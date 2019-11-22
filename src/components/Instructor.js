@@ -1,0 +1,81 @@
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+
+import { fetchStudents } from "../actions"; 
+
+class StudentList extends React.Component {
+  componentDidMount() {
+    this.props.fetchStudents();
+  }
+
+  renderAdmin(student) {
+    if(this.props.isSignedIn && student.userId === this.props.currentUserId) {
+      return(
+        <div className="right floated content">
+          <Link to={`/instructor/editStudent/${student.id}`} className="ui button primary">
+            Edit
+          </Link>
+          <Link to={`instructor/deleteStudent/${student.id}`} className="ui button negative">
+            Delete
+          </Link>
+        </div>
+      );
+    }
+  }
+  
+  renderStudents() {
+    const studentArray = this.props.students.map(student => 
+      <div className="item" key={student.id}>
+        {this.renderAdmin(student)}
+        <i className="large middle aligned icon camera" />
+        <div className="content">
+          <Link to={`/students/${student.id}`} className="header">
+            {student.title}
+          </Link>
+          <div className="description">
+            {student.description}
+          </div>
+        </div>
+      </div>  
+    );
+    
+    if(this.props.isSignedIn) {
+      return studentArray;
+    }
+  }
+
+  renderCreate() {
+    if(this.props.isSignedIn) {
+      return (
+        <div style={{ textAlign: 'right' }}>
+          <Link to="/instructor/newStudent" className="ui button primary">
+            Create Student 
+          </Link>
+        </div>
+      );
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>Student List</h3>
+        <div className="ui celled list">
+          {this.renderStudents()}
+        </div>
+        {this.renderCreate()}
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  return { 
+    students: Object.values(state.students),
+    currentUserId: state.auth.userId,
+    isSignedIn: state.auth.isSignedIn
+  }
+}
+
+export default connect(mapStateToProps, { fetchStudents })(StudentList);
