@@ -39,11 +39,17 @@
       //Now switch for every case(database operation) and then call the right operation
       switch ($_GET['apicall']) {
         case 'insertTerm':
+        break;
         case 'insertStudent':
+        break;
         case 'insertInstructor':
+        break;
         case 'insertCourse':
+        break;
         case 'insertAssistantDeclaration':
+        break;
         case 'insertAdmin':
+        break;
       }
   }
 ?>
