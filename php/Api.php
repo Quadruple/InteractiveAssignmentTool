@@ -133,7 +133,7 @@
         case 'insertAdmin':
         isTheseParametersAvailable(array('adminemail', 'password', 'term'));
         $result = $db->insertAdmin(
-          $_POST['instructoremail'],
+          $_POST['adminemail'],
           $_POST['password'],
           $_POST['term']
         );
