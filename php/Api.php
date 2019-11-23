@@ -75,6 +75,7 @@
         break;
         case 'insertInstructor':
           isTheseParametersAvailable(array('instructoremail', 'password', 'term', 'course'));
+          $db = new DbOperation();
           $result = $db->insertInstructor(
             $_POST['instructoremail'],
             $_POST['password'],
@@ -92,6 +93,7 @@
         case 'insertCourse':
         isTheseParametersAvailable(array('term', 'instructoremail', 'starttime',
                                           'endtime', 'course', 'teachingassistant', 'learningassistant', 'section', 'crncode'));
+        $db = new DbOperation();
         $result = $db->insertCourse(
           $_POST['term'],
           $_POST['instructoremail'],
@@ -113,6 +115,7 @@
         break;
         case 'insertAssistantDeclaration':
         isTheseParametersAvailable(array('instructoremail', 'crncode', 'term', 'studentnumber', 'role', 'workhours', 'assistantscore'));
+        $db = new DbOperation();
         $result = $db->insertAssistantDeclaration(
             $_POST['instructoremail'],
             $_POST['crncode'],
@@ -132,6 +135,7 @@
         break;
         case 'insertAdmin':
         isTheseParametersAvailable(array('adminemail', 'password', 'term'));
+        $db = new DbOperation();
         $result = $db->insertAdmin(
           $_POST['adminemail'],
           $_POST['password'],
