@@ -9,7 +9,7 @@
     }
 
     function insertTerm($term) {
-      $stmt = this->con->prepare("INSERT INTO terms (term) VALUES (?)");
+      $stmt = $this->con->prepare("INSERT INTO terms (term) VALUES (?)");
       $stmt->bind_param("s", $term);
       if($stmt->execute()) {
         return true;
