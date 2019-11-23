@@ -18,7 +18,7 @@
     }
 
     function insertStudent($studentemail, $password, $term, $instructoremail, $crncode, $role, $studentnumber, $workhours) {
-      $stmt = this->con->prepare("INSERT INTO students (studentemail, password, term, instructoremail, crncode, role, studentnumber, workhours)
+      $stmt = $this->con->prepare("INSERT INTO students (studentemail, password, term, instructoremail, crncode, role, studentnumber, workhours)
                                   VALUES (?,?,?,?,?,?,?,?)");
       $stmt->bind_param("ssssisii", $studentemail, $password, $term, $instructoremail, $crncode, $role, $studentnumber, $workhours);
       if($stmt->execute()) {
@@ -28,7 +28,7 @@
     }
 
     function insertInstructor($instructoremail, $password, $term, $course) {
-      $stmt = this->con->prepare("INSERT INTO instructors (instructoremail, password, term, course) VALUES (?,?,?,?)");
+      $stmt = $this->con->prepare("INSERT INTO instructors (instructoremail, password, term, course) VALUES (?,?,?,?)");
       $stmt->bind_param("ssss", $instructoremail, $password, $term, $course);
       if($stmt->execute()) {
         return true;
@@ -37,7 +37,7 @@
     }
 
     function insertCourse($term, $instructoremail, $starttime, $endtime, $course, $teachingassistant, $learningassistant, $section, $crncode) {
-      $stmt = this->con->prepare("INSERT INTO courses
+      $stmt = $this->con->prepare("INSERT INTO courses
                                 (term, instructoremail, starttime, endtime, course, teachingassistant, learningassistant, section, crncode)
                                 VALUES (?,?,?,?,?,?,?,?,?)");
       $stmt->bind_param("ssssssssi", $term, $instructoremail, $starttime, $endtime, $course, $teachingassistant, $learningassistant, $section, $crncode);
@@ -48,7 +48,7 @@
     }
 
     function insertAssistantDeclaration($instructoremail, $crncode, $term, $studentnumber, $role, $workhours, $assistantscore) {
-      $stmt = this->con->prepare("INSERT INTO assistantdeclarations
+      $stmt = $this->con->prepare("INSERT INTO assistantdeclarations
                                 (instructoremail, crncode, term, studentnumber, role, workhours, assistantscore)
                                  VALUES (?,?,?,?,?,?,?)");
       $stmt->bind_param("sisisid", $instructoremail, $crncode, $term, $studentnumber, $role, $workhours, $assistantscore);
@@ -59,7 +59,7 @@
     }
 
     function insertAdmin($adminemail, $password, $term) {
-      $stmt = this->con->prepare("INSERT INTO admins (adminemail, password, term) VALUES (?,?,?)");
+      $stmt = $this->con->prepare("INSERT INTO admins (adminemail, password, term) VALUES (?,?,?)");
       $stmt->bind_param("sss", $adminemail, $password, $term);
       if($stmt->execute()) {
         return true;
