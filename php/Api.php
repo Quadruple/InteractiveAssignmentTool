@@ -1,6 +1,6 @@
 <?php
   //Get operations
-  require_once dirname(__FILE__).'\DbOperation.php'
+  require_once dirname(__FILE__).'\DbOperation.php';
 
   // Function for controlling if variables are $available
   function isTheseParametersAvailable($params){
