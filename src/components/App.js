@@ -1,13 +1,18 @@
 import React from "react";
 import { Router, Route, Switch } from "react-router-dom";
 import LoginScreen from "./LoginScreen";
-import Instructor from "./Instructor";
-import CreateStudent from "./CreateStudent";
-import EditStudent from "./EditStudent";
-import DeleteStudent from "./DeleteStudent";
-import Student from "./Student";
+import Instructor from "./instructorComps/Instructor";
+import CreateStudent from "./instructorComps/CreateStudent";
+import EditStudent from "./instructorComps/EditStudent";
+import DeleteStudent from "./instructorComps/DeleteStudent";
+import Student from "./studentComps/Student";
+import CreateTime from "./studentComps/CreateTime";
+import EditTime from "./studentComps/EditTime";
+import DeleteTime from "./studentComps/DeleteTime";
 import Header from "./Header"; 
 import history from '../history'; 
+
+import Demo from "./Demo";
 
 const App = () => {
   return (
@@ -16,11 +21,15 @@ const App = () => {
         <Header />
         <Switch>
           <Route path="/" exact component={LoginScreen} />
+          <Route path="/login" exact component={Demo} />
           <Route path="/instructor" exact component={Instructor} />
           <Route path="/instructor/newStudent" exact component={CreateStudent} />
           <Route path="/instructor/editStudent/:studentId" exact component={EditStudent} />
           <Route path="/instructor/deleteStudent/:studentId" exact component={DeleteStudent} />
           <Route path="/student" exact component={Student} />
+          <Route path="/student/newTime" exact component={CreateTime} />
+          <Route path="/student/editTime/:timeId" exact component={EditTime} />
+          <Route path="/student/deleteTime/:timeId" exact component={DeleteTime} />
         </Switch>
       </Router>
     </div>

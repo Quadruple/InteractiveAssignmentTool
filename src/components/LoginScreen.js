@@ -9,6 +9,7 @@ class LoginScreen extends React.Component {
       return(
         <div>
           Welcome to Interactive Assignment Tool <br></br><br></br><br></br>
+          <Link to="/login" className="item"> Login Page</Link> <br></br><br></br>
           <Link to="/instructor" className="item"> Instructor Page</Link> <br></br><br></br>
           <Link to="/student" className="item"> Student Page</Link>
         </div> 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 
-class Form extends React.Component {
+class FormTime extends React.Component {
   renderError({ error, touched }) {
     if(touched && error) {
       return(
@@ -33,8 +33,8 @@ class Form extends React.Component {
   render() {
     return (
       <form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)} >
-        <Field name="number" component={this.renderInput} label="Enter Number: " />
-        <Field name="role" component={this.renderInput} label="Enter Role: " />
+        <Field name="time1" component={this.renderInput} label="Enter Slot 1: " />
+        <Field name="time2" component={this.renderInput} label="Enter Slot 2: " />
         <button className="ui button primary">Submit</button>
       </form>
     );
@@ -44,18 +44,18 @@ class Form extends React.Component {
 const validate  = formValues => {
   const errors = {};
  
-  if(!formValues.number) {
-    errors.number = `You must enter a number`;
+  if(!formValues.time1) {
+    errors.time1 = `You must enter a value`;
   }
 
-  if(!formValues.role) {
-    errors.role = "You must enter a role";
+  if(!formValues.time2) {
+    errors.time2 = "You must enter a value";
   }
   console.log(errors);
   return errors;
 }
 
 export default reduxForm({
-  form: "Form",
+  form: "FormTime",
   validate
-})(Form);
+})(FormTime);

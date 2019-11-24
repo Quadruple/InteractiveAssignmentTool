@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { createStudent } from "../actions";
-import Form from "./Form";
+import { createStudent } from "../../actions";
+import Form from "../Form";
 
 class CreateStudent extends React.Component {
   onSubmit = formValues => {
@@ -11,7 +11,7 @@ class CreateStudent extends React.Component {
   render() {
     return (
       <div>
-        <h2>Create a stream!</h2>
+        <h2>Create Student</h2>
         <Form onSubmit={this.onSubmit} />
       </div>
     );

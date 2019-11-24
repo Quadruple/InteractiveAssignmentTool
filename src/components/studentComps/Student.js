@@ -2,21 +2,21 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { fetchStudents } from "../actions"; 
+import { fetchTimes } from "../../actions"; 
 
-class StudentList extends React.Component {
+class TimeList extends React.Component {
   componentDidMount() {
-    this.props.fetchStudents();
+    this.props.fetchTimes();
   }
 
-  renderAdmin(student) {
-    if(this.props.isSignedIn && student.userId === this.props.currentUserId) {
+  renderAdmin(time) {
+    if(this.props.isSignedIn) {
       return(
         <div className="right floated content">
-          <Link to={`/instructor/editStudent/${student.id}`} className="ui button primary">
+          <Link to={`/student/editTime/${time.id}`} className="ui button primary">
             Edit
           </Link>
-          <Link to={`instructor/deleteStudent/${student.id}`} className="ui button negative">
+          <Link to={`/student/deleteTime/${time.id}`} className="ui button negative">
             Delete
           </Link>
         </div>
@@ -25,23 +25,23 @@ class StudentList extends React.Component {
   }
   
   renderStudents() {
-    const studentArray = this.props.students.map(student => 
-      <div className="item" key={student.id}>
-        {this.renderAdmin(student)}
+    const timeArray = this.props.times.map(time => 
+      <div className="item" key={time.id}>
+        {this.renderAdmin(time)}
         <i className="large middle aligned icon camera" />
         <div className="content">
-          <Link to={`/students/${student.id}`} className="header">
-            {student.title}
+          <Link to={`/times/${time.id}`} className="header">
+            {time.time1}
           </Link>
           <div className="description">
-            {student.description}
+            {time.time2}
           </div>
         </div>
       </div>  
     );
     
     if(this.props.isSignedIn) {
-      return studentArray;
+      return timeArray;
     }
   }
 
@@ -49,8 +49,8 @@ class StudentList extends React.Component {
     if(this.props.isSignedIn) {
       return (
         <div style={{ textAlign: 'right' }}>
-          <Link to="/instructor/newStudent" className="ui button primary">
-            Create Student 
+          <Link to="/student/newTime" className="ui button primary">
+            Add Time Preference 
           </Link>
         </div>
       );
@@ -58,9 +58,10 @@ class StudentList extends React.Component {
   }
 
   render() {
+    var string = this.props.isSignedIn ? "Time Preferences" : "";
     return (
       <div>
-        <h3>Student List</h3>
+        <h3>{string}</h3>
         <div className="ui celled list">
           {this.renderStudents()}
         </div>
@@ -72,10 +73,10 @@ class StudentList extends React.Component {
 
 const mapStateToProps = state => {
   return { 
-    students: Object.values(state.students),
+    times: Object.values(state.times),
     currentUserId: state.auth.userId,
     isSignedIn: state.auth.isSignedIn
   }
 }
 
-export default connect(mapStateToProps, { fetchStudents })(StudentList);
+export default connect(mapStateToProps, { fetchTimes })(TimeList);
