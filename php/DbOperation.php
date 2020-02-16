@@ -118,5 +118,25 @@
       }
       return false;
     }
+
+    function getInstructors()
+    {
+      $stmt = $this->con->prepare("SELECT instructoremail, instructorname, term FROM instructors");
+      $stmt->execute();
+      $stmt->bind_result($instructoremail, $instructorname, $term);
+		
+      $instructors = array(); 
+      
+      while($stmt->fetch()){
+        $instructor  = array();
+        $instructor['instructoremail'] = $instructoremail; 
+        $instructor['instructorname'] = $instructorname; 
+        $instructor['term'] = $term; 
+        
+        array_push($instructors, $instructor); 
+      }
+      
+      return $instructors; 
+    }
   }
 ?>

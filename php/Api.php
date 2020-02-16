@@ -82,7 +82,7 @@
           );
           if($result) {
             $response['error'] = false;
-            $response['message'] = "Term added to database succesfully.";
+            $response['message'] = "Instructor added to database succesfully.";
           }else {
             $response['error'] = true;
             $response['message'] = "Some error occured. Please try again.";
@@ -220,6 +220,14 @@
             $response['message'] = "Some error occured. Please try again.";
           }
         break;
+        case 'getInstructors':
+          $db = new DbOperation();
+				  $response['error'] = false; 
+				  $response['message'] = 'Request successfully completed';
+				  $response['instructors'] = $db->getInstructors();
+		  	break; 
       }
   }
+
+  echo json_encode($response)
 ?>
