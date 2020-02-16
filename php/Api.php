@@ -53,17 +53,16 @@
           }
         break;
         case 'insertStudent':
-          isTheseParametersAvailable(array('studentemail', 'password', 'term', 'instructoremail', 'crncode', 'role', 'studentnumber', 'workhours'));
+          isTheseParametersAvailable(array('studentemail', 'studentname', 'term', 'role', 'studentnumber', 'workhours', 'assistantscore'));
           $db = new DbOperation();
           $result = $db->insertStudent(
             $_POST['studentemail'],
-            $_POST['password'],
+            $_POST['studentname'],
             $_POST['term'],
-            $_POST['instructoremail'],
-            $_POST['crncode'],
             $_POST['role'],
             $_POST['studentnumber'],
-            $_POST['workhours']
+            $_POST['workhours'],
+            $_POST['assistantscore']
           );
           if($result) {
             $response['error'] = false;
@@ -74,13 +73,12 @@
           }
         break;
         case 'insertInstructor':
-          isTheseParametersAvailable(array('instructoremail', 'password', 'term', 'course'));
+          isTheseParametersAvailable(array('instructoremail', 'instructorname', 'term'));
           $db = new DbOperation();
           $result = $db->insertInstructor(
             $_POST['instructoremail'],
-            $_POST['password'],
-            $_POST['term'],
-            $_POST['course']
+            $_POST['instructorname'],
+            $_POST['term']
           );
           if($result) {
             $response['error'] = false;
@@ -91,63 +89,136 @@
           }
         break;
         case 'insertCourse':
-        isTheseParametersAvailable(array('term', 'instructoremail', 'starttime',
-                                          'endtime', 'course', 'teachingassistant', 'learningassistant', 'section', 'crncode'));
-        $db = new DbOperation();
-        $result = $db->insertCourse(
-          $_POST['term'],
-          $_POST['instructoremail'],
-          $_POST['starttime'],
-          $_POST['endtime'],
-          $_POST['course'],
-          $_POST['teachingassistant'],
-          $_POST['learningassistant'],
-          $_POST['section'],
-          $_POST['crncode']
-        );
-        if($result) {
-          $response['error'] = false;
-          $response['message'] = "Term added to database succesfully.";
-        }else {
-          $response['error'] = true;
-          $response['message'] = "Some error occured. Please try again.";
-        }
+          isTheseParametersAvailable(array('term', 'starttime',
+                                            'endtime', 'course', 'section', 'crncode'));
+          $db = new DbOperation();
+          $result = $db->insertCourse(
+            $_POST['term'],
+            $_POST['starttime'],
+            $_POST['endtime'],
+            $_POST['course'],
+            $_POST['section'],
+            $_POST['crncode']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Term added to database succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
         break;
         case 'insertAssistantDeclaration':
-        isTheseParametersAvailable(array('instructoremail', 'crncode', 'term', 'studentnumber', 'role', 'workhours', 'assistantscore'));
-        $db = new DbOperation();
-        $result = $db->insertAssistantDeclaration(
-            $_POST['instructoremail'],
-            $_POST['crncode'],
-            $_POST['term'],
-            $_POST['studentnumber'],
-            $_POST['role'],
-            $_POST['workhours'],
-            $_POST['assistantscore']
-        );
-        if($result) {
-          $response['error'] = false;
-          $response['message'] = "Term added to database succesfully.";
-        }else {
-          $response['error'] = true;
-          $response['message'] = "Some error occured. Please try again.";
-        }
+          isTheseParametersAvailable(array('crncode', 'term', 'studentemail'));
+          $db = new DbOperation();
+          $result = $db->insertAssistantDeclaration(
+              $_POST['crncode'],
+              $_POST['term'],
+              $_POST['studentemail']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Term added to database succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
         break;
         case 'insertAdmin':
-        isTheseParametersAvailable(array('adminemail', 'password', 'term'));
-        $db = new DbOperation();
-        $result = $db->insertAdmin(
-          $_POST['adminemail'],
-          $_POST['password'],
-          $_POST['term']
-        );
-        if($result) {
-          $response['error'] = false;
-          $response['message'] = "Term added to database succesfully.";
-        }else {
-          $response['error'] = true;
-          $response['message'] = "Some error occured. Please try again.";
-        }
+          isTheseParametersAvailable(array('adminemail', 'term', 'adminname'));
+          $db = new DbOperation();
+          $result = $db->insertAdmin(
+            $_POST['adminemail'],
+            $_POST['term'],
+            $_POST['adminname']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Term added to database succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
+        break;
+        case 'instructorAddsCourse':
+          isTheseParametersAvailable(array('instructoremail', 'crncode'));
+          $db = new DbOperation();
+          $result = $db->instructorAddsCourse(
+            $_POST['instructoremail'],
+            $_POST['crncode']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Instructors addition recorded succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
+        break;
+        case 'instructorAddsStudent':
+          isTheseParametersAvailable(array('instructoremail', 'studentemail'));
+          $db = new DbOperation();
+          $result = $db->instructorAddsStudent(
+            $_POST['instructoremail'],
+            $_POST['studentemail']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Instructors addition recorded succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
+        break;
+        case 'instructorDeclaresAssistant':
+          isTheseParametersAvailable(array('instructoremail', 'studentemail'));
+          $db = new DbOperation();
+          $result = $db->instructorDeclaresAssistant(
+            $_POST['instructoremail'],
+            $_POST['studentemail']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Instructors assistant declaration recorded succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
+        break;
+        case 'studentDeclaresPreference':
+          isTheseParametersAvailable(array('studentemail', 'preferenceid'));
+          $db = new DbOperation();
+          $result = $db->studentDeclaresPreference(
+            $_POST['studentemail'],
+            $_POST['preferenceid']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Students declaration recorded succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
+        break;
+        case 'insertStudentPreference':
+          isTheseParametersAvailable(array('preferenceid', 'preferencedegree', 'preferencestarttime', 'preferenceendtime', 
+                                            'term', 'course'));
+          $db = new DbOperation();
+          $result = $db->insertStudentPreference(
+            $_POST['preferenceid'],
+            $_POST['preferencedegree'],
+            $_POST['preferencestarttime'],
+            $_POST['preferenceendtime'],
+            $_POST['term'],
+            $_POST['course'],
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Students preference recorded succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
         break;
       }
   }

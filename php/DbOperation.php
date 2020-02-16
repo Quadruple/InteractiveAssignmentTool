@@ -17,50 +17,102 @@
       return false;
     }
 
-    function insertStudent($studentemail, $password, $term, $instructoremail, $crncode, $role, $studentnumber, $workhours) {
-      $stmt = $this->con->prepare("INSERT INTO students (studentemail, password, term, instructoremail, crncode, role, studentnumber, workhours)
-                                  VALUES (?,?,?,?,?,?,?,?)");
-      $stmt->bind_param("ssssisii", $studentemail, $password, $term, $instructoremail, $crncode, $role, $studentnumber, $workhours);
+    function insertStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore) {
+      $stmt = $this->con->prepare("INSERT INTO students (studentemail, studentname, term, role, studentnumber, workhours, assistantscore)
+                                  VALUES (?,?,?,?,?,?,?)");
+      $stmt->bind_param("ssssiid", $studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore);
       if($stmt->execute()) {
         return true;
       }
       return false;
     }
 
-    function insertInstructor($instructoremail, $password, $term, $course) {
-      $stmt = $this->con->prepare("INSERT INTO instructors (instructoremail, password, term, course) VALUES (?,?,?,?)");
-      $stmt->bind_param("ssss", $instructoremail, $password, $term, $course);
+    function insertInstructor($instructoremail, $instructorname, $term) {
+      $stmt = $this->con->prepare("INSERT INTO instructors (instructoremail, instructorname, term) VALUES (?,?,?)");
+      $stmt->bind_param("sss", $instructoremail, $instructorname, $term);
       if($stmt->execute()) {
         return true;
       }
       return false;
     }
 
-    function insertCourse($term, $instructoremail, $starttime, $endtime, $course, $teachingassistant, $learningassistant, $section, $crncode) {
+    function insertCourse($term, $starttime, $endtime, $course, $section, $crncode) {
       $stmt = $this->con->prepare("INSERT INTO courses
-                                (term, instructoremail, starttime, endtime, course, teachingassistant, learningassistant, section, crncode)
-                                VALUES (?,?,?,?,?,?,?,?,?)");
-      $stmt->bind_param("ssssssssi", $term, $instructoremail, $starttime, $endtime, $course, $teachingassistant, $learningassistant, $section, $crncode);
+                                (term, starttime, endtime, course, section, crncode)
+                                VALUES (?,?,?,?,?,?)");
+      $stmt->bind_param("sssssi", $term, $starttime, $endtime, $course, $section, $crncode);
       if($stmt->execute()) {
         return true;
       }
       return false;
     }
 
-    function insertAssistantDeclaration($instructoremail, $crncode, $term, $studentnumber, $role, $workhours, $assistantscore) {
+    function insertAssistantDeclaration($crncode, $term, $studentemail) {
       $stmt = $this->con->prepare("INSERT INTO assistantdeclarations
-                                (instructoremail, crncode, term, studentnumber, role, workhours, assistantscore)
-                                 VALUES (?,?,?,?,?,?,?)");
-      $stmt->bind_param("sisisid", $instructoremail, $crncode, $term, $studentnumber, $role, $workhours, $assistantscore);
+                                (crncode, term, studentemail)
+                                 VALUES (?,?,?)");
+      $stmt->bind_param("iss", $crncode, $term, $studentemail);
       if($stmt->execute()) {
         return true;
       }
       return false;
     }
 
-    function insertAdmin($adminemail, $password, $term) {
-      $stmt = $this->con->prepare("INSERT INTO admins (adminemail, password, term) VALUES (?,?,?)");
-      $stmt->bind_param("sss", $adminemail, $password, $term);
+    function insertAdmin($adminemail, $term, $adminname) {
+      $stmt = $this->con->prepare("INSERT INTO admins (adminemail, term, adminname) VALUES (?,?,?)");
+      $stmt->bind_param("sss", $adminemail, $term, $adminname);
+      if($stmt->execute()) {
+        return true;
+      }
+      return false;
+    }
+
+    function instructorAddsCourse($instructoremail, $crncode)
+    {
+      $stmt = $this->con->prepare("INSERT INTO instructoraddedcourse (instructoremail, crncode) VALUES (?,?)");
+      $stmt->bind_param("si", $instructoremail, $crncode);
+      if($stmt->execute()) {
+          return true;
+      }
+      return false;
+    }
+
+    function instructorAddsStudent($instructoremail, $studentemail)
+    {
+      $stmt = $this->con->prepare("INSERT INTO instructoraddedstudent (instructoremail, studentemail) VALUES (?,?)");
+      $stmt->bind_param("ss", $instructoremail, $studentemail);
+      if($stmt->execute()) {
+          return true;
+      }
+      return false;
+    }
+
+    function instructorDeclaresAssistant($instructoremail, $studentemail)
+    {
+      $stmt = $this->con->prepare("INSERT INTO instructordeclaredassistant (instructoremail, studentemail) VALUES (?,?)");
+      $stmt->bind_param("ss", $instructoremail, $studentemail);
+      if($stmt->execute()) {
+          return true;
+      }
+      return false;
+    }
+
+    function studentDeclaresPreference($studentemail, $preferenceid)
+    {
+      $stmt = $this->con->prepare("INSERT INTO studentdeclaredpreference (studentemail, preferenceid) VALUES (?,?)");
+      $stmt->bind_param("si", $studentemail, $preferenceid);
+      if($stmt->execute()) {
+        return true;
+      }
+      return false;
+    }
+
+    function insertStudentPreference($preferenceid, $preferencedegree, $preferencestarttime, $preferenceendtime, $term, $course)
+    {
+      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferenceid, preferencedegree, preferencestarttime, 
+                                  preferenceendtime, term, course) 
+              VALUES (?,?,?,?,?,?)");
+      $stmt->bind_param("iissss", $preferenceid, $preferencedegree, $preferencestarttime, $preferenceendtime, $term, $course);
       if($stmt->execute()) {
         return true;
       }
