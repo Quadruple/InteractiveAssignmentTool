@@ -225,7 +225,25 @@
 				  $response['error'] = false; 
 				  $response['message'] = 'Request successfully completed';
 				  $response['instructors'] = $db->getInstructors();
-		  	break; 
+        break; 
+        case 'getCourses':
+          $db = new DbOperation();
+				  $response['error'] = false; 
+				  $response['message'] = 'Request successfully completed';
+				  $response['instructors'] = $db->getCourses();
+        break;
+        case 'getAdmins':
+          $db = new DbOperation();
+				  $response['error'] = false; 
+				  $response['message'] = 'Request successfully completed';
+				  $response['admins'] = $db->getAdmins();
+        break;
+        case 'getTerms':
+          $db = new DbOperation();
+				  $response['error'] = false; 
+				  $response['message'] = 'Request successfully completed';
+				  $response['terms'] = $db->getTerms();
+        break;
       }
   }
 

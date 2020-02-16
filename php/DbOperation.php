@@ -138,5 +138,69 @@
       
       return $instructors; 
     }
+
+    function getCourses()
+    {
+      $stmt = $this->con->prepare("SELECT term, starttime, endtime, course, section, crncode FROM courses");
+      $stmt->execute();
+      $stmt->bind_result($term, $starttime, $endtime, $course, $section, $crncode);
+
+      $courses = array();
+
+      while($stmt->fetch())
+      {
+        $course = array();
+        $course['term'] = $term;
+        $course['starttime'] = $starttime;
+        $course['endtime'] = $endtime;
+        $course['course'] = $course;
+        $course['section'] = $section;
+        $course['crncode'] = $crncode;
+
+        array_push($courses, $course);
+      }
+
+      return $courses;
+    }
+
+    function getAdmins()
+    {
+      $stmt = $this->con->prepare("SELECT adminemail, term, adminname FROM admins");
+      $stmt->execute();
+      $stmt->bind_result($adminemail, $term, $adminname);
+
+      $admins = array();
+
+      while($stmt->fetch())
+      {
+        $admin = array();
+        $admin['adminemail'] = $adminemail;
+        $admin['term'] = $term;
+        $admin['adminname'] = $adminname;
+
+        array_push($admins, $admin);
+      }
+
+      return $admins;
+    }
+
+    function getTerms()
+    {
+      $stmt = $this->con->prepare("SELECT term FROM terms");
+      $stmt->execute();
+      $stmt->bind_result($term);
+
+      $terms = array();
+
+      while($stmt->fetch())
+      {
+        $termArray = array();
+        $termArray['term'] = $term;
+
+        array_push($terms, $termArray);
+      }
+
+      return $terms;
+    }
   }
 ?>
