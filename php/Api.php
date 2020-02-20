@@ -249,6 +249,12 @@
 				  $response['message'] = 'Request successfully completed';
 				  $response['students'] = $db->getStudents();
         break;
+        case 'getPreferences':
+          $db = new DbOperation();
+          $response['error'] = false; 
+				  $response['message'] = 'Request successfully completed';
+				  $response['preferences'] = $db->getPreferences(); 
+        break;
       }
   }
 

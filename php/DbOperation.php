@@ -228,5 +228,30 @@
 
       return $students;
     }
+
+    function getPreferences()
+    {
+      $stmt = $this->con->prepare("SELECT preferenceid, preferencedegree, preferencestarttime, preferenceendtime, term, course
+                                  FROM studentpreference");
+      $stmt->execute();
+      $stmt->bind_result($preferenceid, $preferencedegree, $preferencestarttime, $preferenceendtime, $term, $course);
+
+      $preferences = array();
+
+      while($stmt->fetch())
+      {
+        $preferenceArray = array();
+        $preferenceArray['preferenceid'] = $preferenceid;
+        $preferenceArray['preferencedegree'] = $preferencedegree;
+        $preferenceArray['preferencestarttime'] = $preferencestarttime;
+        $preferenceArray['preferenceendtime'] = $preferenceendtime;
+        $preferenceArray['term'] = $term;
+        $preferenceArray['course'] = $course;
+
+        array_push($preferences, $preferenceArray);
+      }
+
+      return $preferences;
+    }
   }
 ?>
