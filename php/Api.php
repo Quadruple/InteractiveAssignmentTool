@@ -201,11 +201,10 @@
           }
         break;
         case 'insertStudentPreference':
-          isTheseParametersAvailable(array('preferenceid', 'preferencedegree', 'preferencestarttime', 'preferenceendtime', 
+          isTheseParametersAvailable(array('preferencedegree', 'preferencestarttime', 'preferenceendtime', 
                                             'term', 'course'));
           $db = new DbOperation();
           $result = $db->insertStudentPreference(
-            $_POST['preferenceid'],
             $_POST['preferencedegree'],
             $_POST['preferencestarttime'],
             $_POST['preferenceendtime'],
