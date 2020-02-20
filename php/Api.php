@@ -229,7 +229,7 @@
           $db = new DbOperation();
 				  $response['error'] = false; 
 				  $response['message'] = 'Request successfully completed';
-				  $response['instructors'] = $db->getCourses();
+				  $response['courses'] = $db->getCourses();
         break;
         case 'getAdmins':
           $db = new DbOperation();
