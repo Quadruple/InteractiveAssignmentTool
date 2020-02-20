@@ -243,6 +243,12 @@
 				  $response['message'] = 'Request successfully completed';
 				  $response['terms'] = $db->getTerms();
         break;
+        case 'getStudents':
+          $db = new DbOperation();
+				  $response['error'] = false; 
+				  $response['message'] = 'Request successfully completed';
+				  $response['students'] = $db->getStudents();
+        break;
       }
   }
 

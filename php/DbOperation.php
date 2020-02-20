@@ -202,5 +202,31 @@
 
       return $terms;
     }
+
+    function getStudents()
+    {
+      $stmt = $this->con->prepare("SELECT studentemail, studentname, term, role, studentnumber, workhours, assistantscore 
+                                  FROM students");
+      $stmt->execute();
+      $stmt->bind_result($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore);
+
+      $students = array();
+
+      while($stmt->fetch())
+      {
+        $studentArray = array();
+        $studentArray['studentemail'] = $studentemail;
+        $studentArray['studentname'] = $studentname;
+        $studentArray['term'] = $term;
+        $studentArray['role'] = $role;
+        $studentArray['studentnumber'] = $studentnumber;
+        $studentArray['workhours'] = $workhours;
+        $studentArray['assistantscore'] = $assistantscore;
+
+        array_push($students, $studentArray);
+      }
+
+      return $students;
+    }
   }
 ?>
