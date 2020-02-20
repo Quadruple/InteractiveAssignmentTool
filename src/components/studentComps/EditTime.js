@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 import { fetchTimes, editTime } from "../../actions";
-import FormTime from "../FormTime";
+import TimePreferencesForm from "../TimePreferencesForm";
 
 class EditTime extends React.Component {
   componentDidMount() {
@@ -22,7 +22,7 @@ class EditTime extends React.Component {
         return (
           <div>
             <h2>Edit Time</h2>
-            <FormTime initialValues={_.pick(this.props.time, 'time1', 'time2')} onSubmit={this.onSubmit} /> 
+            <TimePreferencesForm initialValues={_.pick(this.props.time, 'day', 'startTime', 'endTime', 'preferenceOrder')} onSubmit={this.onSubmit} /> 
           </div>
         );
     }

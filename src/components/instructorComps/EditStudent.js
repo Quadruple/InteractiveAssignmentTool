@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 import { fetchStudents, editStudent } from "../../actions";
-import Form from "../Form";
+import CreateStudentForm from "../CreateStudentForm";
 
 class EditStudent extends React.Component {
   componentDidMount() {
@@ -22,11 +22,10 @@ class EditStudent extends React.Component {
         return (
           <div>
             <h2>Edit Student</h2>
-            <Form initialValues={_.pick(this.props.student, 'number', 'role')} onSubmit={this.onSubmit} /> 
+            <CreateStudentForm initialValues={ {..._.pick(this.props.student, 'name','number', 'role', 'hours', 'score', 'term'), email: this.props.student.email.replace(/@sabanciuniv.edu/, "")} } onSubmit={this.onSubmit} /> 
           </div>
         );
-    }
-   
+      }
   }
 }
 

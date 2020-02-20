@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { createStudent } from "../../actions";
-import Form from "../Form";
+import CreateStudentForm from "../CreateStudentForm";
 
 class CreateStudent extends React.Component {
   onSubmit = formValues => {
@@ -12,7 +12,7 @@ class CreateStudent extends React.Component {
     return (
       <div>
         <h2>Create Student</h2>
-        <Form onSubmit={this.onSubmit} />
+        <CreateStudentForm onSubmit={this.onSubmit} />
       </div>
     );
   }

@@ -12,7 +12,8 @@ import {
   EDIT_TIME,
   DELETE_TIME,
   FETCH_TIMES,
-  FETCH_TIME 
+  FETCH_TIME,
+  CHECK_MAIL
 } from "../actions/types";
 
 
@@ -28,10 +29,12 @@ export const signOut = () => {
   }
 }
 
-export const createStudent = formValues => async (dispatch, getState) => {
-  const { userId } = getState().auth;
+export const checkMail = email => async  dispatch => {
+  dispatch({ type: CHECK_MAIL, payload: "INSTRUCTOR" });
+}
+
+export const createStudent = formValues => async (dispatch) => {
   const response = await axios.post("/students", { ...formValues });
-  console.log(response.data)
 
   dispatch({ type: CREATE_STUDENT, payload: response.data });
   history.push("/instructor");
@@ -63,10 +66,8 @@ export const deleteStudent = id => async dispatch => {
   history.push("/instructor");
 }
 
-export const createTime = formValues => async (dispatch, getState) => {
-  const { userId } = getState().auth;
+export const createTime = formValues => async (dispatch) => {
   const response = await axios.post("/times", { ...formValues });
-  console.log(response.data)
 
   dispatch({ type: CREATE_TIME, payload: response.data });
   history.push("/student");

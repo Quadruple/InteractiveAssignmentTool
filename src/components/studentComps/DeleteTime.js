@@ -15,7 +15,7 @@ class DeleteTime extends React.Component {
     if(!this.props.time) {
       return "Are you sure?"
     }
-    return `Are you sure to delete TIME: ${this.props.time.time1}` + " " + this.props.time.time2;
+    return `Are you sure to delete TIME: ${this.props.time.time1} ${this.props.time.time2}`
   }
   
   renderActions() {

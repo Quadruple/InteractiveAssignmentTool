@@ -13,6 +13,7 @@ import Header from "./Header";
 import history from '../history'; 
 
 import Demo from "./Demo";
+import StudentList from "./instructorComps/adminScreen";
 
 const App = () => {
   return (

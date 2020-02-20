@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { createTime } from "../../actions";
-import FormTime from "../FormTime";
+import TimePreferencesForm from "../TimePreferencesForm";
 
 class CreateTime extends React.Component {
   onSubmit = formValues => {
@@ -12,7 +12,7 @@ class CreateTime extends React.Component {
     return (
       <div>
         <h2>Add a time preference</h2>
-        <FormTime onSubmit={this.onSubmit} />
+        <TimePreferencesForm onSubmit={this.onSubmit} />
       </div>
     );
   }

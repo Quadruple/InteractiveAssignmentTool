@@ -28,13 +28,12 @@ class TimeList extends React.Component {
     const timeArray = this.props.times.map(time => 
       <div className="item" key={time.id}>
         {this.renderAdmin(time)}
-        <i className="large middle aligned icon camera" />
         <div className="content">
-          <Link to={`/times/${time.id}`} className="header">
-            {time.time1}
-          </Link>
+          {time.day + " "}
+          {time.startTime + " - "}
+          {time.endTime}
           <div className="description">
-            {time.time2}
+            {"Order: " + time.preferenceOrder}
           </div>
         </div>
       </div>  

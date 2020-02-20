@@ -10,3 +10,4 @@ export const FETCH_TIMES = "FETCH_TIMES";
 export const FETCH_TIME = "FETCH_TIME";
 export const DELETE_TIME = "DELETE_TIME";
 export const EDIT_TIME = "EDIT_TIME";
+export const CHECK_MAIL = "CHECK_MAIL";

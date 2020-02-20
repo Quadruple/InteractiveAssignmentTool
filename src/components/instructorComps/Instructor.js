@@ -28,13 +28,10 @@ class StudentList extends React.Component {
     const studentArray = this.props.students.map(student => 
       <div className="item" key={student.id}>
         {this.renderAdmin(student)}
-        <i className="large middle aligned icon camera" />
         <div className="content">
-          <Link to={`/students/${student.id}`} className="header">
-            {student.number}
-          </Link>
+            {student.name + " / " + student.number}
           <div className="description">
-            {student.role}
+            {student.role + " / " + student.hours + " hours / " + student.score + " experience points"}
           </div>
         </div>
       </div>  
@@ -74,7 +71,6 @@ class StudentList extends React.Component {
 const mapStateToProps = state => {
   return { 
     students: Object.values(state.students),
-    currentUserId: state.auth.userId,
     isSignedIn: state.auth.isSignedIn
   }
 }

@@ -15,7 +15,7 @@ class DeleteStudent extends React.Component {
     if(!this.props.student) {
       return "Are you sure?"
     }
-    return `Are you sure to delete STUDENT_NAME: ${this.props.student.number}` + " " + this.props.student.role;
+    return `Are you sure to delete STUDENT_NAME: ${this.props.student.number} ${this.props.student.role}`
   }
   
   renderActions() {
