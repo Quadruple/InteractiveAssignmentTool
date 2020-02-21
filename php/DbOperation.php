@@ -107,12 +107,11 @@
       return false;
     }
 
-    function insertStudentPreference($preferencedegree, $preferencestarttime, $preferenceendtime, $term, $course)
+    function insertStudentPreference($preferenceid, $preferencedegree, $term, $course)
     {
-      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferencedegree, preferencestarttime, 
-                                  preferenceendtime, term, course) 
-              VALUES (?,?,?,?,?)");
-      $stmt->bind_param("issss", $preferencedegree, $preferencestarttime, $preferenceendtime, $term, $course);
+      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferenceid, preferencedegree, term, course) 
+              VALUES (?,?,?,?)");
+      $stmt->bind_param("iiss", $preferenceid, $preferencedegree, $term, $course);
       if($stmt->execute()) {
         return true;
       }
