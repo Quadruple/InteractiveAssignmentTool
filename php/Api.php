@@ -188,11 +188,10 @@
           }
         break;
         case 'studentDeclaresPreference':
-          isTheseParametersAvailable(array('studentemail', 'preferenceid'));
+          isTheseParametersAvailable(array('studentemail'));
           $db = new DbOperation();
           $result = $db->studentDeclaresPreference(
-            $_POST['studentemail'],
-            $_POST['preferenceid']
+            $_POST['studentemail']
           );
           if($result) {
             $response['error'] = false;

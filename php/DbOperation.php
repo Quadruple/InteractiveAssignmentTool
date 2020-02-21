@@ -98,10 +98,10 @@
       return false;
     }
 
-    function studentDeclaresPreference($studentemail, $preferenceid)
+    function studentDeclaresPreference($studentemail)
     {
-      $stmt = $this->con->prepare("INSERT INTO studentdeclaredpreference (studentemail, preferenceid) VALUES (?,?)");
-      $stmt->bind_param("si", $studentemail, $preferenceid);
+      $stmt = $this->con->prepare("INSERT INTO studentdeclaredpreference (studentemail) VALUES (?)");
+      $stmt->bind_param("s", $studentemail);
       if($stmt->execute()) {
         return true;
       }
