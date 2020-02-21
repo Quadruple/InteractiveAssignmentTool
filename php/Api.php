@@ -53,7 +53,8 @@
           }
         break;
         case 'insertStudent':
-          isTheseParametersAvailable(array('studentemail', 'studentname', 'term', 'role', 'studentnumber', 'workhours', 'assistantscore'));
+          isTheseParametersAvailable(array('studentemail', 'studentname', 'term', 'role', 'studentnumber', 'workhours', 'assistantscore',
+                                          'course'));
           $db = new DbOperation();
           $result = $db->insertStudent(
             $_POST['studentemail'],
@@ -62,7 +63,8 @@
             $_POST['role'],
             $_POST['studentnumber'],
             $_POST['workhours'],
-            $_POST['assistantscore']
+            $_POST['assistantscore'],
+            $_POST['course'],
           );
           if($result) {
             $response['error'] = false;
@@ -201,13 +203,12 @@
           }
         break;
         case 'insertStudentPreference':
-          isTheseParametersAvailable(array('preferenceid', 'preferencedegree', 'term', 'course'));
+          isTheseParametersAvailable(array('preferenceid', 'preferencedegree', 'term'));
           $db = new DbOperation();
           $result = $db->insertStudentPreference(
             $_POST['preferenceid'],
             $_POST['preferencedegree'],
-            $_POST['term'],
-            $_POST['course']
+            $_POST['term']
           );
           if($result) {
             $response['error'] = false;

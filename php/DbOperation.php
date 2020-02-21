@@ -17,10 +17,11 @@
       return false;
     }
 
-    function insertStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore) {
-      $stmt = $this->con->prepare("INSERT INTO students (studentemail, studentname, term, role, studentnumber, workhours, assistantscore)
-                                  VALUES (?,?,?,?,?,?,?)");
-      $stmt->bind_param("ssssiid", $studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore);
+    function insertStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course) {
+      $stmt = $this->con->prepare("INSERT INTO students (studentemail, studentname, term, role, studentnumber, workhours, 
+                                  assistantscore, course)
+                                  VALUES (?,?,?,?,?,?,?,?)");
+      $stmt->bind_param("ssssiids", $studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
       if($stmt->execute()) {
         return true;
       }
@@ -107,11 +108,11 @@
       return false;
     }
 
-    function insertStudentPreference($preferenceid, $preferencedegree, $term, $course)
+    function insertStudentPreference($preferenceid, $preferencedegree, $term)
     {
-      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferenceid, preferencedegree, term, course) 
-              VALUES (?,?,?,?)");
-      $stmt->bind_param("iiss", $preferenceid, $preferencedegree, $term, $course);
+      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferenceid, preferencedegree, term) 
+              VALUES (?,?,?)");
+      $stmt->bind_param("iis", $preferenceid, $preferencedegree, $term);
       if($stmt->execute()) {
         return true;
       }
