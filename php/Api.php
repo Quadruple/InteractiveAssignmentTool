@@ -253,6 +253,42 @@
 				  $response['message'] = 'Request successfully completed';
 				  $response['preferences'] = $db->getPreferences(); 
         break;
+        case 'getCoursesOfInstructor':
+          if(isset($_GET['instructoremail']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['courses'] = $db->getCoursesOfInstructor($_GET['instructoremail']);
+          }
+        break;
+        case 'getStudentsOfInstructor':
+          if(isset($_GET['instructoremail']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['students'] = $db->getStudentsOfInstructor($_GET['instructoremail']);
+          }
+        break;
+        case 'getPreferenceIdOfStudent':
+          if(isset($_GET['studentemail']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['preferenceid'] = $db->getPreferenceIdOfStudent($_GET['studentemail']);
+          }
+        break;
+        case 'getAssistantsOfInstructor':
+          if(isset($_GET['instructoremail']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['assistants'] = $db->getAssistantsOfInstructor($_GET['instructoremail']);
+          }
+        break;
       }
   }
 

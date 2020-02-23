@@ -250,5 +250,89 @@
 
       return $preferences;
     }
+
+    function getCoursesOfInstructor($instructoremail)
+    {
+      $stmt = $this->con->prepare("SELECT crncode FROM instructoraddedcourse WHERE instructoremail = ?");
+
+      $stmt->bind_param("s", $instructoremail);
+      $stmt->execute();
+      $stmt->bind_result($crncode);
+
+      $courses = array();
+
+      while($stmt->fetch())
+      {
+        $course = array();
+        $course['crncode'] = $crncode;
+
+        array_push($courses, $course);
+      }
+
+      return $courses;
+    }
+
+    function getStudentsOfInstructor($instructoremail)
+    {
+      $stmt = $this->con->prepare("SELECT studentemail FROM instructoraddedstudent WHERE instructoremail = ?");
+
+      $stmt->bind_param("s", $instructoremail);
+      $stmt->execute();
+      $stmt->bind_result($studentemail);
+
+      $students = array();
+
+      while($stmt->fetch())
+      {
+        $student = array();
+        $student['studentemail'] = $studentemail;
+
+        array_push($students, $student);
+      }
+
+      return $students;
+    }
+
+    function getPreferenceIdOfStudent($studentemail)
+    {
+      $stmt = $this->con->prepare("SELECT preferenceid FROM studentdeclaredpreference WHERE studentemail = ?");
+
+      $stmt->bind_param("s", $studentemail);
+      $stmt->execute();
+      $stmt->bind_result($preferenceid);
+
+      $preferences = array();
+
+      while($stmt->fetch())
+      {
+        $preference = array();
+        $preference['preferenceid'] = $preferenceid;
+
+        array_push($preferences, $preference);
+      }
+
+      return $preferences;
+    }
+
+    function getAssistantsOfInstructor($instructoremail)
+    {
+      $stmt = $this->con->prepare("SELECT studentemail FROM instructordeclaredassistant WHERE instructoremail = ?");
+
+      $stmt->bind_param("s", $instructoremail);
+      $stmt->execute();
+      $stmt->bind_result($studentemail);
+
+      $assistants = array();
+
+      while($stmt->fetch())
+      {
+        $assistant = array();
+        $assistant['studentemail'] = $studentemail;
+
+        array_push($assistants, $assistant);
+      }
+
+      return $assistants;
+    }
   }
 ?>
