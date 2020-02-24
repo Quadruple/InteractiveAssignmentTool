@@ -86,7 +86,7 @@ class StudentList extends React.Component {
         <div style={{ textAlign: 'right' }}>
           <div class="ui compact menu"  style={{marginRight: "20px"}}>
   <div class="ui simple dropdown item">
-    Year
+    Term
     <i class="dropdown icon"></i>
     <div class="menu">
       <div class="item">Choice 1</div>
@@ -112,7 +112,7 @@ class StudentList extends React.Component {
         <div style={{ textAlign: 'right' }}>
           <div class="ui compact menu"  style={{marginRight: "20px"}}>
   <div class="ui simple dropdown item">
-    Year
+    Term
     <i class="dropdown icon"></i>
     <div class="menu">
       <div class="item">Choice 1</div>
@@ -124,6 +124,18 @@ class StudentList extends React.Component {
 <div class="ui input" style={{marginLeft: "20px", marginRight:"20px"}}>
   <input type="text" placeholder="Instructor Name Input"></input>
 </div>
+<div class="ui compact menu"  style={{marginRight: "20px"}}>
+  <div class="ui simple dropdown item">
+    Course
+    <i class="dropdown icon"></i>
+    <div class="menu">
+      <div class="item">Choice 1</div>
+      <div class="item">Choice 2</div>
+      <div class="item">Choice 3</div>
+    </div>
+  </div>
+</div> 
+
 <Link to="/instructor/newStudent" className="ui button primary">
             Add Instructor
           </Link>

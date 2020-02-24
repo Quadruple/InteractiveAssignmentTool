@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { signIn, signOut, checkMail} from "../actions";
+import history from "../history";
 
 class GoogleAuth extends React.Component {
   componentDidMount() {
@@ -29,6 +30,7 @@ class GoogleAuth extends React.Component {
       this.props.checkMail(userMail)
     } else {
       this.props.signOut();
+      history.push("/");
     }
   }
 

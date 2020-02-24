@@ -9,24 +9,25 @@ import Student from "./studentComps/Student";
 import CreateTime from "./studentComps/CreateTime";
 import EditTime from "./studentComps/EditTime";
 import DeleteTime from "./studentComps/DeleteTime";
+import Assignment from "./instructorComps/assignment/Assignment";
 import Header from "./Header"; 
 import history from '../history'; 
 
-import Demo from "./Demo";
 import StudentList from "./instructorComps/adminScreen";
 
 const App = () => {
   return (
-    <div className="ui container">
+    <div style={{marginLeft: "10%", marginRight: "10%"}}>
       <Router history={history}>
         <Header />
         <Switch>
           <Route path="/" exact component={LoginScreen} />
-          <Route path="/login" exact component={Demo} />
           <Route path="/instructor" exact component={Instructor} />
+          <Route path="/admin" exact component={StudentList} />
           <Route path="/instructor/newStudent" exact component={CreateStudent} />
           <Route path="/instructor/editStudent/:studentId" exact component={EditStudent} />
           <Route path="/instructor/deleteStudent/:studentId" exact component={DeleteStudent} />
+          <Route path="/assignment" exact component={Assignment} />
           <Route path="/student" exact component={Student} />
           <Route path="/student/newTime" exact component={CreateTime} />
           <Route path="/student/editTime/:timeId" exact component={EditTime} />

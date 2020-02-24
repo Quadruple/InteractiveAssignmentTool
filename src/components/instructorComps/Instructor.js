@@ -63,6 +63,9 @@ class StudentList extends React.Component {
           {this.renderStudents()}
         </div>
         {this.renderCreate()}
+        <Link to="/assignment" >
+            Go to Assignment Screen 
+        </Link>
       </div>
     );
   }
