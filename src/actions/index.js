@@ -34,10 +34,39 @@ export const checkMail = email => async  dispatch => {
 }
 
 export const createStudent = formValues => async (dispatch) => {
-  const response = await axios.post("/students", { ...formValues });
+  var request = new XMLHttpRequest();
 
-  dispatch({ type: CREATE_STUDENT, payload: response.data });
-  history.push("/instructor");
+  let urlEncodedData = "",
+  urlEncodedDataPairs = [],
+  name;
+
+  for(name in formValues)
+  {
+    urlEncodedDataPairs.push( encodeURIComponent( name ) + '=' + encodeURIComponent( formValues[name] ) );
+  }
+
+  urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+
+  // Define what happens on successful data submission
+  request.addEventListener( 'load', function(event) {
+    alert( 'Yeah! Data sent and response loaded.' );
+  } );
+
+  // Define what happens in case of error
+  request.addEventListener( 'error', function(event) {
+    alert( 'Oops! Something went wrong.' );
+  } );
+
+  request.open("POST", 'http://localhost/php/Api.php?apicall=insertStudent', true);
+  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  request.onreadystatechange = function() { // Call a function when the state changes.
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        console.log(request.responseText);
+    }
+  }
+
+  request.send(urlEncodedData);
 }
 
 export const fetchStudents = () => async dispatch => {

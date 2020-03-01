@@ -1,4 +1,6 @@
 <?php
+  header('Access-Control-Allow-Origin: *');
+  
   class DbOperation {
     private $con;
 

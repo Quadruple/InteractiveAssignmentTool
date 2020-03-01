@@ -1,4 +1,7 @@
 <?php
+
+  header('Access-Control-Allow-Origin: *');
+
   //Get operations
   require_once dirname(__FILE__).'\DbOperation.php';
 

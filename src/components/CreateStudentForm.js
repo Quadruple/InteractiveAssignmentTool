@@ -37,10 +37,10 @@ class CreateStudentForm extends React.Component {
       <form className="ui form error" onSubmit={this.props.handleSubmit(this.onSubmit)} >
         <label style={{fontWeight: "bold"}}>E-Mail:</label> 
         <div>
-          <Field name="email" component={"input"} label="E-Mail: " className="twelve wide field"/> <p style={{display: "inline", fontSize:"15px"}}>@sabanciuniv.edu</p>
+          <Field name="studentemail" component={"input"} label="E-Mail: " className="twelve wide field"/> <p style={{display: "inline", fontSize:"15px"}}>@sabanciuniv.edu</p>
         </div>
-        <Field name="name" component={this.renderInput} label="Name: " />
-        <Field name="number" component={this.renderInput} label="Number: " />
+        <Field name="studentname" component={this.renderInput} label="Name: " />
+        <Field name="studentnumber" component={this.renderInput} label="Number: " />
         <label style={{fontWeight: "bold"}}>Role:</label> 
         <div>
           <label>
@@ -52,18 +52,29 @@ class CreateStudentForm extends React.Component {
             LA
           </label>
         </div> <br></br>
+        <label style={{fontWeight: "bold"}}>Course</label>
+        <div>
+          <label>
+            <Field name="course" component={"input"} type="radio" value="NS-101" />{' '}
+            NS-101
+          </label> <br></br>
+          <label>
+            <Field name="course" component="input" type="radio" value="IF-100" />{' '}
+            IF-100
+          </label>
+        </div> <br></br>
         <label style={{fontWeight: "bold"}}>Work Hours:</label> 
         <div>
           <label>
-            <Field name="hours" component="input" type="radio" value="10" />{' '}
+            <Field name="workhours" component="input" type="radio" value="10" />{' '}
             10
           </label> <br></br>
           <label>
-            <Field name="hours" component="input" type="radio" value="20" />{' '}
+            <Field name="workhours" component="input" type="radio" value="20" />{' '}
             20
           </label>
         </div> <br></br>
-        <Field name="score" component={this.renderInput} label="Score: " />
+        <Field name="assistantscore" component={this.renderInput} label="Score: " />
         <label style={{fontWeight: "bold"}}>Term:</label>
         <div style={{width: "845px"}}>
           <Field name="term" component="select">
