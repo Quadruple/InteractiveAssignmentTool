@@ -334,5 +334,34 @@
 
       return $assistants;
     }
+
+    function checkAccountType($email)
+    {
+      $stmt = $this->con->prepare("SELECT adminemail FROM admins WHERE adminemail = ?");
+
+      $stmt->bind_param("s", $email);
+      $stmt->execute();
+      $row = $stmt->fetch();
+
+      if(! $row)
+      {
+        $stmt = $this->con->prepare("SELECT instructoremail FROM instructors WHERE instructoremail = ?");
+
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if(! $row)
+        {
+          return "Student";
+        }
+      }
+      else
+      {
+        return "Instructor";
+      }
+
+      return "Admin";
+    }
   }
 ?>

@@ -289,6 +289,15 @@
             $response['assistants'] = $db->getAssistantsOfInstructor($_GET['instructoremail']);
           }
         break;
+        case 'checkAccountType':
+          if(isset($_GET['email']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['accounttype'] = $db->checkAccountType($_GET['email']);
+          }
+        break;
       }
   }
 
