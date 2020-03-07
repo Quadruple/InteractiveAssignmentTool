@@ -26,12 +26,12 @@ class StudentList extends React.Component {
   
   renderStudents() {
     const studentArray = this.props.students.map(student => 
-      <div className="item" key={student.id}>
+      <div className="item" key={student.studentemail}>
         {this.renderAdmin(student)}
         <div className="content">
-            {student.name + " / " + student.number}
+            {student.studentname + " / " + student.studentnumber}
           <div className="description">
-            {student.role + " / " + student.hours + " hours / " + student.score + " experience points"}
+            {student.role + " / " + student.workhours + " hours / " + student.assistantscore + " experience points"}
           </div>
         </div>
       </div>  

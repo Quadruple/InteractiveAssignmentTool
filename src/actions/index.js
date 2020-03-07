@@ -70,9 +70,30 @@ export const createStudent = formValues => async (dispatch) => {
 }
 
 export const fetchStudents = () => async dispatch => {
-  const response = await axios.get("/students")
+  var request = new XMLHttpRequest();
 
-  dispatch({ type: FETCH_STUDENTS, payload: response.data});
+  // Define what happens on successful data submission
+  request.addEventListener( 'load', function(event) {
+    alert( 'Yeah! Data sent and response loaded.' );
+  } );
+
+  // Define what happens in case of error
+  request.addEventListener( 'error', function(event) {
+    alert( 'Oops! Something went wrong.' );
+  } );
+
+  request.open("GET", 'http://localhost/php/Api.php?apicall=getStudents', true);
+
+  request.onreadystatechange = function() { // Call a function when the state changes.
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        console.log('Response for GET is:', JSON.parse(request.responseText));
+        var responseJson = JSON.parse(request.responseText);
+        console.log('students are:', responseJson.students);
+        dispatch({ type: FETCH_STUDENTS, payload: responseJson.students});
+    }
+  }
+
+  request.send();
 }
 
 export const fetchStudent = id => async dispatch => {
