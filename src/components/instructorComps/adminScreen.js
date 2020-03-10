@@ -121,9 +121,6 @@ class StudentList extends React.Component {
     </div>
   </div>
 </div> 
-<div class="ui input" style={{marginLeft: "20px", marginRight:"20px"}}>
-  <input type="text" placeholder="Instructor Name Input"></input>
-</div>
 <div class="ui compact menu"  style={{marginRight: "20px"}}>
   <div class="ui simple dropdown item">
     Course
@@ -134,7 +131,18 @@ class StudentList extends React.Component {
       <div class="item">Choice 3</div>
     </div>
   </div>
-</div> 
+</div>
+<div class="ui compact menu"  style={{marginRight: "20px"}}>
+  <div class="ui simple dropdown item">
+    Instructor
+    <i class="dropdown icon"></i>
+    <div class="menu">
+      <div class="item">Choice 1</div>
+      <div class="item">Choice 2</div>
+      <div class="item">Choice 3</div>
+    </div>
+  </div>
+</div>  
 
 <Link to="/instructor/newStudent" className="ui button primary">
             Add Instructor
@@ -206,26 +214,11 @@ class StudentList extends React.Component {
         
         <div className="content">
           <Link to={`/student`} className="header">
-            IF101
+            IF100
           </Link>
         </div>
       </div>
-      <div className="item">
-        <div className="right floated content">
-          <Link to={`/instructor/editStudent`} className="ui button primary">
-            Edit
-          </Link>
-          <Link to={`instructor/deleteStudent`} className="ui button negative">
-            Delete
-          </Link>
-        </div>
-        
-        <div className="content">
-          <Link to={`/student`} className="header">
-            NS102
-          </Link>
-        </div>
-      </div>
+
         </div> <br></br>
         {this.renderCreate2()} <br></br>
 
@@ -285,4 +278,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { fetchStudents })(StudentList);
+  export default connect(mapStateToProps, { fetchStudents })(StudentList);

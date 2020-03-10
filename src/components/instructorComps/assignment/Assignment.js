@@ -6,28 +6,29 @@ import Backend from 'react-dnd-html5-backend'
 import Assistant from "./Assistant";
 import Calendar from "./Calendar";
 import Slot from "./Calendar"
-
-const renderAssistant = () => {
-  return(
-    <div>
-      <Assistant />
-    </div>
-  );
-}
+import { connect } from "react-redux";
+import { fetchStudents } from "../../../actions"; 
 
 
 class Assignment extends React.Component {
-  render() {
-    const assistants = []
-    for (let i = 0; i < 20; i++) {
-      assistants.push(renderAssistant());
-    }
+  componentDidMount() {
+    this.props.fetchStudents();
+  }
+  renderAssistants = () => {
+    const studentArray = this.props.students.map(student => 
+      <div><Assistant name={student.name} /></div>
+    );
+    
+    console.log(this.props.students);
+    return studentArray;
+  }
 
+  render() {
     return(
       <DndProvider backend={Backend}>
         <Layout>
           <SideBar>
-            {assistants}
+            {this.renderAssistants()}
           </SideBar>
           <Calendar />
         </Layout>
@@ -36,4 +37,11 @@ class Assignment extends React.Component {
   }
 }
 
-export default Assignment;
+const mapStateToProps = state => {
+  return { 
+    students: Object.values(state.students),
+    isSignedIn: state.auth.isSignedIn
+  }
+}
+
+export default connect(mapStateToProps, { fetchStudents })(Assignment);
