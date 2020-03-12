@@ -11,7 +11,7 @@ import {
 export default (state={}, action) => {
   switch(action.type) {
     case FETCH_STUDENTS:
-      return { ...state, ..._.mapKeys(action.payload, "id")}
+      return { ...state, ...action.payload}
     case FETCH_STUDENT:
       return { ...state, [action.payload.id]: action.payload };
     case CREATE_STUDENT:
