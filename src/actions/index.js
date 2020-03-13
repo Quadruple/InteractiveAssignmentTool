@@ -30,7 +30,45 @@ export const signOut = () => {
 }
 
 export const checkMail = email => async  dispatch => {
-  dispatch({ type: CHECK_MAIL, payload: "INSTRUCTOR" });
+  var request = new XMLHttpRequest()
+
+  var requestLink = 'http://localhost/php/Api.php?apicall=checkAccountType&email=' + email
+
+  // Define what happens on successful data submission
+  request.addEventListener( 'load', function(event) {
+    alert( 'Yeah! Data sent and response loaded.' );
+  } );
+
+  // Define what happens in case of error
+  request.addEventListener( 'error', function(event) {
+    alert( 'Oops! Something went wrong.' );
+  } );
+
+  request.open("GET", requestLink, true);
+  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  request.onreadystatechange = function() { // Call a function when the state changes.
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+        console.log('Response Check Mail: ', JSON.parse(request.responseText));
+        var accountGetter =  JSON.parse(request.responseText)
+        if(accountGetter.accountType == 'Admin')
+        {
+          dispatch({ type: CHECK_MAIL, payload: "ADMIN" });
+        }
+        else if(accountGetter.accountType == 'Instructor')
+        {
+          dispatch({ type: CHECK_MAIL, payload: "INSTRUCTOR" });
+        }
+        else
+        {
+          dispatch({ type: CHECK_MAIL, payload: "STUDENT" });
+        }
+    }
+  }
+
+  request.send();
+  
+  //dispatch({ type: CHECK_MAIL, payload: "INSTRUCTOR" });
 }
 
 export const createStudent = formValues => async (dispatch) => {

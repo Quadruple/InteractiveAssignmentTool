@@ -351,15 +351,13 @@
 
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
 
         if(! $row)
-        {
+        { 
           return "Student";
         }
-      }
-      else
-      {
+
         return "Instructor";
       }
 
