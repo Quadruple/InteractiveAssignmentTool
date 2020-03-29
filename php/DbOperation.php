@@ -363,5 +363,30 @@
 
       return "Admin";
     }
+
+    function editStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore)
+    {
+        $stmt = $this->con->prepare("UPDATE students SET studentname = ?, term = ?, role = ?, studentnumber = ?,
+                                    workhours = ?, assistantscore = ? WHERE studentemail = ?");
+
+        $stmt->bind_param("sssiids", $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $studentemail);
+        if($stmt->execute())
+        {
+          return true;
+        }
+
+        return false;
+    }
+
+    function deleteStudent($studentemail)
+    {
+        $stmt = $this->con->prepare("DELETE FROM students WHERE studentemail = ?");
+        $stmt->bind_param("s", $studentemail);
+        if($stmt->execute())
+        {
+          return true;
+        }
+        return false;
+    }
   }
 ?>

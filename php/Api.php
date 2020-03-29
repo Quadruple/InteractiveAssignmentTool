@@ -301,6 +301,51 @@
             $response['accounttype'] = $db->checkAccountType($_GET['email']);
           }
         break;
+        case 'editStudent':
+          isTheseParametersAvailable(array('studentemail', 'studentname', 'term', 'role', 'studentnumber', 'workhours', 'assistantscore'));
+          $db = new DbOperation();
+          $result = $db->editStudent(
+            $_POST['studentemail'],
+            $_POST['studentname'],
+            $_POST['term'],
+            $_POST['role'],
+            $_POST['studentnumber'],
+            $_POST['workhours'],
+            $_POST['assistantscore'],
+          );
+
+          if($result)
+          {
+            $response['error'] = false;
+            $response['message'] = "Student updated successfully.";
+          }
+          else
+          {
+            $response['error'] = true;
+            $response['message'] = "An error occured during update process.";
+          }
+        break;
+        case 'deleteStudent':
+          if(isset($_GET['studentemail']))
+          {
+            $db = new DbOperation();
+            if($db->deleteStudent($_GET['studentemail']))
+            {
+              $response['error'] = false;
+              $response['message'] = 'Student deleted successfully.';
+            } 
+            else
+            {
+              $response['error'] = true;
+              $response['message'] = 'Some error occured during delete procedure.';
+            } 
+          }
+          else
+          {
+            $response['error'] = true; 
+					  $response['message'] = 'Nothing to delete, provide an id please';
+          }
+        break;
       }
   }
 
