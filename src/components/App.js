@@ -12,8 +12,7 @@ import DeleteTime from "./studentComps/DeleteTime";
 import Assignment from "./instructorComps/assignment/Assignment";
 import Header from "./Header"; 
 import history from '../history'; 
-
-import StudentList from "./instructorComps/adminScreen";
+import AdminScreen from "./adminComps/AdminScreen";
 
 const App = () => {
   return (
@@ -23,7 +22,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={LoginScreen} />
           <Route path="/instructor" exact component={Instructor} />
-          <Route path="/admin" exact component={StudentList} />
+          <Route path="/admin" exact component={AdminScreen} />
           <Route path="/instructor/newStudent" exact component={CreateStudent} />
           <Route path="/instructor/editStudent/:studentId" exact component={EditStudent} />
           <Route path="/instructor/deleteStudent/:studentId" exact component={DeleteStudent} />

@@ -12,7 +12,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch(action.type) {
     case SIGN_IN:
-      return {...state, isSignedIn: true };
+      return {...state, isSignedIn: true, userType: "ADMIN" };
     case SIGN_OUT:
         return {...state, isSignedIn: false };
     case CHECK_MAIL:
