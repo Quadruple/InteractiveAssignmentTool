@@ -20,6 +20,26 @@ function FetchClasses(text)
   }
 }
 
+
+function fetchEmailOfInstructor(text, instructorname)
+{
+  var line = text.split("\n");
+  var arrayLength = line.length;
+
+  for(var i = 0; i < arrayLength; i++)
+  {
+    if(line[i].includes(instructorname))
+    {
+      var matchGroup = line[i].match(/<a href\="(.*?)"/g); 
+      var instructorMailto = matchGroup[0].match(/(?<=\")(.*?)(?=\")/g);
+      var indexOfBegin = matchGroup[0].indexOf(":");
+      var instructorEmail = matchGroup[0].substring(indexOfBegin + 1, matchGroup[0].length - 1);
+      console.log(instructorEmail);
+      break;
+    }
+  }
+}
+
 function fetchInstructorsOfAClass(text, coursename)
 {
   var line = text.split("\n");
@@ -67,4 +87,6 @@ fetch(classesUrl).then(function(response) {
     FetchClasses(textToFetch);
   }).then(function(){
     fetchInstructorsOfAClass(textToFetch, "VA 455");
+  }).then(function(){
+    fetchEmailOfInstructor(textToFetch, "Hülya Görür Atabaş");
   });
