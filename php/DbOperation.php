@@ -20,6 +20,17 @@
       return false;
     }
 
+    function deleteTerm($term)
+    {
+      $stmt = $this->con->prepare("DELETE FROM terms WHERE term = ?");
+        $stmt->bind_param("s", $term);
+        if($stmt->execute())
+        {
+          return true;
+        }
+        return false;
+    }
+
     function instructorAddsCourse($instructoremail, $coursename)
     {
       $stmt = $this->con->prepare("INSERT INTO instructoraddedcourse (instructoremail, course) VALUES (?,?)");
@@ -40,6 +51,17 @@
       return false;
     }
 
+    function deleteInstructor($instructoremail)
+    {
+      $stmt = $this->con->prepare("DELETE FROM instructors WHERE instructoremail = ?");
+        $stmt->bind_param("s", $instructoremail);
+        if($stmt->execute())
+        {
+          return true;
+        }
+        return false;
+    }
+
     function insertCourse($term, $starttime, $endtime, $course, $section, $crncode) {
       $stmt = $this->con->prepare("INSERT INTO courses
                                 (term, starttime, endtime, course, section, crncode)
@@ -49,6 +71,17 @@
         return true;
       }
       return false;
+    }
+
+    function deleteCourse($course)
+    {
+      $stmt = $this->con->prepare("DELETE FROM courses WHERE course = ?");
+        $stmt->bind_param("s", $course);
+        if($stmt->execute())
+        {
+          return true;
+        }
+        return false;
     }
     
     // ------------------------- ADMIN FUNCTIONS END ---------------------------

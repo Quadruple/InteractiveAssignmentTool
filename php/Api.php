@@ -347,6 +347,69 @@
 					  $response['message'] = 'Nothing to delete, provide an id please';
           }
         break;
+        case 'deleteTerm':
+          if(isset($_GET['term']))
+          {
+            $db = new DbOperation();
+            if($db->deleteTerm($_GET['term']))
+            {
+              $response['error'] = false;
+              $response['message'] = 'Term deleted successfully.';
+            } 
+            else
+            {
+              $response['error'] = true;
+              $response['message'] = 'Some error occured during delete procedure.';
+            } 
+          }
+          else
+          {
+            $response['error'] = true; 
+					  $response['message'] = 'Nothing to delete, provide a term please.';
+          }
+        break;
+        case 'deleteInstructor':
+          if(isset($_GET['instructoremail']))
+          {
+            $db = new DbOperation();
+            if($db->deleteInstructor($_GET['instructoremail']))
+            {
+              $response['error'] = false;
+              $response['message'] = 'Instructor deleted successfully.';
+            } 
+            else
+            {
+              $response['error'] = true;
+              $response['message'] = 'Some error occured during delete procedure.';
+            } 
+          }
+          else
+          {
+            $response['error'] = true; 
+					  $response['message'] = 'Nothing to delete, provide a term please.';
+          }
+        break;
+        case 'deleteCourse':
+          if(isset($_GET['coursename']))
+          {
+            $db = new DbOperation();
+            if($db->deleteCourse($_GET['coursename']))
+            {
+              $response['error'] = false;
+              $response['message'] = 'Course deleted successfully.';
+            } 
+            else
+            {
+              $response['error'] = true;
+              $response['message'] = 'Some error occured during delete procedure.';
+            } 
+          }
+          else
+          {
+            $response['error'] = true; 
+					  $response['message'] = 'Nothing to delete, provide a course name please.';
+          }
+        break;
       }
   }
 
