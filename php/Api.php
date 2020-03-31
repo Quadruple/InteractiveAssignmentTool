@@ -78,12 +78,13 @@
           }
         break;
         case 'insertInstructor':
-          isTheseParametersAvailable(array('instructoremail', 'instructorname', 'term'));
+          isTheseParametersAvailable(array('instructoremail', 'instructorname', 'term', 'course'));
           $db = new DbOperation();
           $result = $db->insertInstructor(
             $_POST['instructoremail'],
             $_POST['instructorname'],
-            $_POST['term']
+            $_POST['term'],
+            $_POST['course']
           );
           if($result) {
             $response['error'] = false;
@@ -146,11 +147,11 @@
           }
         break;
         case 'instructorAddsCourse':
-          isTheseParametersAvailable(array('instructoremail', 'crncode'));
+          isTheseParametersAvailable(array('instructoremail', 'coursename'));
           $db = new DbOperation();
           $result = $db->instructorAddsCourse(
             $_POST['instructoremail'],
-            $_POST['crncode']
+            $_POST['coursename']
           );
           if($result) {
             $response['error'] = false;

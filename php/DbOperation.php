@@ -10,6 +10,7 @@
       $this->con = $db->connect();
     }
 
+    //-------------------- ADMIN FUNCTIONS START ----------------------
     function insertTerm($term) {
       $stmt = $this->con->prepare("INSERT INTO terms (term) VALUES (?)");
       $stmt->bind_param("s", $term);
@@ -19,21 +20,21 @@
       return false;
     }
 
-    function insertStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course) {
-      $stmt = $this->con->prepare("INSERT INTO students (studentemail, studentname, term, role, studentnumber, workhours, 
-                                  assistantscore, course)
-                                  VALUES (?,?,?,?,?,?,?,?)");
-      $stmt->bind_param("ssssiids", $studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
+    function instructorAddsCourse($instructoremail, $coursename)
+    {
+      $stmt = $this->con->prepare("INSERT INTO instructoraddedcourse (instructoremail, course) VALUES (?,?)");
+      $stmt->bind_param("ss", $instructoremail, $coursename);
       if($stmt->execute()) {
-        return true;
+          return true;
       }
       return false;
     }
 
-    function insertInstructor($instructoremail, $instructorname, $term) {
+    function insertInstructor($instructoremail, $instructorname, $term, $coursename) {
       $stmt = $this->con->prepare("INSERT INTO instructors (instructoremail, instructorname, term) VALUES (?,?,?)");
       $stmt->bind_param("sss", $instructoremail, $instructorname, $term);
       if($stmt->execute()) {
+        $this->instructorAddsCourse($instructoremail, $coursename);
         return true;
       }
       return false;
@@ -44,6 +45,20 @@
                                 (term, starttime, endtime, course, section, crncode)
                                 VALUES (?,?,?,?,?,?)");
       $stmt->bind_param("sssssi", $term, $starttime, $endtime, $course, $section, $crncode);
+      if($stmt->execute()) {
+        return true;
+      }
+      return false;
+    }
+    
+    // ------------------------- ADMIN FUNCTIONS END ---------------------------
+
+
+    function insertStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course) {
+      $stmt = $this->con->prepare("INSERT INTO students (studentemail, studentname, term, role, studentnumber, workhours, 
+                                  assistantscore, course)
+                                  VALUES (?,?,?,?,?,?,?,?)");
+      $stmt->bind_param("ssssiids", $studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
       if($stmt->execute()) {
         return true;
       }
@@ -66,16 +81,6 @@
       $stmt->bind_param("sss", $adminemail, $term, $adminname);
       if($stmt->execute()) {
         return true;
-      }
-      return false;
-    }
-
-    function instructorAddsCourse($instructoremail, $crncode)
-    {
-      $stmt = $this->con->prepare("INSERT INTO instructoraddedcourse (instructoremail, crncode) VALUES (?,?)");
-      $stmt->bind_param("si", $instructoremail, $crncode);
-      if($stmt->execute()) {
-          return true;
       }
       return false;
     }
@@ -255,18 +260,18 @@
 
     function getCoursesOfInstructor($instructoremail)
     {
-      $stmt = $this->con->prepare("SELECT crncode FROM instructoraddedcourse WHERE instructoremail = ?");
+      $stmt = $this->con->prepare("SELECT course FROM instructoraddedcourse WHERE instructoremail = ?");
 
       $stmt->bind_param("s", $instructoremail);
       $stmt->execute();
-      $stmt->bind_result($crncode);
+      $stmt->bind_result($coursename);
 
       $courses = array();
 
       while($stmt->fetch())
       {
         $course = array();
-        $course['crncode'] = $crncode;
+        $course['coursename'] = $coursename;
 
         array_push($courses, $course);
       }
