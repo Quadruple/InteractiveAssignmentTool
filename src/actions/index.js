@@ -149,7 +149,8 @@ export const fetchCourses = () => async dispatch => {
 }
 
 export const addInstructor = formValues => async (dispatch) => {
-  const response = await axios.post("/instructors", { ...formValues });
+  var courseAndTerm = formValues.course.split(" ")
+  const response = await axios.post("/instructors", { course: courseAndTerm[0], term: courseAndTerm[1] + " " + courseAndTerm[2], instructor: formValues.instructor });
 
   dispatch({ type: ADD_INSTRUCTOR, payload: response.data });
   history.push("/admin");
