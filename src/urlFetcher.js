@@ -7,6 +7,7 @@ function FetchClasses(text)
 {
   var line = text.split("\n");
   var arrayLength =line.length;
+  var wholeClasses = [];
 
   for(var i = 0; i < arrayLength; i++)
   {
@@ -15,7 +16,26 @@ function FetchClasses(text)
       var indexOfBeginning = line[i].indexOf(">", line[i].indexOf(">") + 1);
       var temp = line[i].indexOf("<", line[i].indexOf("<") + 1);
       var indexOfEnd = line[i].indexOf("<", temp + 1);
-      console.log(line[i].substring(indexOfBeginning + 1, indexOfEnd));
+      //console.log(line[i].substring(indexOfBeginning + 1, indexOfEnd));
+      wholeClasses.push(line[i].substring(indexOfBeginning + 1, indexOfEnd));
+    }
+  }
+
+  return wholeClasses;
+}
+
+function fetchDiscussionsAndRecitations(text, coursename)
+{
+  var courseRecit = coursename + "R";
+  var courseDiscussion = coursename + "D";
+  var courseLab = coursename + "L";
+
+  var wholeClasses = FetchClasses(text);
+  for(var i = 0; i < wholeClasses.length; i++)
+  {
+    if(wholeClasses[i].includes(courseRecit) || wholeClasses[i].includes(courseDiscussion) || wholeClasses[i].includes(courseLab))
+    {
+      console.log(wholeClasses[i]);
     }
   }
 }
@@ -89,4 +109,6 @@ fetch(classesUrl).then(function(response) {
     fetchInstructorsOfAClass(textToFetch, "VA 455");
   }).then(function(){
     fetchEmailOfInstructor(textToFetch, "Hülya Görür Atabaş");
+  }).then(function(){
+    fetchDiscussionsAndRecitations(textToFetch, "SPS 102");
   });
