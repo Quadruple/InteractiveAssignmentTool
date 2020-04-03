@@ -24,6 +24,36 @@ function FetchClasses(text)
   return wholeClasses;
 }
 
+function fetchTimesOfRecits(text, sectionName)
+{
+  var line = text.split("\n");
+  var arrayLength =line.length;
+  var lineNumOfClass = 0;
+
+  for(var i = 0; i < arrayLength; i++)
+  {
+    if(line[i].includes(sectionName))
+    {
+      lineNumOfClass = i;
+      break;
+    }
+  }
+
+  for (x = lineNumOfClass + 1; x < arrayLength; x++)
+  {
+    if(line[x].includes("<td class=\"dddefault\">") && (line[x].includes(" am ") || line[x].includes(" pm ") || line[x].includes("TBA")))
+    {
+      indexOfBeginning = line[x].indexOf(">");
+      indexOfEnd = line[x].indexOf("<", indexOfBeginning + 1);
+      console.log(line[x].substring(indexOfBeginning + 1, indexOfEnd));
+    }
+    else if(line[x].includes("</table>"))
+    {
+      break;
+    }
+  }
+}
+
 function fetchDiscussionsAndRecitations(text, coursename)
 {
   var courseRecit = coursename + "R";
@@ -111,4 +141,6 @@ fetch(classesUrl).then(function(response) {
     fetchEmailOfInstructor(textToFetch, "Hülya Görür Atabaş");
   }).then(function(){
     fetchDiscussionsAndRecitations(textToFetch, "SPS 102");
+  }).then(function(){
+    fetchTimesOfRecits(textToFetch, "IF 100R - A2");
   });
