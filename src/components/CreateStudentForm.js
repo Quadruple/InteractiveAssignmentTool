@@ -64,15 +64,7 @@ class CreateStudentForm extends React.Component {
           </label>
         </div> <br></br>
         <Field name="score" component={this.renderInput} label="Score: " />
-        <label style={{fontWeight: "bold"}}>Term:</label>
-        <div style={{width: "845px"}}>
-          <Field name="term" component="select">
-            <option />
-            <option value="2019-2020 Spring">2019-2020 Spring</option>
-            <option value="2019-2020 Fall">2019-2020 Fall</option>
-            <option value="2018-2019 Summer">2018-2019 Summer</option>
-          </Field>
-        </div><br></br>      
+        <br></br>      
         <button className="ui button primary">Submit</button>
       </form>
     );

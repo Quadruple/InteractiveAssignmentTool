@@ -6,9 +6,10 @@ import {
   CREATE_STUDENT,
   FETCH_STUDENTS,
   FETCH_STUDENT,
+  FETCH_STUDENT_COURSE,
   DELETE_STUDENT,
   EDIT_STUDENT,
-  CREATE_TIME,
+  CREATE_PREFERENCES,
   EDIT_TIME,
   DELETE_TIME,
   FETCH_TIMES,
@@ -70,15 +71,16 @@ export const editStudent = (id, formValues) => async dispatch => {
 
 export const deleteStudent = id => async dispatch => {
   await axios.delete(`/students/${id}`);
-
+  
   dispatch({ type: DELETE_STUDENT, payload: id});
   history.push("/instructor");
 }
 
-export const createTime = formValues => async (dispatch) => {
-  const response = await axios.post("/times", { ...formValues });
+export const createPreferences = preferences => async (dispatch) => {
+  //const response = await axios.post("/times", ...preferences);
+  await Promise.all(preferences.map(preference => axios.post("/times", { preference })))
 
-  dispatch({ type: CREATE_TIME, payload: response.data });
+  //dispatch({ type: CREATE_PREFERENCES, payload: response.data });
   history.push("/student");
 }
 
@@ -86,6 +88,12 @@ export const fetchTimes = () => async dispatch => {
   const response = await axios.get("/times")
 
   dispatch({ type: FETCH_TIMES, payload: response.data});
+}
+
+export const fetchStudentCourse = id => async dispatch => {
+  //const response = await axios.get(`/studentCourse`)
+
+  dispatch({ type: FETCH_STUDENT_COURSE, payload: "CS 201"});
 }
 
 export const fetchTime = id => async dispatch => {

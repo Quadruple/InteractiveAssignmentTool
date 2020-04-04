@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { createTime } from "../../actions";
+//import { createTime } from "../../actions";
 import TimePreferencesForm from "../TimePreferencesForm";
 
 class CreateTime extends React.Component {
   onSubmit = formValues => {
-    this.props.createTime(formValues);
+    //this.props.createTime(formValues);
   }
 
   render() {
@@ -18,4 +18,4 @@ class CreateTime extends React.Component {
   }
 }
 
-export default connect(null, { createTime })(CreateTime);
+export default connect(null, {  })(CreateTime);
