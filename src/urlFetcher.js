@@ -45,7 +45,9 @@ function fetchTimesOfRecits(text, sectionName)
     {
       indexOfBeginning = line[x].indexOf(">");
       indexOfEnd = line[x].indexOf("<", indexOfBeginning + 1);
-      console.log(line[x].substring(indexOfBeginning + 1, indexOfEnd));
+      indexOfDayBegin = line[x + 1].indexOf(">");
+      indexOfDayEnd = line[x + 1].indexOf("<", indexOfDayBegin + 1);
+      console.log(line[x].substring(indexOfBeginning + 1, indexOfEnd) + " - " + line[x + 1].substring(indexOfDayBegin + 1, indexOfDayEnd))
     }
     else if(line[x].includes("</table>"))
     {
@@ -142,5 +144,5 @@ fetch(classesUrl).then(function(response) {
   }).then(function(){
     fetchDiscussionsAndRecitations(textToFetch, "SPS 102");
   }).then(function(){
-    fetchTimesOfRecits(textToFetch, "IF 100R - A2");
+    fetchTimesOfRecits(textToFetch, "AL 102 - A1");
   });
