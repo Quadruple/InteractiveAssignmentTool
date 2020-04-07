@@ -2,15 +2,10 @@ import React, { useState } from 'react'
 import { ItemTypes } from './Constants'
 import { useDrop } from 'react-dnd'
 
-function Slot() {
-  const[isDropped, setIsDropped] = useState(false);
-
+function Slot({ onDrop, lastDroppedItem }) {
 	const [{ isOver }, drop] = useDrop({
 		accept: ItemTypes.ASSISTANT,
-		drop: () => {
-      setIsDropped(true);
-      return {name: "Slot"}
-    },
+		drop: onDrop,
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
 		}),
@@ -27,7 +22,7 @@ function Slot() {
         borderWidth: "2px"
       }}
     >
-      { isDropped ? <h1>ASSISTANT</h1> : null}
+      {lastDroppedItem ? <h1>{lastDroppedItem.name}</h1> : null}
       {isOver && (
         <div
           style={{

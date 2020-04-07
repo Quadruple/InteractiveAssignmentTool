@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Layout, SideBar } from "./styles";
 
 import { DndProvider } from 'react-dnd'
@@ -10,46 +10,28 @@ import { CalendarGrid } from "./styles";
 import Slot from "./Slot";
 
 function Assignment(props) {
+  const [slots, setSlots] = useState([]);
+  console.log(slots)
   useEffect(() => {
     props.fetchStudents();
+
+    const slotArr = [];
+    for (let i = 0; i < 55; i++) {
+      slotArr.push({ id: i, lastDroppedItem: null })
+    }
+    setSlots(slotArr);
   }, []);
 
   const renderAssistants = () => {
     const studentArray = props.students.map(student => 
       <div><Assistant name={student.name} /></div>
     );
-    console.log(props.students);
     return studentArray;
   }
 
-  const renderSlot = () => {
-    return(
-      <div style={{ width: '20%', height: '75px' }}>
-        <Slot />
-      </div>
-    );
-  }
-
-  const slots = [];
-  for (let i = 0; i < 55; i++) {
-    slots.push(renderSlot())
-  }
-
-  const handleDrop = (index, item) => {
-    const { name } = item
-    setDroppedBoxNames(
-      update(droppedBoxNames, name ? { $push: [name] } : { $push: [] }),
-    )
-    setDustbins(
-      update(dustbins, {
-        [index]: {
-          lastDroppedItem: {
-            $set: item,
-          },
-        },
-      }),
-    )
-  }
+  const handleDrop = (id, item) => {
+    setSlots([...slots.slice(0, id), { id, lastDroppedItem: item }, ...slots.slice(id + 1)])
+  } 
   
   return(
     <DndProvider backend={Backend}>
@@ -58,7 +40,15 @@ function Assignment(props) {
           {renderAssistants()}
         </SideBar>
         <CalendarGrid>
-          {slots}
+        {slots.map(({ lastDroppedItem }, id) => (
+          <div style={{ width: '20%', height: '75px' }}>
+            <Slot
+              lastDroppedItem={lastDroppedItem}
+              onDrop={(item) => handleDrop(id, item)}
+              key={id}
+            />
+          </div>
+        ))}
         </CalendarGrid>
       </Layout>
     </DndProvider>

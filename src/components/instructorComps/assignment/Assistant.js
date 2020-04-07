@@ -3,16 +3,13 @@ import { ItemTypes } from './Constants'
 import { useDrag } from 'react-dnd'
 import { AssistantDiv } from "./styles"
 
-function Assistant(props) {
-  const [assistantName, setAssistantName] = useState(props.name);
+function Assistant({ name }) {
   const [{isDragging}, drag] = useDrag({
-    item: { name: props.name, type: ItemTypes.ASSISTANT },
+    item: { name, type: ItemTypes.ASSISTANT },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
-        console.log(item)
-        setAssistantName(item.name)
-        alert(`You dropped ${item.name} into ${dropResult.name}!`)
+        //console.log(item)
       }
     },
 		collect: monitor => ({
@@ -30,7 +27,7 @@ function Assistant(props) {
         cursor: 'move',
       }}
     >
-      <AssistantDiv>{assistantName}</AssistantDiv>
+      <AssistantDiv>{name}</AssistantDiv>
     </div>
   )
 }
