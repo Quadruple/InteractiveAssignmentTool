@@ -7,7 +7,10 @@ function Slot() {
 
 	const [{ isOver }, drop] = useDrop({
 		accept: ItemTypes.ASSISTANT,
-		drop: () => setIsDropped(true),
+		drop: () => {
+      setIsDropped(true);
+      return {name: "Slot"}
+    },
 		collect: monitor => ({
 			isOver: !!monitor.isOver(),
 		}),

@@ -1,40 +1,68 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, SideBar } from "./styles";
 
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import Assistant from "./Assistant";
-import Calendar from "./Calendar";
-import Slot from "./Calendar"
 import { connect } from "react-redux";
 import { fetchStudents } from "../../../actions"; 
+import { CalendarGrid } from "./styles";
+import Slot from "./Slot";
 
+function Assignment(props) {
+  useEffect(() => {
+    props.fetchStudents();
+  }, []);
 
-class Assignment extends React.Component {
-  componentDidMount() {
-    this.props.fetchStudents();
-  }
-  renderAssistants = () => {
-    const studentArray = this.props.students.map(student => 
+  const renderAssistants = () => {
+    const studentArray = props.students.map(student => 
       <div><Assistant name={student.name} /></div>
     );
-    
-    console.log(this.props.students);
+    console.log(props.students);
     return studentArray;
   }
 
-  render() {
+  const renderSlot = () => {
     return(
-      <DndProvider backend={Backend}>
-        <Layout>
-          <SideBar>
-            {this.renderAssistants()}
-          </SideBar>
-          <Calendar />
-        </Layout>
-      </DndProvider>
+      <div style={{ width: '20%', height: '75px' }}>
+        <Slot />
+      </div>
     );
   }
+
+  const slots = [];
+  for (let i = 0; i < 55; i++) {
+    slots.push(renderSlot())
+  }
+
+  const handleDrop = (index, item) => {
+    const { name } = item
+    setDroppedBoxNames(
+      update(droppedBoxNames, name ? { $push: [name] } : { $push: [] }),
+    )
+    setDustbins(
+      update(dustbins, {
+        [index]: {
+          lastDroppedItem: {
+            $set: item,
+          },
+        },
+      }),
+    )
+  }
+  
+  return(
+    <DndProvider backend={Backend}>
+      <Layout>
+        <SideBar>
+          {renderAssistants()}
+        </SideBar>
+        <CalendarGrid>
+          {slots}
+        </CalendarGrid>
+      </Layout>
+    </DndProvider>
+  );
 }
 
 const mapStateToProps = state => {
