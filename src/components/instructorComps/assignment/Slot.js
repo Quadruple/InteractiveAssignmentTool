@@ -3,7 +3,7 @@ import { ItemTypes } from './Constants'
 import { useDrop } from 'react-dnd'
 import { SlotDiv } from './styles'
 
-function Slot({ onDrop, items, name }) {
+function Slot({ onDrop, onCancel, items, name, id }) {
 	const [{ isOver }, drop] = useDrop({
 		accept: ItemTypes.ASSISTANT,
 		drop: onDrop,
@@ -15,7 +15,7 @@ function Slot({ onDrop, items, name }) {
   return (
     <SlotDiv ref={drop}>
       {name}
-      {items ? <h4>{items.map(item => <div>{item.name}</div>)}</h4> : null}
+      {items ? <h4>{items.map(item => <div>{item.name} <button onClick={() => onCancel(item.name, id)}>x</button></div>)}</h4> : null}
       {isOver && (
         <div
           style={{

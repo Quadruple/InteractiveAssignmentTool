@@ -14,7 +14,6 @@ function Assignment(props) {
   const [times, setTimes] = useState([]);
   const [slots, setSlots] = useState();
 
-  console.log(slots)
   useEffect(() => {
     props.fetchStudents();
 
@@ -49,7 +48,11 @@ function Assignment(props) {
   }
 
   const handleDrop = (id, item) => {
-    setSlots([...slots.slice(0, id), { id,  items: [...slots.slice(id, id + 1)[0].items, item ], name: slots.slice(id, id + 1)[0].name, item }, ...slots.slice(id + 1)])
+    setSlots([...slots.slice(0, id), { id,  items: [...slots.slice(id, id + 1)[0].items, item ], name: slots.slice(id, id + 1)[0].name }, ...slots.slice(id + 1)])
+  }
+  
+  const handleCancel = (itemName, id) => {
+    setSlots([...slots.slice(0, id), { id,  items: slots.slice(id, id + 1)[0].items.filter(item => item.name !== itemName), name: slots.slice(id, id + 1)[0].name }, ...slots.slice(id + 1)])
   } 
   
   return(
@@ -61,9 +64,11 @@ function Assignment(props) {
         <CalendarGrid>
         {slots && slots.map(({ items, name, id }) => (
             <Slot
+              id={id}
               name={name}
               items={items}
               onDrop={(item) => handleDrop(id, item)}
+              onCancel={handleCancel}
             />
         ))}
         </CalendarGrid>
