@@ -1,5 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { fetchStudents } from "../actions"; 
+import { connect } from "react-redux";
 
 class CreateStudentForm extends React.Component {
   renderError({ error, touched }) {
@@ -26,10 +28,28 @@ class CreateStudentForm extends React.Component {
     );
   }
 
+  isStudentAlreadyExists = (formValues) => {
+    for (var i = 0; i < this.props.students.length; i++)
+    {
+      if(this.props.students[i].email.includes(formValues.email) || this.props.students[i].number.includes(formValues.number))
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   onSubmit = formValues => {
-    console.log(formValues)
-    formValues = {...formValues, email: formValues.email + "@sabanciuniv.edu"}
-    this.props.onSubmit(formValues);
+    if(this.isStudentAlreadyExists(formValues))
+    {
+      alert("This student already exists.");
+    }
+    else{
+      console.log(formValues)
+      formValues = {...formValues, email: formValues.email + "@sabanciuniv.edu"}
+      this.props.onSubmit(formValues);
+    }
   }
 
   render() {
@@ -84,7 +104,14 @@ const validate  = formValues => {
   return errors;
 }
 
+
+const mapStateToProps = state => {
+  return { 
+    students: Object.values(state.students),
+  }
+}
+
 export default reduxForm({
   form: "CreateStudentForm",
   validate
-})(CreateStudentForm);
+})(connect(mapStateToProps, { fetchStudents })(CreateStudentForm));
