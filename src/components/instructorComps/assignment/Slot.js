@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { ItemTypes } from './Constants'
 import { useDrop } from 'react-dnd'
+import { SlotDiv } from './styles'
 
 function Slot({ onDrop, items, name }) {
 	const [{ isOver }, drop] = useDrop({
@@ -12,16 +13,7 @@ function Slot({ onDrop, items, name }) {
   })
 
   return (
-    <div
-      ref={drop}
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '100%',
-        borderStyle: "solid",
-        borderWidth: "2px",
-      }}
-    >
+    <SlotDiv ref={drop}>
       {name}
       {items ? <h4>{items.map(item => <div>{item.name}</div>)}</h4> : null}
       {isOver && (
@@ -38,7 +30,7 @@ function Slot({ onDrop, items, name }) {
           }}
         />
       )}
-    </div>
+    </SlotDiv>
   )
 }
 

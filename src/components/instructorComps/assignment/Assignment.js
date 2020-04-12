@@ -12,7 +12,7 @@ import Slot from "./Slot";
 function Assignment(props) {
   const [recitations, setRecitations] = useState([]);
   const [times, setTimes] = useState([]);
-  const [slots, setSlots] = useState([]);
+  const [slots, setSlots] = useState();
 
   console.log(slots)
   useEffect(() => {
@@ -32,13 +32,14 @@ function Assignment(props) {
   }, []);
 
   useEffect(() => {
+    let slots = [];
     if(recitations.length && times.length) {
       for(let i = 0; i < recitations.length; i++) {
         slots.push({name: recitations[i] + " " + times[i], id: i, items: []})
       }
       setSlots(slots)
     }
-  }, [recitations, times]);
+  }, [recitations, times]); 
 
   const renderAssistants = () => {
     const studentArray = props.students.map(student => 
@@ -58,14 +59,12 @@ function Assignment(props) {
           {renderAssistants()}
         </SideBar>
         <CalendarGrid>
-        {slots.map(({ items, name, id }) => (
-          <div style={{ width: '20%', height: '75px' }}>
+        {slots && slots.map(({ items, name, id }) => (
             <Slot
               name={name}
               items={items}
               onDrop={(item) => handleDrop(id, item)}
             />
-          </div>
         ))}
         </CalendarGrid>
       </Layout>
