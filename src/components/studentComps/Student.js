@@ -14,7 +14,7 @@ class TimeList extends React.Component {
     const timeArray = this.props.times.map(time => 
       <div key={time.id} style={{marginBottom: "50px"}}>
         <div className="content">
-          {time.preference}
+          {`Score for ${time.preferenceHour}: ${time.preferenceScore}`}
         </div>
       </div>  
     );

@@ -21,18 +21,18 @@ function TimePreferences(props) {
     const sectionOptions = recitationHours.map(hour =>
       <div style={{marginBottom: "25px"}}>
         {hour}
-        <select class="ui dropdown" style={{marginLeft: "20px"}} onChange={e => setPreferences( [...preferences, e.target.value] )}>
+        <select class="ui dropdown" style={{marginLeft: "20px"}} onChange={e => setPreferences( [...preferences, {preferenceHour: JSON.parse(e.target.value).hour, preferenceScore: JSON.parse(e.target.value).score}] )}>
           <option value="">Score</option>
-          <option value={`${hour} Preference Score: 1`}>1</option>
-          <option value={`${hour} Preference Score: 2`}>2</option>
-          <option value={`${hour} Preference Score: 3`}>3</option>
-          <option value={`${hour} Preference Score: 4`}>4</option>
-          <option value={`${hour} Preference Score: 5`}>5</option>
-          <option value={`${hour} Preference Score: 6`}>6</option>
-          <option value={`${hour} Preference Score: 7`}>7</option>
-          <option value={`${hour} Preference Score: 8`}>8</option>
-          <option value={`${hour} Preference Score: 9`}>9</option>
-          <option value={`${hour} Preference Score: 10`}>10</option>
+          <option value={JSON.stringify({hour, score: 1})}>1</option>
+          <option value={JSON.stringify({hour, score: 2})}>2</option>
+          <option value={JSON.stringify({hour, score: 3})}>3</option>
+          <option value={JSON.stringify({hour, score: 4})}>4</option>
+          <option value={JSON.stringify({hour, score: 5})}>5</option>
+          <option value={JSON.stringify({hour, score: 6})}>6</option>
+          <option value={JSON.stringify({hour, score: 7})}>7</option>
+          <option value={JSON.stringify({hour, score: 8})}>8</option>
+          <option value={JSON.stringify({hour, score: 9})}>9</option>
+          <option value={JSON.stringify({hour, score: 10})}>10</option>
         </select>
       </div>
     );

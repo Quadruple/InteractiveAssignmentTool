@@ -78,7 +78,7 @@ export const deleteStudent = id => async dispatch => {
 
 export const createPreferences = preferences => async (dispatch) => {
   //const response = await axios.post("/times", ...preferences);
-  await Promise.all(preferences.map(preference => axios.post("/times", { preference })))
+  await Promise.all(preferences.map(preference => axios.post("/times", preference )))
 
   //dispatch({ type: CREATE_PREFERENCES, payload: response.data });
   history.push("/student");
@@ -93,7 +93,7 @@ export const fetchTimes = () => async dispatch => {
 export const fetchStudentCourse = id => async dispatch => {
   //const response = await axios.get(`/studentCourse`)
 
-  dispatch({ type: FETCH_STUDENT_COURSE, payload: "CS 201"});
+  dispatch({ type: FETCH_STUDENT_COURSE, payload: "IF 100"});
 }
 
 export const fetchTime = id => async dispatch => {

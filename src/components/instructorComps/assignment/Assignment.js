@@ -5,7 +5,7 @@ import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import Assistant from "./Assistant";
 import { connect } from "react-redux";
-import { fetchStudents } from "../../../actions"; 
+import { fetchStudents, fetchTimes } from "../../../actions"; 
 import { CalendarGrid } from "./styles";
 import Slot from "./Slot";
 
@@ -16,6 +16,7 @@ function Assignment(props) {
 
   useEffect(() => {
     props.fetchStudents();
+    props.fetchTimes();
 
     axios.get(`http://localhost:4000/getRecitationSections/IF 100`)
       .then((response) => {
@@ -34,7 +35,7 @@ function Assignment(props) {
     let slots = [];
     if(recitations.length && times.length) {
       for(let i = 0; i < recitations.length; i++) {
-        slots.push({name: recitations[i] + " " + times[i], id: i, items: []})
+        slots.push({ name: recitations[i], time: times[i], id: i, items: [] })
       }
       setSlots(slots)
     }
@@ -62,13 +63,15 @@ function Assignment(props) {
           {renderAssistants()}
         </SideBar>
         <CalendarGrid>
-        {slots && slots.map(({ items, name, id }) => (
+        {slots && slots.map(({ items, name, time, id }) => (
             <Slot
               id={id}
               name={name}
+              time={time}
               items={items}
               onDrop={(item) => handleDrop(id, item)}
               onCancel={handleCancel}
+              preferences={props.preferences}
             />
         ))}
         </CalendarGrid>
@@ -80,8 +83,9 @@ function Assignment(props) {
 const mapStateToProps = state => {
   return { 
     students: Object.values(state.students),
+    preferences: Object.values(state.times),
     isSignedIn: state.auth.isSignedIn
   }
 }
 
-export default connect(mapStateToProps, { fetchStudents })(Assignment);
+export default connect(mapStateToProps, { fetchStudents, fetchTimes })(Assignment);
