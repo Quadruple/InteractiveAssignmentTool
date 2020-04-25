@@ -93,7 +93,13 @@
                                   VALUES (?,?,?,?,?,?,?,?)");
       $stmt->bind_param("ssssiids", $studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
       if($stmt->execute()) {
-        return true;
+        if($this->studentDeclaresPreference($studentemail)){
+          return true;
+        }
+        else 
+        {
+          return false;
+        }
       }
       return false;
     }
@@ -148,11 +154,11 @@
       return false;
     }
 
-    function insertStudentPreference($preferenceid, $preferencedegree, $term)
+    function insertStudentPreference($preferenceid, $preferencedegree, $sectionname ,$term)
     {
-      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferenceid, preferencedegree, term) 
-              VALUES (?,?,?)");
-      $stmt->bind_param("iis", $preferenceid, $preferencedegree, $term);
+      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferenceid, preferencedegree, sectionname ,term) 
+              VALUES (?,?,?,?)");
+      $stmt->bind_param("iiss", $preferenceid, $preferencedegree, $sectionname ,$term);
       if($stmt->execute()) {
         return true;
       }
@@ -269,20 +275,21 @@
       return $students;
     }
 
-    function getPreferences()
+    function getPreferences($preferenceid)
     {
-      $stmt = $this->con->prepare("SELECT preferenceid, preferencedegree, term
-                                  FROM studentpreference");
+      $stmt = $this->con->prepare("SELECT preferencedegree, sectionname, term
+                                  FROM studentpreference WHERE preferenceid = ?");
+      $stmt->bind_param("i", $preferenceid);
       $stmt->execute();
-      $stmt->bind_result($preferenceid, $preferencedegree, $term);
+      $stmt->bind_result( $preferencedegree, $sectionname, $term);
 
       $preferences = array();
 
       while($stmt->fetch())
       {
         $preferenceArray = array();
-        $preferenceArray['preferenceid'] = $preferenceid;
         $preferenceArray['preferencedegree'] = $preferencedegree;
+        $preferenceArray['sectionname'] = $sectionname;
         $preferenceArray['term'] = $term;
 
         array_push($preferences, $preferenceArray);
@@ -425,6 +432,23 @@
           return true;
         }
         return false;
+    }
+
+    function getStudentsSubmittedPreferences($studentemail)
+    {
+      $stmt = $this->con->prepare("SELECT preferenceid FROM studentdeclaredpreference WHERE studentemail = ?");
+      $stmt->bind_param("s", $studentemail);
+      $stmt->execute();
+      $stmt->bind_result($preferenceid);
+
+      $preferenceids = array();
+
+      while($stmt->fetch())
+      {
+        array_push($preferenceids, $preferenceid);
+      }
+
+      return $this->getPreferences($preferenceids[0]);
     }
   }
 ?>
