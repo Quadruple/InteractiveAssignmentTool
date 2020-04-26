@@ -1,9 +1,10 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { ItemTypes } from './Constants'
 import { useDrop } from 'react-dnd'
 import { SlotDiv } from './styles'
 
-function Slot({ onDrop, onCancel, items, name, time, id, preferences }) {
+function Slot({ onDrop, onRemove, items, name, time, id }) {
 	const [{ isOver, canDrop }, drop] = useDrop({
 		accept: ItemTypes.ASSISTANT,
 		drop: onDrop,
@@ -13,16 +14,21 @@ function Slot({ onDrop, onCancel, items, name, time, id, preferences }) {
 		}),
   })
 
+  //state e yazılan bir öğrencinin prefleri oku
+  const prefs = useSelector(state =>  Object.values(state.times))
+
   const doesHavePreference = () => {
-    const pref = preferences.find(preference => preference.preferenceHour === time)
-    if(typeof pref === "undefined") return null
-    return pref.preferenceScore;
+    if(Array.isArray(prefs)) {
+      const pref = prefs.find(preference => preference.preferenceHour === time)
+      if(typeof pref === "undefined") return null
+      return pref.preferenceScore
+    } else return null
   }
 
   return (
     <SlotDiv ref={drop}>
       {`${name} ${time}`}
-      {items ? <h4>{items.map(item => <div>{item.name} <button onClick={() => onCancel(item.name, id)}>x</button></div>)}</h4> : null}
+      {items ? <h4>{items.map(item => <div>{item.name} <button onClick={() => onRemove(item, id)}>x</button></div>)}</h4> : null}
       {canDrop && <div style={{position: "absolute", right: "4px", bottom: "5px"}}>{doesHavePreference()}</div>}
       {isOver && (
         <div

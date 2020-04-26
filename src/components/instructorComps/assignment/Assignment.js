@@ -13,6 +13,7 @@ function Assignment(props) {
   const [recitations, setRecitations] = useState([]);
   const [times, setTimes] = useState([]);
   const [slots, setSlots] = useState();
+  const [totalScore, setTotalScore] = useState(0);
 
   useEffect(() => {
     props.fetchStudents();
@@ -43,17 +44,21 @@ function Assignment(props) {
 
   const renderAssistants = () => {
     const studentArray = props.students.map(student => 
-      <div><Assistant name={student.name} /></div>
+      <div><Assistant name={student.name} prefs={props.preferences} /></div>
     );
     return studentArray;
   }
 
   const handleDrop = (id, item) => {
-    setSlots([...slots.slice(0, id), { id,  items: [...slots.slice(id, id + 1)[0].items, item ], name: slots.slice(id, id + 1)[0].name }, ...slots.slice(id + 1)])
+    const matchingPref = item.prefs.find(preference => preference.preferenceHour === slots[id].time)
+    matchingPref && setTotalScore(totalScore + matchingPref.preferenceScore)
+    setSlots([...slots.slice(0, id), { id,  items: [...slots[id].items, item ], name: slots[id].name, time: slots[id].time }, ...slots.slice(id + 1)])
   }
   
-  const handleCancel = (itemName, id) => {
-    setSlots([...slots.slice(0, id), { id,  items: slots.slice(id, id + 1)[0].items.filter(item => item.name !== itemName), name: slots.slice(id, id + 1)[0].name }, ...slots.slice(id + 1)])
+  const handleRemove = (removedItem, id) => {
+    const matchingPref = removedItem.prefs.find(preference => preference.preferenceHour === slots[id].time)
+    matchingPref && setTotalScore(totalScore - matchingPref.preferenceScore)
+    setSlots([...slots.slice(0, id), { id,  items: slots[id].items.filter(item => item.name !== removedItem.name), name: slots[id].name, time: slots[id].time }, ...slots.slice(id + 1)])
   } 
   
   return(
@@ -70,12 +75,15 @@ function Assignment(props) {
               time={time}
               items={items}
               onDrop={(item) => handleDrop(id, item)}
-              onCancel={handleCancel}
-              preferences={props.preferences}
+              onRemove={handleRemove}
             />
         ))}
         </CalendarGrid>
       </Layout>
+      {slots &&
+        <div style={{textAlign: "center", fontSize: "large", marginTop: "25px"}}>
+          Total Score = {totalScore}
+        </div>}
     </DndProvider>
   );
 }

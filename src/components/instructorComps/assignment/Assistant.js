@@ -3,9 +3,9 @@ import { ItemTypes } from './Constants'
 import { useDrag } from 'react-dnd'
 import { AssistantDiv } from "./styles"
 
-function Assistant({ name }) {
+function Assistant({ name, prefs }) {
   const [{isDragging}, drag] = useDrag({
-    item: { name, type: ItemTypes.ASSISTANT },
+    item: { name, prefs, type: ItemTypes.ASSISTANT },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
@@ -16,6 +16,9 @@ function Assistant({ name }) {
 			isDragging: !!monitor.isDragging(),
 		}),
   })
+
+  //pref leri state e yaz.
+  isDragging && console.log(name)
 
   return (
     <div
