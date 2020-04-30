@@ -56,10 +56,12 @@ function AdminScreen(props) {
       </div>
     );
   }
-
+  console.log("ne geliyor", props.terms);
   const renderCourseInput = () => {
     const termOptions = props.terms.map(term =>
-      <option value={term.year + " " + term.semester}>{term.year + " " + term.semester}</option>
+      term.map(result =>
+        <option value={result.term}>{result.term}</option>
+        )
     );
     return (
       <div style={{ textAlign: 'right' }}>
@@ -182,6 +184,7 @@ function AdminScreen(props) {
 
 
 const mapStateToProps = state => {
+  console.log(Object.values(state.terms));
   return { 
     terms: Object.values(state.terms),
     courses: Object.values(state.courses),

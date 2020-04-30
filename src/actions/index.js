@@ -219,9 +219,13 @@ export const deleteTerm = id => async dispatch => {
 }
 
 export const fetchTerms = () => async dispatch => {
-  const response = await axios.get("/terms")
-
-  dispatch({ type: FETCH_TERMS, payload: response.data});
+  const fetchTermsUrl = "http://localhost/php/Api.php?apicall=getTerms";
+  fetch(fetchTermsUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data);
+    dispatch({ type: FETCH_TERMS, payload: data});  
+  });
 }
 
 export const addCourse = formValues => async (dispatch) => {
