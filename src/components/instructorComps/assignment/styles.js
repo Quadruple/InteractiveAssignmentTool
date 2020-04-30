@@ -17,13 +17,14 @@ export const CalendarGrid = styled.div`
 
 export const SlotDiv = styled.div`
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 235px;
+  height: 150px;
   border-style: solid;
   border-width: 2px;
+  margin: 25px;
 `
 export const AssistantDiv = styled.div`
-  height: 25px;
+  height: 35px;
   width: 110px;
   border-style: solid;
   border-width: 2px;

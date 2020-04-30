@@ -1,5 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { fetchStudents } from "../actions"; 
+import { connect } from "react-redux";
 
 class CreateStudentForm extends React.Component {
   renderError({ error, touched }) {
@@ -26,10 +28,28 @@ class CreateStudentForm extends React.Component {
     );
   }
 
+  isStudentAlreadyExists = (formValues) => {
+    for (var i = 0; i < this.props.students.length; i++)
+    {
+      if(this.props.students[i].email.includes(formValues.email) || this.props.students[i].number.includes(formValues.number))
+      {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   onSubmit = formValues => {
-    console.log(formValues)
-    formValues = {...formValues, email: formValues.email + "@sabanciuniv.edu"}
-    this.props.onSubmit(formValues);
+    if(this.isStudentAlreadyExists(formValues))
+    {
+      alert("This student already exists.");
+    }
+    else{
+      console.log(formValues)
+      formValues = {...formValues, email: formValues.email + "@sabanciuniv.edu"}
+      this.props.onSubmit(formValues);
+    }
   }
 
   render() {
@@ -74,16 +94,8 @@ class CreateStudentForm extends React.Component {
             20
           </label>
         </div> <br></br>
-        <Field name="assistantscore" component={this.renderInput} label="Score: " />
-        <label style={{fontWeight: "bold"}}>Term:</label>
-        <div style={{width: "845px"}}>
-          <Field name="term" component="select">
-            <option />
-            <option value="2019-2020 Spring">2019-2020 Spring</option>
-            <option value="2019-2020 Fall">2019-2020 Fall</option>
-            <option value="2018-2019 Summer">2018-2019 Summer</option>
-          </Field>
-        </div><br></br>      
+        <Field name="score" component={this.renderInput} label="Score: " />
+        <br></br>     
         <button className="ui button primary">Submit</button>
       </form>
     );
@@ -103,7 +115,14 @@ const validate  = formValues => {
   return errors;
 }
 
+
+const mapStateToProps = state => {
+  return { 
+    students: Object.values(state.students),
+  }
+}
+
 export default reduxForm({
   form: "CreateStudentForm",
   validate
-})(CreateStudentForm);
+})(connect(mapStateToProps, { fetchStudents })(CreateStudentForm));

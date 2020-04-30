@@ -1,11 +1,11 @@
 import _ from "lodash";
 
 import {
-  CREATE_TIME,
   FETCH_TIMES,
   FETCH_TIME,
   DELETE_TIME,
-  EDIT_TIME 
+  EDIT_TIME, 
+  CREATE_PREFERENCES
 } from "../actions/types";
 
 export default (state={}, action) => {
@@ -14,8 +14,8 @@ export default (state={}, action) => {
       return { ...state, ..._.mapKeys(action.payload, "id")}
     case FETCH_TIME:
       return { ...state, [action.payload.id]: action.payload };
-    case CREATE_TIME:
-      return { ...state, [action.payload.id]: action.payload };
+    case CREATE_PREFERENCES:
+      return { ...state, ...action.payload };
     case EDIT_TIME:
       return { ...state, [action.payload.id]: action.payload };
     case DELETE_TIME:

@@ -6,14 +6,24 @@ import {
   CREATE_STUDENT,
   FETCH_STUDENTS,
   FETCH_STUDENT,
+  FETCH_STUDENT_COURSE,
   DELETE_STUDENT,
   EDIT_STUDENT,
-  CREATE_TIME,
+  CREATE_PREFERENCES,
   EDIT_TIME,
   DELETE_TIME,
   FETCH_TIMES,
   FETCH_TIME,
-  CHECK_MAIL
+  CHECK_MAIL,
+  ADD_TERM,
+  DELETE_TERM,
+  ADD_COURSE,
+  DELETE_COURSE,
+  ADD_INSTRUCTOR,
+  DELETE_INSTRUCTOR,
+  FETCH_TERMS,
+  FETCH_COURSES,
+  FETCH_INSTRUCTORS
 } from "../actions/types";
 
 
@@ -149,15 +159,16 @@ export const editStudent = (id, formValues) => async dispatch => {
 
 export const deleteStudent = id => async dispatch => {
   await axios.delete(`/students/${id}`);
-
+  
   dispatch({ type: DELETE_STUDENT, payload: id});
   history.push("/instructor");
 }
 
-export const createTime = formValues => async (dispatch) => {
-  const response = await axios.post("/times", { ...formValues });
+export const createPreferences = preferences => async (dispatch) => {
+  //const response = await axios.post("/times", ...preferences);
+  await Promise.all(preferences.map(preference => axios.post("/times", preference )))
 
-  dispatch({ type: CREATE_TIME, payload: response.data });
+  //dispatch({ type: CREATE_PREFERENCES, payload: response.data });
   history.push("/student");
 }
 
@@ -165,6 +176,12 @@ export const fetchTimes = () => async dispatch => {
   const response = await axios.get("/times")
 
   dispatch({ type: FETCH_TIMES, payload: response.data});
+}
+
+export const fetchStudentCourse = id => async dispatch => {
+  //const response = await axios.get(`/studentCourse`)
+
+  dispatch({ type: FETCH_STUDENT_COURSE, payload: "IF 100"});
 }
 
 export const fetchTime = id => async dispatch => {
@@ -185,4 +202,65 @@ export const deleteTime = id => async dispatch => {
 
   dispatch({ type: DELETE_TIME, payload: id});
   history.push("/student");
+}
+
+export const addTerm = formValues => async (dispatch) => {
+  const response = await axios.post("/terms", { ...formValues });
+
+  dispatch({ type: ADD_TERM, payload: response.data });
+  history.push("/admin");
+}
+
+export const deleteTerm = id => async dispatch => {
+  await axios.delete(`/terms/${id}`);
+
+  dispatch({ type: DELETE_TERM, payload: id});
+  history.push("/admin");
+}
+
+export const fetchTerms = () => async dispatch => {
+  const response = await axios.get("/terms")
+
+  dispatch({ type: FETCH_TERMS, payload: response.data});
+}
+
+export const addCourse = formValues => async (dispatch) => {
+  const response = await axios.post("/courses", { ...formValues });
+
+  dispatch({ type: ADD_COURSE, payload: response.data });
+  history.push("/admin");
+}
+
+export const deleteCourse = id => async dispatch => {
+  await axios.delete(`/courses/${id}`);
+
+  dispatch({ type: DELETE_COURSE, payload: id});
+  history.push("/admin");
+}
+
+export const fetchCourses = () => async dispatch => {
+  const response = await axios.get("/courses")
+
+  dispatch({ type: FETCH_COURSES, payload: response.data});
+}
+
+export const addInstructor = formValues => async (dispatch) => {
+  var courseAndTerm = formValues.course.split(" ")
+  const response = await axios.post("/instructors", { course: courseAndTerm[0], term: courseAndTerm[1] + " " + courseAndTerm[2], instructor: formValues.instructor });
+
+  dispatch({ type: ADD_INSTRUCTOR, payload: response.data });
+  history.push("/admin");
+}
+
+export const deleteInstructor = id => async dispatch => {
+  await axios.delete(`/instructors/${id}`);
+
+  dispatch({ type: DELETE_INSTRUCTOR, payload: id});
+  history.push("/admin");
+}
+
+export const fetchInstructors = () => async dispatch => {
+  const response = await axios.get("/instructors")
+
+  dispatch({ type: FETCH_INSTRUCTORS, payload: response.data});
 }

@@ -5,7 +5,8 @@ import {
   FETCH_STUDENTS,
   FETCH_STUDENT,
   DELETE_STUDENT,
-  EDIT_STUDENT 
+  EDIT_STUDENT,
+  FETCH_STUDENT_COURSE 
 } from "../actions/types";
 
 export default (state={}, action) => {
@@ -14,6 +15,8 @@ export default (state={}, action) => {
       return { ...state, ...action.payload}
     case FETCH_STUDENT:
       return { ...state, [action.payload.id]: action.payload };
+    case FETCH_STUDENT_COURSE:
+      return { ...state, courseName: action.payload };
     case CREATE_STUDENT:
       return { ...state, [action.payload.id]: action.payload };
     case EDIT_STUDENT:

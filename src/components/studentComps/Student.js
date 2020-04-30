@@ -2,39 +2,19 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { fetchTimes } from "../../actions"; 
+import { fetchTimes, fetchStudentCourse } from "../../actions"; 
 
 class TimeList extends React.Component {
   componentDidMount() {
     this.props.fetchTimes();
+    this.props.fetchStudentCourse();
   }
-
-  renderAdmin(time) {
-    if(this.props.isSignedIn) {
-      return(
-        <div className="right floated content">
-          <Link to={`/student/editTime/${time.id}`} className="ui button primary">
-            Edit
-          </Link>
-          <Link to={`/student/deleteTime/${time.id}`} className="ui button negative">
-            Delete
-          </Link>
-        </div>
-      );
-    }
-  }
-  
-  renderStudents() {
+ 
+  renderPreferences() {
     const timeArray = this.props.times.map(time => 
-      <div className="item" key={time.id}>
-        {this.renderAdmin(time)}
+      <div key={time.id} style={{marginBottom: "50px"}}>
         <div className="content">
-          {time.day + " "}
-          {time.startTime + " - "}
-          {time.endTime}
-          <div className="description">
-            {"Order: " + time.preferenceOrder}
-          </div>
+          {`Score for ${time.preferenceHour}: ${time.preferenceScore}`}
         </div>
       </div>  
     );
@@ -49,7 +29,7 @@ class TimeList extends React.Component {
       return (
         <div style={{ textAlign: 'right' }}>
           <Link to="/student/newTime" className="ui button primary">
-            Add Time Preference 
+            Create Time Preferences 
           </Link>
         </div>
       );
@@ -60,9 +40,9 @@ class TimeList extends React.Component {
     var string = this.props.isSignedIn ? "Time Preferences" : "";
     return (
       <div>
-        <h3>{string}</h3>
+        <h3 style={{marginBottom: "25px"}}>{string}</h3>
         <div className="ui celled list">
-          {this.renderStudents()}
+          {this.renderPreferences()}
         </div>
         {this.renderCreate()}
       </div>
@@ -78,4 +58,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { fetchTimes })(TimeList);
+export default connect(mapStateToProps, { fetchTimes, fetchStudentCourse })(TimeList);
