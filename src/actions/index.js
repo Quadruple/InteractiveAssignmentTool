@@ -26,6 +26,17 @@ import {
   FETCH_INSTRUCTORS
 } from "../actions/types";
 
+const encodeRequestBody = (requestBody) => {
+  var formBody = [];
+  for (var property in requestBody) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(requestBody[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+
+  return formBody;
+}
 
 export const signIn = () => {
   return {
@@ -46,7 +57,7 @@ export const checkMail = email => async  dispatch => {
 
   // Define what happens on successful data submission
   request.addEventListener( 'load', function(event) {
-    alert( 'Yeah! Data sent and response loaded.' );
+    console.log( 'Yeah! Data sent and response loaded.' );
   } );
 
   // Define what happens in case of error
@@ -205,10 +216,34 @@ export const deleteTime = id => async dispatch => {
 }
 
 export const addTerm = formValues => async (dispatch) => {
+  let termInDatabaseFormat = formValues.year + " " + formValues.semester;
+  const insertTermUrl = "http://localhost/php/Api.php?apicall=insertTerm";
+
+  let dataForBody = {
+    term: termInDatabaseFormat
+  };
+
+  let encodedBody = encodeRequestBody(dataForBody);
+  console.log(encodedBody);
+
+  let requestData = {
+    method: 'POST',
+    body: encodedBody,
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+  }
+
+  fetch(insertTermUrl, requestData)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data);
+  });
+
+  /*
   const response = await axios.post("/terms", { ...formValues });
 
   dispatch({ type: ADD_TERM, payload: response.data });
   history.push("/admin");
+  */
 }
 
 export const deleteTerm = id => async dispatch => {

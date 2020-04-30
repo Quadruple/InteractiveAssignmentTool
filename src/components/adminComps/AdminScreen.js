@@ -56,7 +56,7 @@ function AdminScreen(props) {
       </div>
     );
   }
-  console.log("ne geliyor", props.terms);
+
   const renderCourseInput = () => {
     const termOptions = props.terms.map(term =>
       term.map(result =>
@@ -105,19 +105,21 @@ function AdminScreen(props) {
 
   const renderTermBlock = () => {
     const terms = props.terms.map(term =>
-        <div className="item">
-          <div className="right floated content">
-            <Link to={`admin/deleteTerm/${term.id}`} className="ui button negative">
-              Delete
-            </Link>
-          </div>
-          <div className="content">
-            {term.semester}
-            <div className="description">
-              {term.year}
+          term.map(result => 
+            <div className="item">
+            <div className="right floated content">
+              <Link to={`admin/deleteTerm/${result.term}`} className="ui button negative">
+                Delete
+              </Link>
             </div>
-          </div>
-        </div>
+            <div className="content">
+              {result.term}
+              <div className="description">
+                {result.term}
+              </div>
+            </div>
+          </div>  
+        )
     )
     return terms;
   }
