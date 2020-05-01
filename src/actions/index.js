@@ -237,20 +237,16 @@ export const addTerm = formValues => async (dispatch) => {
   .then(function(data) {
     console.log(data);
   });
-
-  /*
-  const response = await axios.post("/terms", { ...formValues });
-
-  dispatch({ type: ADD_TERM, payload: response.data });
-  history.push("/admin");
-  */
 }
 
-export const deleteTerm = id => async dispatch => {
-  await axios.delete(`/terms/${id}`);
-
-  dispatch({ type: DELETE_TERM, payload: id});
-  history.push("/admin");
+export const deleteTerm = term => async dispatch => {
+  const deleteTermBaseUrl = "http://localhost/php/Api.php?apicall=deleteTerm&term=";
+  const deleteTermUrl = deleteTermBaseUrl + term;
+  fetch(deleteTermUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data); 
+  });
 }
 
 export const fetchTerms = () => async dispatch => {
@@ -291,15 +287,27 @@ export const addInstructor = formValues => async (dispatch) => {
   history.push("/admin");
 }
 
-export const deleteInstructor = id => async dispatch => {
-  await axios.delete(`/instructors/${id}`);
-
-  dispatch({ type: DELETE_INSTRUCTOR, payload: id});
-  history.push("/admin");
+export const deleteInstructor = instructorEmail => async dispatch => {
+  const deleteInstructorBaseUrl = "http://localhost/php/Api.php?apicall=deleteInstructor&instructoremail=";
+  const deleteInstructorUrl = deleteInstructorBaseUrl + instructorEmail;
+  fetch(deleteInstructorUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data); 
+  });
 }
 
 export const fetchInstructors = () => async dispatch => {
+  const fetchInstructorsUrl = "http://localhost/php/Api.php?apicall=getInstructors";
+  fetch(fetchInstructorsUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data);
+    dispatch({ type: FETCH_INSTRUCTORS, payload: data});  
+  });
+  /*
   const response = await axios.get("/instructors")
 
   dispatch({ type: FETCH_INSTRUCTORS, payload: response.data});
+  */
 }
