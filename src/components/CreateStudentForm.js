@@ -86,15 +86,15 @@ class CreateStudentForm extends React.Component {
         <label style={{fontWeight: "bold"}}>Work Hours:</label> 
         <div>
           <label>
-            <Field name="workhours" component="input" type="radio" value="10" />{' '}
+            <Field name="workhours" component="input" type="radio" value={10} />{' '}
             10
           </label> <br></br>
           <label>
-            <Field name="workhours" component="input" type="radio" value="20" />{' '}
+            <Field name="workhours" component="input" type="radio" value={20} />{' '}
             20
           </label>
         </div> <br></br>
-        <Field name="score" component={this.renderInput} label="Score: " />
+        <Field name="assistantscore" component={this.renderInput} label="Score: " />
         <br></br>     
         <button className="ui button primary">Submit</button>
       </form>

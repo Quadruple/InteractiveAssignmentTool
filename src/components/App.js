@@ -24,7 +24,7 @@ const App = () => {
           <Route path="/instructor" exact component={Instructor} />
           <Route path="/admin" exact component={AdminScreen} />
           <Route path="/instructor/newStudent" exact component={CreateStudent} />
-          <Route path="/instructor/editStudent/:studentId" exact component={EditStudent} />
+          <Route path="/instructor/editStudent/:studentemail" exact component={EditStudent} />
           <Route path="/instructor/deleteStudent/:studentId" exact component={DeleteStudent} />
           <Route path="/assignment" exact component={Assignment} />
           <Route path="/student" exact component={Student} />

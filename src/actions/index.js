@@ -156,6 +156,17 @@ export const fetchStudents = () => async dispatch => {
 }
 
 export const fetchStudent = id => async dispatch => {
+  /*
+  const fetchStudentBaseUrl = "http://localhost/php/Api.php?apicall=getStudentInformation&studentemail=";
+  const fetchStudentUrl = fetchStudentBaseUrl + studentEmail;
+
+  fetch(fetchStudentUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data);
+    dispatch({ type: FETCH_STUDENT, payload: data});  
+  });
+  */
   const response = await axios.get(`/students/${id}`)
 
   dispatch({ type: FETCH_STUDENT, payload: response.data});

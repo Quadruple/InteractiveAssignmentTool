@@ -7,12 +7,12 @@ import CreateStudentForm from "../CreateStudentForm";
 
 class EditStudent extends React.Component {
   componentDidMount() {
-    console.log(this.props.match.params.studentId);
-    this.props.fetchStudents(this.props.match.params.studentId);
+    console.log(this.props.match.params.studentemail);
+    this.props.fetchStudents(this.props.match.params.studentemail);
   }
 
   onSubmit = (formValues) => {
-    this.props.editStudent(this.props.match.params.studentId, formValues);
+    this.props.editStudent(this.props.match.params.studentemail, formValues);
   }
 
   render() {
@@ -22,7 +22,7 @@ class EditStudent extends React.Component {
         return (
           <div>
             <h2>Edit Student</h2>
-            <CreateStudentForm initialValues={ {..._.pick(this.props.student, 'name','number', 'role', 'hours', 'score', 'term'), email: this.props.student.email.replace(/@sabanciuniv.edu/, "")} } onSubmit={this.onSubmit} /> 
+            <CreateStudentForm initialValues={ {..._.pick(this.props.student, 'studentemail', 'studentname', 'studentnumber', 'role', 'course', 'workhours', 'assistantscore', 'term'), email: this.props.student.studentemail.replace(/@sabanciuniv.edu/, "")} } onSubmit={this.onSubmit} /> 
           </div>
         );
       }
@@ -30,7 +30,8 @@ class EditStudent extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return { student: state.students[ownProps.match.params.studentId] }
+  let studentsAsArray = Object.values(state.students);
+  return { student: studentsAsArray.find(studentObject => studentObject.studentemail === ownProps.match.params.studentemail) }
 }
 
 export default connect(mapStateToProps, { fetchStudents, editStudent })(EditStudent);

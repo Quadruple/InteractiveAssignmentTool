@@ -420,6 +420,15 @@
             $response['preferences'] = $db->getStudentsSubmittedPreferences($_GET['studentemail']);
           }
         break;
+        case 'getStudentInformation':
+          if(isset($_GET['studentemail']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['student'] = $db->getStudentInformation($_GET['studentemail']);
+          }
+        break;
       }
   }
 

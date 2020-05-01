@@ -249,12 +249,37 @@
       return $terms;
     }
 
+    function getStudentInformation($studentemail)
+    {
+      $stmt = $this->con->prepare("SELECT studentemail, studentname, term, role, studentnumber, workhours, assistantscore, course 
+                                  FROM students WHERE studentemail = ?");
+      $stmt->bind_param("s", $studentemail);
+      $stmt->execute();
+      $stmt->bind_result($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
+
+      $studentArray = array();
+
+      while($stmt->fetch())
+      {
+        $studentArray['studentemail'] = $studentemail;
+        $studentArray['studentname'] = $studentname;
+        $studentArray['term'] = $term;
+        $studentArray['role'] = $role;
+        $studentArray['studentnumber'] = $studentnumber;
+        $studentArray['workhours'] = $workhours;
+        $studentArray['assistantscore'] = $assistantscore;
+        $studentArray['course'] = $course;
+      }
+
+      return $studentArray;
+    }
+
     function getStudents()
     {
-      $stmt = $this->con->prepare("SELECT studentemail, studentname, term, role, studentnumber, workhours, assistantscore 
+      $stmt = $this->con->prepare("SELECT studentemail, studentname, term, role, studentnumber, workhours, assistantscore , course
                                   FROM students");
       $stmt->execute();
-      $stmt->bind_result($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore);
+      $stmt->bind_result($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
 
       $students = array();
 
@@ -268,7 +293,7 @@
         $studentArray['studentnumber'] = $studentnumber;
         $studentArray['workhours'] = $workhours;
         $studentArray['assistantscore'] = $assistantscore;
-
+        $studentArray['course'] = $course;
         array_push($students, $studentArray);
       }
 

@@ -13,7 +13,7 @@ class StudentList extends React.Component {
     if(this.props.isSignedIn) {
       return(
         <div className="right floated content">
-          <Link to={`/instructor/editStudent/${student.id}`} className="ui button primary">
+          <Link to={`/instructor/editStudent/${student.studentemail}`} className="ui button primary">
             Edit
           </Link>
           <Link onClick={deleteStudent(student.studentemail)} className="ui button negative">
