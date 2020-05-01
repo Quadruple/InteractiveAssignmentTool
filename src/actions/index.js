@@ -305,9 +305,4 @@ export const fetchInstructors = () => async dispatch => {
     console.log(data);
     dispatch({ type: FETCH_INSTRUCTORS, payload: data});  
   });
-  /*
-  const response = await axios.get("/instructors")
-
-  dispatch({ type: FETCH_INSTRUCTORS, payload: response.data});
-  */
 }
