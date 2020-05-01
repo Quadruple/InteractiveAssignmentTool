@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { fetchStudents } from "../../actions"; 
+import { fetchStudents, deleteStudent } from "../../actions"; 
 
 class StudentList extends React.Component {
   componentDidMount() {
@@ -16,7 +16,7 @@ class StudentList extends React.Component {
           <Link to={`/instructor/editStudent/${student.id}`} className="ui button primary">
             Edit
           </Link>
-          <Link to={`instructor/deleteStudent/${student.id}`} className="ui button negative">
+          <Link onClick={deleteStudent(student.studentemail)} className="ui button negative">
             Delete
           </Link>
         </div>

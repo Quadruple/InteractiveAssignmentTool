@@ -108,7 +108,7 @@ export const createStudent = formValues => async (dispatch) => {
 
   // Define what happens on successful data submission
   request.addEventListener( 'load', function(event) {
-    alert( 'Yeah! Data sent and response loaded.' );
+    console.log( 'Yeah! Data sent and response loaded.' );
   } );
 
   // Define what happens in case of error
@@ -133,7 +133,7 @@ export const fetchStudents = () => async dispatch => {
 
   // Define what happens on successful data submission
   request.addEventListener( 'load', function(event) {
-    alert( 'Yeah! Data sent and response loaded.' );
+    console.log( 'Yeah! Data sent and response loaded.' );
   } );
 
   // Define what happens in case of error
@@ -168,11 +168,14 @@ export const editStudent = (id, formValues) => async dispatch => {
   history.push("/instructor");
 }
 
-export const deleteStudent = id => async dispatch => {
-  await axios.delete(`/students/${id}`);
-  
-  dispatch({ type: DELETE_STUDENT, payload: id});
-  history.push("/instructor");
+export const deleteStudent = studentEmail => async dispatch => {
+  const deleteStudentBaseUrl = "http://localhost/php/Api.php?apicall=deleteStudent&studentemail=";
+  const deleteStudentUrl = deleteStudentBaseUrl + studentEmail;
+  fetch(deleteStudentUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data); 
+  });
 }
 
 export const createPreferences = preferences => async (dispatch) => {
