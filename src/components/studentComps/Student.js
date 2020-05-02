@@ -12,7 +12,7 @@ class TimeList extends React.Component {
  
   renderPreferences() {
     const timeArray = this.props.times.map(time => 
-      <div key={time.id} style={{marginBottom: "50px"}}>
+      <div style={{marginBottom: "50px"}}>
         <div className="content">
           {`Score for ${time.preferenceHour}: ${time.preferenceScore}`}
         </div>
@@ -42,7 +42,7 @@ class TimeList extends React.Component {
       <div>
         <h3 style={{marginBottom: "25px"}}>{string}</h3>
         <div className="ui celled list">
-          {this.renderPreferences()}
+          {this.props.times && this.renderPreferences()}
         </div>
         {this.renderCreate()}
       </div>
@@ -52,7 +52,7 @@ class TimeList extends React.Component {
 
 const mapStateToProps = state => {
   return { 
-    times: Object.values(state.times),
+    times: state.times.Ege,
     currentUserId: state.auth.userId,
     isSignedIn: state.auth.isSignedIn
   }

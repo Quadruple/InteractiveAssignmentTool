@@ -14,8 +14,7 @@ function Slot({ onDrop, onRemove, items, name, time, id }) {
 		}),
   })
 
-  //state e yazılan bir öğrencinin prefleri oku
-  const prefs = useSelector(state =>  Object.values(state.times))
+  const prefs = useSelector(state =>  state.drag)
 
   const doesHavePreference = () => {
     if(Array.isArray(prefs)) {
