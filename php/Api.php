@@ -95,16 +95,11 @@
           }
         break;
         case 'insertCourse':
-          isTheseParametersAvailable(array('term', 'starttime',
-                                            'endtime', 'course', 'section', 'crncode'));
+          isTheseParametersAvailable(array('term', 'course'));
           $db = new DbOperation();
           $result = $db->insertCourse(
             $_POST['term'],
-            $_POST['starttime'],
-            $_POST['endtime'],
-            $_POST['course'],
-            $_POST['section'],
-            $_POST['crncode']
+            $_POST['course']
           );
           if($result) {
             $response['error'] = false;

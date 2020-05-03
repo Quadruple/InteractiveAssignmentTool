@@ -274,23 +274,48 @@ export const fetchTerms = () => async dispatch => {
 }
 
 export const addCourse = formValues => async (dispatch) => {
-  const response = await axios.post("/courses", { ...formValues });
+  const addCourseUrl = "http://localhost/php/Api.php?apicall=insertCourse";
 
-  dispatch({ type: ADD_COURSE, payload: response.data });
-  history.push("/admin");
+  let dataForBody = {
+    term: formValues.term,
+    course: formValues.courseName
+  }
+
+  let encodedBody = encodeRequestBody(dataForBody);
+
+  let requestData = {
+    method: 'POST',
+    body: encodedBody,
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+  }
+
+  fetch(addCourseUrl, requestData)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data);
+  });
 }
 
-export const deleteCourse = id => async dispatch => {
-  await axios.delete(`/courses/${id}`);
+export const deleteCourse = coursename => async dispatch => {
+  const deleteCourseBaseUrl = "http://localhost/php/Api.php?apicall=deleteCourse&coursename=";
+  const deleteCourseUrl = deleteCourseBaseUrl + coursename;
 
-  dispatch({ type: DELETE_COURSE, payload: id});
-  history.push("/admin");
+  fetch(deleteCourseUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data); 
+  });
 }
 
 export const fetchCourses = () => async dispatch => {
-  const response = await axios.get("/courses")
+  const fetchCoursesUrl = "http://localhost/php/Api.php?apicall=getCourses";
 
-  dispatch({ type: FETCH_COURSES, payload: response.data});
+  fetch(fetchCoursesUrl)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data);
+    dispatch({ type: FETCH_COURSES, payload: data});  
+  });
 }
 
 export const addInstructor = formValues => async (dispatch) => {

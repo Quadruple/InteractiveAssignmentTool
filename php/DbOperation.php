@@ -62,11 +62,11 @@
         return false;
     }
 
-    function insertCourse($term, $starttime, $endtime, $course, $section, $crncode) {
+    function insertCourse($term, $course) {
       $stmt = $this->con->prepare("INSERT INTO courses
-                                (term, starttime, endtime, course, section, crncode)
-                                VALUES (?,?,?,?,?,?)");
-      $stmt->bind_param("sssssi", $term, $starttime, $endtime, $course, $section, $crncode);
+                                (term, course)
+                                VALUES (?,?)");
+      $stmt->bind_param("ss", $term, $course);
       if($stmt->execute()) {
         return true;
       }
@@ -187,9 +187,9 @@
 
     function getCourses()
     {
-      $stmt = $this->con->prepare("SELECT term, starttime, endtime, course, section, crncode FROM courses");
+      $stmt = $this->con->prepare("SELECT term, course FROM courses");
       $stmt->execute();
-      $stmt->bind_result($term, $starttime, $endtime, $course, $section, $crncode);
+      $stmt->bind_result($term, $coursename);
 
       $courses = array();
 
@@ -197,11 +197,7 @@
       {
         $course = array();
         $course['term'] = $term;
-        $course['starttime'] = $starttime;
-        $course['endtime'] = $endtime;
-        $course['course'] = $course;
-        $course['section'] = $section;
-        $course['crncode'] = $crncode;
+        $course['course'] = $coursename;
 
         array_push($courses, $course);
       }

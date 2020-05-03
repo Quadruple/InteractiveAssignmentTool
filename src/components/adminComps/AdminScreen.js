@@ -82,7 +82,9 @@ function AdminScreen(props) {
 
   const renderInstructorInput = () => {
     const courseOptions = props.courses.map(course =>
-      <option value={course.courseName + " " + course.term}>{course.courseName + " " + course.term}</option>
+      course.map(result => 
+        <option value={result.course + " " + result.term}>{result.course + " " + result.term}</option>  
+      )
     )
     const instructorSelectOptions = instructorOptions.map(instructor =>
       <option value={instructor}>{instructor}</option>
@@ -127,19 +129,21 @@ function AdminScreen(props) {
 
   const renderCourseBlock = () => {
     const courses = props.courses.map(course =>
-      <div className="item">
-        <div className="right floated content">
-          <Link to={`admin/deleteCourse/${course.id}`} className="ui button negative">
-            Delete
+      course.map(result =>
+        <div className="item">
+          <div className="right floated content">
+            <Link onClick={deleteCourse(result.course)} className="ui button negative">
+              Delete
             </Link>
+          </div>
+          <div className="content">
+            {result.course}
+          </div>
+          <div className="content">
+            {result.term}
+          </div>
         </div>
-        <div className="content">
-          {course.courseName}
-        </div>
-        <div className="content">
-          {course.term}
-        </div>
-      </div>
+      )
     );
     return courses;
   }
@@ -189,7 +193,7 @@ function AdminScreen(props) {
 
 
 const mapStateToProps = state => {
-  console.log(Object.values(state.terms));
+  console.log(Object.values(state.courses));
   return {
     terms: Object.values(state.terms),
     courses: Object.values(state.courses),
