@@ -19,6 +19,8 @@ function AdminScreen(props) {
   const [addCourseForm, setAddCourseForm] = useState({});
   const [addInstructorForm, setAddInstructorForm] = useState({});
   const [instructorOptions, setInstructorOptions] = useState([]);
+  
+  console.log(addInstructorForm);
 
   useEffect(() => {
     props.fetchTerms();

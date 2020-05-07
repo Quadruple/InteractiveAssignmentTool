@@ -319,11 +319,36 @@ export const fetchCourses = () => async dispatch => {
 }
 
 export const addInstructor = formValues => async (dispatch) => {
-  var courseAndTerm = formValues.course.split(" ")
-  const response = await axios.post("/instructors", { course: courseAndTerm[0], term: courseAndTerm[1] + " " + courseAndTerm[2], instructor: formValues.instructor });
+  const getInstructorEmailUrl = `http://localhost:4000/getEmailOfInstructorName/${formValues.instructor}`;
+  const insertInstructorEmailUrl = "http://localhost/php/Api.php?apicall=insertInstructor";
 
-  dispatch({ type: ADD_INSTRUCTOR, payload: response.data });
-  history.push("/admin");
+  var courseAndTerm = formValues.course.split(" ");
+
+  fetch(getInstructorEmailUrl)
+  .then((response) => response.text())
+  .then(function(data) {
+    //console.log(data);
+    let dataForBody = {
+      instructoremail: data,
+      instructorname: formValues.instructor,
+      term: courseAndTerm[2] + " " + courseAndTerm[3],
+      course: courseAndTerm[0] + " " + courseAndTerm[1]
+    }
+  
+    let encodedBody = encodeRequestBody(dataForBody);
+  
+    let requestData = {
+      method: 'POST',
+      body: encodedBody,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    }
+  
+    fetch(insertInstructorEmailUrl, requestData)
+    .then((response) => response.json())
+    .then(function(data) {
+      console.log(data);
+    });
+  });
 }
 
 export const deleteInstructor = instructorEmail => async dispatch => {
