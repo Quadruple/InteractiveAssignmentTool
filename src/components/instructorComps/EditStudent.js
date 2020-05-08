@@ -12,20 +12,30 @@ class EditStudent extends React.Component {
   }
 
   onSubmit = (formValues) => {
-    this.props.editStudent(this.props.match.params.studentemail, formValues);
+    this.props.editStudent(formValues);
   }
 
   render() {
-    if(!this.props.student) {
+    if (!this.props.student) {
       return <div>LOADING</div>
     } else {
-        return (
-          <div>
-            <h2>Edit Student</h2>
-            <CreateStudentForm initialValues={ {..._.pick(this.props.student, 'studentemail', 'studentname', 'studentnumber', 'role', 'course', 'workhours', 'assistantscore', 'term'), email: this.props.student.studentemail.replace(/@sabanciuniv.edu/, "")} } onSubmit={this.onSubmit} /> 
-          </div>
-        );
-      }
+      return (
+        <div>
+          <h2>Edit Student</h2>
+          <CreateStudentForm initialValues={{
+            studentemail: this.props.student.studentemail,
+            studentname: this.props.student.studentname,
+            studentnumber: this.props.student.studentnumber,
+            role: this.props.student.role,
+            course: this.props.student.course,
+            workhours: this.props.student.workhours.toString(),
+            assistantscore: this.props.student.assistantscore,
+            term: this.props.student.term,
+            email: this.props.student.studentemail.replace(/@sabanciuniv.edu/, "")
+          }} onSubmit={this.onSubmit} />
+        </div>
+      );
+    }
   }
 }
 

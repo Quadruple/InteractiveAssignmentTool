@@ -87,11 +87,11 @@
     // ------------------------- ADMIN FUNCTIONS END ---------------------------
 
 
-    function insertStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course) {
-      $stmt = $this->con->prepare("INSERT INTO students (studentemail, studentname, term, role, studentnumber, workhours, 
+    function insertStudent($studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore, $course) {
+      $stmt = $this->con->prepare("INSERT INTO students (studentemail, studentname, role, studentnumber, workhours, 
                                   assistantscore, course)
-                                  VALUES (?,?,?,?,?,?,?,?)");
-      $stmt->bind_param("ssssiids", $studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
+                                  VALUES (?,?,?,?,?,?,?)");
+      $stmt->bind_param("sssiids", $studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore, $course);
       if($stmt->execute()) {
         if($this->studentDeclaresPreference($studentemail)){
           return true;
@@ -247,11 +247,11 @@
 
     function getStudentInformation($studentemail)
     {
-      $stmt = $this->con->prepare("SELECT studentemail, studentname, term, role, studentnumber, workhours, assistantscore, course 
+      $stmt = $this->con->prepare("SELECT studentemail, studentname, role, studentnumber, workhours, assistantscore, course 
                                   FROM students WHERE studentemail = ?");
       $stmt->bind_param("s", $studentemail);
       $stmt->execute();
-      $stmt->bind_result($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
+      $stmt->bind_result($studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore, $course);
 
       $studentArray = array();
 
@@ -259,7 +259,6 @@
       {
         $studentArray['studentemail'] = $studentemail;
         $studentArray['studentname'] = $studentname;
-        $studentArray['term'] = $term;
         $studentArray['role'] = $role;
         $studentArray['studentnumber'] = $studentnumber;
         $studentArray['workhours'] = $workhours;
@@ -272,10 +271,10 @@
 
     function getStudents()
     {
-      $stmt = $this->con->prepare("SELECT studentemail, studentname, term, role, studentnumber, workhours, assistantscore , course
+      $stmt = $this->con->prepare("SELECT studentemail, studentname, role, studentnumber, workhours, assistantscore , course
                                   FROM students");
       $stmt->execute();
-      $stmt->bind_result($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $course);
+      $stmt->bind_result($studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore, $course);
 
       $students = array();
 
@@ -284,7 +283,6 @@
         $studentArray = array();
         $studentArray['studentemail'] = $studentemail;
         $studentArray['studentname'] = $studentname;
-        $studentArray['term'] = $term;
         $studentArray['role'] = $role;
         $studentArray['studentnumber'] = $studentnumber;
         $studentArray['workhours'] = $workhours;
@@ -430,12 +428,12 @@
       return "Admin";
     }
 
-    function editStudent($studentemail, $studentname, $term, $role, $studentnumber, $workhours, $assistantscore)
+    function editStudent($studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore, $course)
     {
-        $stmt = $this->con->prepare("UPDATE students SET studentname = ?, term = ?, role = ?, studentnumber = ?,
-                                    workhours = ?, assistantscore = ? WHERE studentemail = ?");
+        $stmt = $this->con->prepare("UPDATE students SET studentname = ?, role = ?, studentnumber = ?,
+                                    workhours = ?, assistantscore = ?, course = ? WHERE studentemail = ?");
 
-        $stmt->bind_param("sssiids", $studentname, $term, $role, $studentnumber, $workhours, $assistantscore, $studentemail);
+        $stmt->bind_param("ssiidss", $studentname, $role, $studentnumber, $workhours, $assistantscore, $course, $studentemail);
         if($stmt->execute())
         {
           return true;

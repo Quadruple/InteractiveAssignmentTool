@@ -172,11 +172,38 @@ export const fetchStudent = id => async dispatch => {
   dispatch({ type: FETCH_STUDENT, payload: response.data});
 }
 
-export const editStudent = (id, formValues) => async dispatch => {
+export const editStudent = (formValues) => async dispatch => {
+  const editStudentUrl = "http://localhost/php/Api.php?apicall=editStudent";
+
+  let dataForBody = {
+    studentemail: formValues.studentemail,
+    studentname: formValues.studentname,
+    role: formValues.role,
+    studentnumber: formValues.studentnumber,
+    workhours: formValues.workhours,
+    assistantscore: formValues.assistantscore,
+    course: formValues.course
+  };
+
+  let encodedBody = encodeRequestBody(dataForBody);
+
+  let requestData = {
+    method: 'POST',
+    body: encodedBody,
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+  }
+
+  fetch(editStudentUrl, requestData)
+  .then((response) => response.json())
+  .then(function(data) {
+    console.log(data);
+  });
+  /*
   const response = await axios.patch(`/students/${id}`, formValues);
 
   dispatch({ type: EDIT_STUDENT, payload: response.data});
   history.push("/instructor");
+  */
 }
 
 export const deleteStudent = studentEmail => async dispatch => {
