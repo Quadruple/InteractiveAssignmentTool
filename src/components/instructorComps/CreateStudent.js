@@ -5,6 +5,7 @@ import CreateStudentForm from "../CreateStudentForm";
 
 class CreateStudent extends React.Component {
   onSubmit = formValues => {
+    console.log(formValues);
     this.props.createStudent(formValues);
   }
 

@@ -154,11 +154,11 @@
       return false;
     }
 
-    function insertStudentPreference($preferenceid, $preferencedegree, $sectionname ,$term)
+    function insertStudentPreference($studentemail, $preferencedegree, $preferencestring)
     {
-      $stmt = $this->con->prepare("INSERT INTO studentpreference (preferenceid, preferencedegree, sectionname ,term) 
-              VALUES (?,?,?,?)");
-      $stmt->bind_param("iiss", $preferenceid, $preferencedegree, $sectionname ,$term);
+      $stmt = $this->con->prepare("INSERT INTO studentpreference (studentemail, preferencedegree, preferencestring) 
+              VALUES (?,?,?)");
+      $stmt->bind_param("sss", $studentemail, $preferencedegree, $preferencestring);
       if($stmt->execute()) {
         return true;
       }
@@ -294,13 +294,13 @@
       return $students;
     }
 
-    function getPreferences($preferenceid)
+    function getPreferences($studentemail)
     {
-      $stmt = $this->con->prepare("SELECT preferencedegree, sectionname, term
-                                  FROM studentpreference WHERE preferenceid = ?");
-      $stmt->bind_param("i", $preferenceid);
+      $stmt = $this->con->prepare("SELECT preferencedegree, preferencestring
+                                  FROM studentpreference WHERE studentemail = ?");
+      $stmt->bind_param("s", $studentemail);
       $stmt->execute();
-      $stmt->bind_result( $preferencedegree, $sectionname, $term);
+      $stmt->bind_result( $preferencedegree, $preferencestring);
 
       $preferences = array();
 
@@ -308,8 +308,7 @@
       {
         $preferenceArray = array();
         $preferenceArray['preferencedegree'] = $preferencedegree;
-        $preferenceArray['sectionname'] = $sectionname;
-        $preferenceArray['term'] = $term;
+        $preferenceArray['preferencestring'] = $preferencestring;
 
         array_push($preferences, $preferenceArray);
       }

@@ -1,8 +1,8 @@
 import history from "../history";
 import axios from "../axios";
-import { 
-  SIGN_IN, 
-  SIGN_OUT, 
+import {
+  SIGN_IN,
+  SIGN_OUT,
   CREATE_STUDENT,
   FETCH_STUDENTS,
   FETCH_STUDENT,
@@ -41,10 +41,42 @@ const encodeRequestBody = (requestBody) => {
   return formBody;
 }
 
-export const signIn = () => {
-  return {
-    type: SIGN_IN,
+export const signIn = (email) => async (dispatch) => {
+  var request = new XMLHttpRequest();
+
+  var requestLink = 'http://localhost/php/Api.php?apicall=checkAccountType&email=' + email;
+
+  // Define what happens on successful data submission
+  request.addEventListener('load', function (event) {
+    console.log('Yeah! Data sent and response loaded.');
+  });
+
+  // Define what happens in case of error
+  request.addEventListener('error', function (event) {
+    alert('Oops! Something went wrong.');
+  });
+
+  request.open("GET", requestLink, true);
+  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  request.onreadystatechange = function () { // Call a function when the state changes.
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+      console.log('Response Check Mail: ', JSON.parse(request.responseText));
+      var accountGetter = JSON.parse(request.responseText)
+      console.log("AccountGetter:", accountGetter);
+      if (accountGetter.accounttype == 'Admin') {
+        dispatch({ type: SIGN_IN, payload: { userType: "ADMIN", userMail: email } });
+      }
+      else if (accountGetter.accounttype == 'Instructor') {
+        dispatch({ type: SIGN_IN, payload: { userType: "INSTRUCTOR", userMail: email } });
+      }
+      else {
+        dispatch({ type: SIGN_IN, payload: { userType: "STUDENT", userMail: email } });
+      }
+    }
   }
+
+  request.send();
 }
 
 export const signOut = () => {
@@ -53,78 +85,37 @@ export const signOut = () => {
   }
 }
 
-export const checkMail = email => async  dispatch => {
-  var request = new XMLHttpRequest()
-
-  var requestLink = 'http://localhost/php/Api.php?apicall=checkAccountType&email=' + email
-
-  // Define what happens on successful data submission
-  request.addEventListener( 'load', function(event) {
-    console.log( 'Yeah! Data sent and response loaded.' );
-  } );
-
-  // Define what happens in case of error
-  request.addEventListener( 'error', function(event) {
-    alert( 'Oops! Something went wrong.' );
-  } );
-
-  request.open("GET", requestLink, true);
-  request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
-  request.onreadystatechange = function() { // Call a function when the state changes.
-    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        console.log('Response Check Mail: ', JSON.parse(request.responseText));
-        var accountGetter =  JSON.parse(request.responseText)
-        if(accountGetter.accountType == 'Admin')
-        {
-          dispatch({ type: CHECK_MAIL, payload: "ADMIN" });
-        }
-        else if(accountGetter.accountType == 'Instructor')
-        {
-          dispatch({ type: CHECK_MAIL, payload: "INSTRUCTOR" });
-        }
-        else
-        {
-          dispatch({ type: CHECK_MAIL, payload: "STUDENT" });
-        }
-    }
-  }
-
-  request.send();
-  
-  //dispatch({ type: CHECK_MAIL, payload: "INSTRUCTOR" });
-}
-
 export const createStudent = formValues => async (dispatch) => {
   var request = new XMLHttpRequest();
 
   let urlEncodedData = "",
-  urlEncodedDataPairs = [],
-  name;
+    urlEncodedDataPairs = [],
+    name;
 
-  for(name in formValues)
-  {
-    urlEncodedDataPairs.push( encodeURIComponent( name ) + '=' + encodeURIComponent( formValues[name] ) );
+  console.log(formValues);
+
+  for (name in formValues) {
+    urlEncodedDataPairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(formValues[name]));
   }
 
-  urlEncodedData = urlEncodedDataPairs.join( '&' ).replace( /%20/g, '+' );
+  urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
 
   // Define what happens on successful data submission
-  request.addEventListener( 'load', function(event) {
-    console.log( 'Yeah! Data sent and response loaded.' );
-  } );
+  request.addEventListener('load', function (event) {
+    console.log('Yeah! Data sent and response loaded.');
+  });
 
   // Define what happens in case of error
-  request.addEventListener( 'error', function(event) {
-    alert( 'Oops! Something went wrong.' );
-  } );
+  request.addEventListener('error', function (event) {
+    alert('Oops! Something went wrong.');
+  });
 
   request.open("POST", 'http://localhost/php/Api.php?apicall=insertStudent', true);
   request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-  request.onreadystatechange = function() { // Call a function when the state changes.
+  request.onreadystatechange = function () { // Call a function when the state changes.
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        console.log(request.responseText);
+      console.log(request.responseText);
     }
   }
 
@@ -135,23 +126,23 @@ export const fetchStudents = () => async dispatch => {
   var request = new XMLHttpRequest();
 
   // Define what happens on successful data submission
-  request.addEventListener( 'load', function(event) {
-    console.log( 'Yeah! Data sent and response loaded.' );
-  } );
+  request.addEventListener('load', function (event) {
+    console.log('Yeah! Data sent and response loaded.');
+  });
 
   // Define what happens in case of error
-  request.addEventListener( 'error', function(event) {
-    alert( 'Oops! Something went wrong.' );
-  } );
+  request.addEventListener('error', function (event) {
+    alert('Oops! Something went wrong.');
+  });
 
   request.open("GET", 'http://localhost/php/Api.php?apicall=getStudents', true);
 
-  request.onreadystatechange = function() { // Call a function when the state changes.
+  request.onreadystatechange = function () { // Call a function when the state changes.
     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-        console.log('Response for GET is:', JSON.parse(request.responseText));
-        var responseJson = JSON.parse(request.responseText);
-        console.log('students are:', responseJson.students);
-        dispatch({ type: FETCH_STUDENTS, payload: responseJson.students});
+      console.log('Response for GET is:', JSON.parse(request.responseText));
+      var responseJson = JSON.parse(request.responseText);
+      console.log('students are:', responseJson.students);
+      dispatch({ type: FETCH_STUDENTS, payload: responseJson.students });
     }
   }
 
@@ -172,7 +163,7 @@ export const fetchStudent = id => async dispatch => {
   */
   const response = await axios.get(`/students/${id}`)
 
-  dispatch({ type: FETCH_STUDENT, payload: response.data});
+  dispatch({ type: FETCH_STUDENT, payload: response.data });
 }
 
 export const editStudent = (formValues) => async dispatch => {
@@ -197,10 +188,10 @@ export const editStudent = (formValues) => async dispatch => {
   }
 
   fetch(editStudentUrl, requestData)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data);
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
   /*
   const response = await axios.patch(`/students/${id}`, formValues);
 
@@ -213,24 +204,54 @@ export const deleteStudent = studentEmail => async dispatch => {
   const deleteStudentBaseUrl = "http://localhost/php/Api.php?apicall=deleteStudent&studentemail=";
   const deleteStudentUrl = deleteStudentBaseUrl + studentEmail;
   fetch(deleteStudentUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data); 
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
-export const createPreferences = preferences => async (dispatch) => {
+export const createPreferences = (preferences, email) => async (dispatch) => {
+  const insertPreferenceURL = "http://localhost/php/Api.php?apicall=insertStudentPreference";
   //const response = await axios.post("/times", ...preferences);
-  //await Promise.all(preferences.map(preference => axios.post("/times", preference )))
-  await axios.post("/times", { "Ege" : preferences } )
+  await Promise.all(preferences.map(preference => {
+    console.log(preference);
+
+    let dataForBody = {
+      studentemail: email,
+      preferencedegree: preference.preferenceScore,
+      preferencestring: preference.preferenceHour
+    };
+
+    let encodedBody = encodeRequestBody(dataForBody);
+
+    let requestData = {
+      method: 'POST',
+      body: encodedBody,
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    }
+
+    fetch(insertPreferenceURL, requestData)
+      .then((response) => response.json())
+      .then(function (data) {
+        console.log(data);
+      });
+  }))
 
   //dispatch({ type: CREATE_PREFERENCES, payload: response.data });
   history.push("/student");
 }
 
-export const fetchTimes = () => async dispatch => {
-  const response = await axios.get("/times")
-  dispatch({ type: FETCH_TIMES, payload: response.data});
+export const fetchTimes = (email) => async dispatch => {
+  const getPreferenceTimesBaseURL = "http://localhost/php/Api.php?apicall=getPreferences&studentemail=";
+  console.log("email", email);
+  const getPreferencesURL = getPreferenceTimesBaseURL + email;
+  fetch(getPreferencesURL)
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log("İNDEXJS", data);
+      dispatch({ type: FETCH_TIMES, payload: data });
+    });
+  //const response = await axios.get("/times")
 }
 
 export const writeTimes = (preferences) => async dispatch => {
@@ -242,38 +263,38 @@ export const writeTimes = (preferences) => async dispatch => {
 export const fetchAssignments = () => async dispatch => {
   const response = await axios.get("/assignments")
   console.log(response)
-  response.data[0] && dispatch({ type: FETCH_ASSIGNMENTS, payload: response.data[0]})
+  response.data[0] && dispatch({ type: FETCH_ASSIGNMENTS, payload: response.data[0] })
 }
 
 export const saveAssignments = (assignments, totalScore) => async dispatch => {
   console.log(assignments)
-  await axios.post("/assignments", {assignments, totalScore} )
+  await axios.post("/assignments", { assignments, totalScore })
   dispatch({ type: SAVE_ASSIGNMENTS, payload: assignments });
 }
 
 export const fetchStudentCourse = id => async dispatch => {
   //const response = await axios.get(`/studentCourse`)
 
-  dispatch({ type: FETCH_STUDENT_COURSE, payload: "IF 100"});
+  dispatch({ type: FETCH_STUDENT_COURSE, payload: "IF 100" });
 }
 
 export const fetchTime = id => async dispatch => {
   const response = await axios.get(`/times/${id}`)
 
-  dispatch({ type: FETCH_TIME, payload: response.data});
+  dispatch({ type: FETCH_TIME, payload: response.data });
 }
 
 export const editTime = (id, formValues) => async dispatch => {
   const response = await axios.patch(`/times/${id}`, formValues);
 
-  dispatch({ type: EDIT_TIME, payload: response.data});
+  dispatch({ type: EDIT_TIME, payload: response.data });
   history.push("/student");
 }
 
 export const deleteTime = id => async dispatch => {
   await axios.delete(`/times/${id}`);
 
-  dispatch({ type: DELETE_TIME, payload: id});
+  dispatch({ type: DELETE_TIME, payload: id });
   history.push("/student");
 }
 
@@ -295,30 +316,30 @@ export const addTerm = formValues => async (dispatch) => {
   }
 
   fetch(insertTermUrl, requestData)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data);
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
 export const deleteTerm = term => async dispatch => {
   const deleteTermBaseUrl = "http://localhost/php/Api.php?apicall=deleteTerm&term=";
   const deleteTermUrl = deleteTermBaseUrl + term;
   fetch(deleteTermUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data); 
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
 export const fetchTerms = () => async dispatch => {
   const fetchTermsUrl = "http://localhost/php/Api.php?apicall=getTerms";
   fetch(fetchTermsUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data);
-    dispatch({ type: FETCH_TERMS, payload: data});  
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+      dispatch({ type: FETCH_TERMS, payload: data });
+    });
 }
 
 export const addCourse = formValues => async (dispatch) => {
@@ -338,10 +359,10 @@ export const addCourse = formValues => async (dispatch) => {
   }
 
   fetch(addCourseUrl, requestData)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data);
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
 export const deleteCourse = coursename => async dispatch => {
@@ -349,21 +370,21 @@ export const deleteCourse = coursename => async dispatch => {
   const deleteCourseUrl = deleteCourseBaseUrl + coursename;
 
   fetch(deleteCourseUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data); 
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
 export const fetchCourses = () => async dispatch => {
   const fetchCoursesUrl = "http://localhost/php/Api.php?apicall=getCourses";
 
   fetch(fetchCoursesUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data);
-    dispatch({ type: FETCH_COURSES, payload: data});  
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+      dispatch({ type: FETCH_COURSES, payload: data });
+    });
 }
 
 export const addInstructor = formValues => async (dispatch) => {
@@ -373,48 +394,48 @@ export const addInstructor = formValues => async (dispatch) => {
   var courseAndTerm = formValues.course.split(" ");
 
   fetch(getInstructorEmailUrl)
-  .then((response) => response.text())
-  .then(function(data) {
-    //console.log(data);
-    let dataForBody = {
-      instructoremail: data,
-      instructorname: formValues.instructor,
-      term: courseAndTerm[2] + " " + courseAndTerm[3],
-      course: courseAndTerm[0] + " " + courseAndTerm[1]
-    }
-  
-    let encodedBody = encodeRequestBody(dataForBody);
-  
-    let requestData = {
-      method: 'POST',
-      body: encodedBody,
-      headers: { "Content-Type": "application/x-www-form-urlencoded" }
-    }
-  
-    fetch(insertInstructorEmailUrl, requestData)
-    .then((response) => response.json())
-    .then(function(data) {
-      console.log(data);
+    .then((response) => response.text())
+    .then(function (data) {
+      //console.log(data);
+      let dataForBody = {
+        instructoremail: data,
+        instructorname: formValues.instructor,
+        term: courseAndTerm[2] + " " + courseAndTerm[3],
+        course: courseAndTerm[0] + " " + courseAndTerm[1]
+      }
+
+      let encodedBody = encodeRequestBody(dataForBody);
+
+      let requestData = {
+        method: 'POST',
+        body: encodedBody,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      }
+
+      fetch(insertInstructorEmailUrl, requestData)
+        .then((response) => response.json())
+        .then(function (data) {
+          console.log(data);
+        });
     });
-  });
 }
 
 export const deleteInstructor = instructorEmail => async dispatch => {
   const deleteInstructorBaseUrl = "http://localhost/php/Api.php?apicall=deleteInstructor&instructoremail=";
   const deleteInstructorUrl = deleteInstructorBaseUrl + instructorEmail;
   fetch(deleteInstructorUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data); 
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
 export const fetchInstructors = () => async dispatch => {
   const fetchInstructorsUrl = "http://localhost/php/Api.php?apicall=getInstructors";
   fetch(fetchInstructorsUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data);
-    dispatch({ type: FETCH_INSTRUCTORS, payload: data});  
-  });
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+      dispatch({ type: FETCH_INSTRUCTORS, payload: data });
+    });
 }

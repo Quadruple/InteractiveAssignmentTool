@@ -30,7 +30,7 @@ class CreateStudentForm extends React.Component {
 
   onSubmit = formValues => {
     console.log(formValues)
-    formValues = { ...formValues, email: formValues.email + "@sabanciuniv.edu" }
+    formValues = { ...formValues, studentemail: formValues.studentemail + "@sabanciuniv.edu" }
     this.props.onSubmit(formValues);
   }
 

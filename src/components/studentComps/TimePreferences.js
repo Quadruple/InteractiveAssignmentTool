@@ -42,13 +42,16 @@ function TimePreferences(props) {
   return (
     <>
       {renderSections()}
-      {!!recitationHours.length && <button className="ui button primary" style={{ float: 'right' }} onClick={() => props.createPreferences(preferences)}>Submit Preferences</button>}
+      {!!recitationHours.length && <button className="ui button primary" style={{ float: 'right' }} onClick={() => props.createPreferences(preferences, props.email)}>Submit Preferences</button>}
     </>
   );
 }
 
 const mapStateToProps = (state) => {
-  return { courseName: state.students.courseName }
+  return { 
+    courseName: state.students.courseName, 
+    email: state.auth.userMail
+  }
 }
 
 export default connect(mapStateToProps, { createPreferences })(TimePreferences);
