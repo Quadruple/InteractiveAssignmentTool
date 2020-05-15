@@ -5,7 +5,7 @@ import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import Assistant from "./Assistant";
 import { connect } from "react-redux";
-import { fetchStudents, fetchTimes } from "../../../actions"; 
+import { fetchStudents, fetchTimes, fetchAssignments, saveAssignments } from "../../../actions"; 
 import { CalendarGrid } from "./styles";
 import Slot from "./Slot";
 
@@ -14,11 +14,13 @@ function Assignment(props) {
   const [times, setTimes] = useState([]);
   const [slots, setSlots] = useState();
   const [totalScore, setTotalScore] = useState(0);
-
+  console.log(slots)
+  
   useEffect(() => {
+    props.fetchAssignments();
     props.fetchStudents();
     props.fetchTimes();
-
+    
     axios.get(`http://localhost:4000/getRecitationSections/IF 100`)
       .then((response) => {
         setRecitations(response.data);
@@ -34,13 +36,22 @@ function Assignment(props) {
 
   useEffect(() => {
     let slots = [];
-    if(recitations.length && times.length) {
+    if(recitations.length && times.length && !props.assignments) {
       for(let i = 0; i < recitations.length; i++) {
-        slots.push({ name: recitations[i], time: times[i], id: i, items: [] })
+        slots.push({name: recitations[i], 
+                    time: times[i], 
+                    id: i, 
+                    //items: [ { name: "deneme", type: "ASSISTANT", prefs: [ { preferenceHour: "8:40 am - 10:30 am - R", preferenceScore: 10, id: 1 } ] } ] }
+                    items: []
+                   }
+        )
       }
       setSlots(slots)
+    } else if(props.assignments) {
+        setSlots(props.assignments)
+        setTotalScore(props.totalScore)
     }
-  }, [recitations, times]); 
+  }, [recitations, times, props.assignments]); 
 
   const renderAssistants = () => {
     const studentArray = props.students.map(student => 
@@ -84,6 +95,7 @@ function Assignment(props) {
         <div style={{textAlign: "center", fontSize: "large", marginTop: "25px"}}>
           Total Score = {totalScore}
         </div>}
+      <button onClick={() => props.saveAssignments(slots, totalScore)}>SAVE</button>
     </DndProvider>
   );
 }
@@ -91,9 +103,11 @@ function Assignment(props) {
 const mapStateToProps = state => {
   return { 
     students: Object.values(state.students),
-    preferences: Object.values(state.times),
-    isSignedIn: state.auth.isSignedIn
+    preferences: state.times,
+    isSignedIn: state.auth.isSignedIn,
+    assignments: state.assignments.assignments,
+    totalScore: state.assignments.totalScore
   }
 }
 
-export default connect(mapStateToProps, { fetchStudents, fetchTimes })(Assignment);
+export default connect(mapStateToProps, { fetchStudents, fetchTimes, fetchAssignments, saveAssignments })(Assignment);

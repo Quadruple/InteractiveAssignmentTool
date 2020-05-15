@@ -13,6 +13,7 @@ import {
   EDIT_TIME,
   DELETE_TIME,
   FETCH_TIMES,
+  WRITE_TIMES,
   FETCH_TIME,
   CHECK_MAIL,
   ADD_TERM,
@@ -23,7 +24,9 @@ import {
   DELETE_INSTRUCTOR,
   FETCH_TERMS,
   FETCH_COURSES,
-  FETCH_INSTRUCTORS
+  FETCH_INSTRUCTORS,
+  FETCH_ASSIGNMENTS,
+  SAVE_ASSIGNMENTS
 } from "../actions/types";
 
 const encodeRequestBody = (requestBody) => {
@@ -218,7 +221,8 @@ export const deleteStudent = studentEmail => async dispatch => {
 
 export const createPreferences = preferences => async (dispatch) => {
   //const response = await axios.post("/times", ...preferences);
-  await Promise.all(preferences.map(preference => axios.post("/times", preference )))
+  //await Promise.all(preferences.map(preference => axios.post("/times", preference )))
+  await axios.post("/times", { "Ege" : preferences } )
 
   //dispatch({ type: CREATE_PREFERENCES, payload: response.data });
   history.push("/student");
@@ -226,8 +230,25 @@ export const createPreferences = preferences => async (dispatch) => {
 
 export const fetchTimes = () => async dispatch => {
   const response = await axios.get("/times")
-
   dispatch({ type: FETCH_TIMES, payload: response.data});
+}
+
+export const writeTimes = (preferences) => async dispatch => {
+  //await Promise.all(preferences.map(preference => axios.post("/times", preference )))
+  //const response = await axios.post("/times", ...prefs)
+  dispatch({ type: WRITE_TIMES, payload: preferences });
+}
+
+export const fetchAssignments = () => async dispatch => {
+  const response = await axios.get("/assignments")
+  console.log(response)
+  response.data[0] && dispatch({ type: FETCH_ASSIGNMENTS, payload: response.data[0]})
+}
+
+export const saveAssignments = (assignments, totalScore) => async dispatch => {
+  console.log(assignments)
+  await axios.post("/assignments", {assignments, totalScore} )
+  dispatch({ type: SAVE_ASSIGNMENTS, payload: assignments });
 }
 
 export const fetchStudentCourse = id => async dispatch => {

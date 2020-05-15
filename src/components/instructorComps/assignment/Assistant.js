@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { ItemTypes } from './Constants'
 import { useDrag } from 'react-dnd'
 import { AssistantDiv } from "./styles"
+import { writeTimes } from "../../../actions"; 
+import { connect } from "react-redux";
 
-function Assistant({ name, prefs }) {
+function Assistant({ name, prefs, writeTimes }) {
   const [{isDragging}, drag] = useDrag({
-    item: { name, prefs, type: ItemTypes.ASSISTANT },
+    item: { name, prefs: prefs.Ege, type: ItemTypes.ASSISTANT },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
@@ -17,8 +19,10 @@ function Assistant({ name, prefs }) {
 		}),
   })
 
-  //pref leri state e yaz.
-  isDragging && console.log(name)
+  useEffect(() => {
+    if(isDragging)
+      writeTimes(prefs[name])
+  }, [isDragging]);
 
   return (
     <div
@@ -35,4 +39,10 @@ function Assistant({ name, prefs }) {
   )
 }
 
-export default Assistant
+const mapStateToProps = state => {
+  return { 
+    times: state.times.Ege,
+  }
+}
+
+export default connect(mapStateToProps, { writeTimes })(Assistant);

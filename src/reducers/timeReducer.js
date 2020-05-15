@@ -11,7 +11,7 @@ import {
 export default (state={}, action) => {
   switch(action.type) {
     case FETCH_TIMES:
-      return { ...state, ..._.mapKeys(action.payload, "id")}
+      return { ...state, ...action.payload}
     case FETCH_TIME:
       return { ...state, [action.payload.id]: action.payload };
     case CREATE_PREFERENCES:
