@@ -5,15 +5,12 @@ import {
 
 const INITIAL_STATE = {
   isSignedIn: null,
-  userMail: null,
-  userType: null
 }
 
 export default (state = INITIAL_STATE, action) => {
   switch(action.type) {
     case SIGN_IN:
-      console.log(action.payload.email);
-      return {...state, isSignedIn: true, userType: action.payload.userType, userMail: action.payload.userMail };
+      return {...state, isSignedIn: true, userType: "INSTRUCTOR" };
     case SIGN_OUT:
         return {...state, isSignedIn: false };
     default:
