@@ -71,6 +71,24 @@ function Assignment(props) {
     matchingPref && setTotalScore(totalScore - matchingPref.preferenceScore)
     setSlots([...slots.slice(0, id), { id,  items: slots[id].items.filter(item => item.name !== removedItem.name), name: slots[id].name, time: slots[id].time }, ...slots.slice(id + 1)])
   } 
+
+  const onSave = () => {
+    let courseName = "IF 100" //TODO: take it from redux store
+
+    for(let i = 0; i < slots.length; i++) {
+      if(slots[i].items.length) {
+        let sectionName = slots[i].name;
+        let sectionTime = slots[i].time;
+
+        for(let j = 0; j < slots[i].items.length; j++) {
+          let studentName = slots[i].items[j].name
+          let studentEmail = "egebircan@sabanciuniv.edu" // TODO : add email to <Student /> as a prop
+       
+          // SAVE ASSIGNMENTS REQUEST
+        }
+      }
+    }
+  }
   
   return(
     <DndProvider backend={Backend}>
