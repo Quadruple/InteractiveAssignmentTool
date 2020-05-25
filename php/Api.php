@@ -425,6 +425,33 @@
             $response['student'] = $db->getStudentInformation($_GET['studentemail']);
           }
         break;
+        case 'saveAssignments':
+          isTheseParametersAvailable(array('coursename', 'sectionname', 'sectiontime', 'studentemail', 'studentname'));
+          $db = new DbOperation();
+          $result = $db->saveAssignments(
+            $_POST['coursename'],
+            $_POST['sectionname'],
+            $_POST['sectiontime'],
+            $_POST['studentemail'],
+            $_POST['studentname']
+          );
+          if($result) {
+            $response['error'] = false;
+            $response['message'] = "Assignments saved succesfully.";
+          }else {
+            $response['error'] = true;
+            $response['message'] = "Some error occured. Please try again.";
+          }
+        break;
+        case 'getAssignmentsOfCourse':
+          if(isset($_GET['coursename']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['assignments'] = $db->getAssignmentsOfCourse($_GET['coursename']);
+          }
+        break;
       }
   }
 
