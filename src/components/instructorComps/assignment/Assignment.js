@@ -5,7 +5,7 @@ import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import Assistant from "./Assistant";
 import { connect } from "react-redux";
-import { fetchStudents, fetchTimes, fetchAssignments, saveAssignments } from "../../../actions"; 
+import { fetchStudents, fetchTimes, fetchAssignments, saveAssignments } from "../../../actions";
 import { CalendarGrid } from "./styles";
 import Slot from "./Slot";
 
@@ -14,13 +14,13 @@ function Assignment(props) {
   const [times, setTimes] = useState([]);
   const [slots, setSlots] = useState();
   const [totalScore, setTotalScore] = useState(0);
-  console.log(slots, totalScore)
-  
+  console.log(slots)
+
   useEffect(() => {
     props.fetchAssignments();
     props.fetchStudents();
     props.fetchTimes();
-    
+
     axios.get(`http://localhost:4000/getRecitationSections/IF 100`)
       .then((response) => {
         setRecitations(response.data);
@@ -36,22 +36,35 @@ function Assignment(props) {
 
   useEffect(() => {
     let slots = [];
-    if(recitations.length && times.length && !props.assignments) {
-      for(let i = 0; i < recitations.length; i++) {
-        slots.push({name: recitations[i], 
-                    time: times[i], 
-                    id: i, 
-                    //items: [ { name: "deneme", type: "ASSISTANT", prefs: [ { preferenceHour: "8:40 am - 10:30 am - R", preferenceScore: 10, id: 1 } ] } ] }
-                    items: []
-                   }
-        )
+    if (recitations.length && times.length) {
+      for (let i = 0; i < recitations.length; i++) {
+        if (props.assignments && props.assignments.length) {
+          let recitName = recitations[i];
+          let recitTime = times[i];
+
+          let assignmentsArray = props.assignments.filter(assignment => assignment.sectionname == recitName && assignment.sectiontime == recitTime)
+          console.log(assignmentsArray)
+          let items = []
+          assignmentsArray.map(assignment => items.push({ name: assignment.studentname , type: "ASSISTANT" }))
+
+          slots.push({
+            name: recitations[i],
+            time: times[i],
+            id: i,
+            items 
+          })          
+        } else {
+          slots.push({
+            name: recitations[i],
+            time: times[i],
+            id: i,
+            items: []
+          })
+        }
       }
       setSlots(slots)
-    } else if(props.assignments) {
-        setSlots(props.assignments)
-        setTotalScore(props.totalScore)
-    }
-  }, [recitations, times, props.assignments]); 
+    } 
+  }, [recitations, times]);
 
   const renderAssistants = () => {
     const studentArray = props.students.map(student => 
@@ -65,10 +78,10 @@ function Assignment(props) {
     matchingPref && setTotalScore(totalScore + matchingPref.preferenceScore)
     setSlots([...slots.slice(0, id), { id,  items: [...slots[id].items, item ], name: slots[id].name, time: slots[id].time }, ...slots.slice(id + 1)])
   }
-  
+
   const handleRemove = (removedItem, id) => {
-    const matchingPref = removedItem.prefs.find(preference => preference.preferenceHour === slots[id].time)
-    matchingPref && setTotalScore(totalScore - matchingPref.preferenceScore)
+    //const matchingPref = removedItem.prefs.find(preference => preference.preferenceHour === slots[id].time)
+    //matchingPref && setTotalScore(totalScore - matchingPref.preferenceScore)
     setSlots([...slots.slice(0, id), { id,  items: slots[id].items.filter(item => item.name !== removedItem.name), name: slots[id].name, time: slots[id].time }, ...slots.slice(id + 1)])
   } 
 
@@ -89,7 +102,7 @@ function Assignment(props) {
       }
     }
   }
-  
+
   return(
     <DndProvider backend={Backend}>
       <Layout>
@@ -97,7 +110,7 @@ function Assignment(props) {
           {renderAssistants()}
         </SideBar>
         <CalendarGrid>
-        {slots && slots.map(({ items, name, time, id }) => (
+          {slots && slots.map(({ items, name, time, id }) => (
             <Slot
               id={id}
               name={name}
@@ -106,14 +119,14 @@ function Assignment(props) {
               onDrop={(item) => handleDrop(id, item)}
               onRemove={handleRemove}
             />
-        ))}
+          ))}
         </CalendarGrid>
       </Layout>
       {slots &&
-        <div style={{textAlign: "center", fontSize: "large", marginTop: "25px"}}>
+        <div style={{ textAlign: "center", fontSize: "large", marginTop: "25px" }}>
           Total Score = {totalScore}
         </div>}
-      <button style={{marginLeft: "1200px", height: "40px", width: "80px"}} onClick={() => props.saveAssignments(slots, totalScore)}>SAVE</button>
+      <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => props.saveAssignments(slots, totalScore)}>SAVE</button>
     </DndProvider>
   );
 }
@@ -123,7 +136,7 @@ const mapStateToProps = state => {
     students: Object.values(state.students),
     preferences: state.times,
     isSignedIn: state.auth.isSignedIn,
-    assignments: state.assignments.assignments,
+    assignments: state.assignments,
     totalScore: state.assignments.totalScore
   }
 }
