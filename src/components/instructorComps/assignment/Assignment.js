@@ -14,7 +14,7 @@ function Assignment(props) {
   const [times, setTimes] = useState([]);
   const [slots, setSlots] = useState();
   const [totalScore, setTotalScore] = useState(0);
-  console.log(slots)
+  console.log(slots, totalScore)
   
   useEffect(() => {
     props.fetchAssignments();
@@ -95,7 +95,7 @@ function Assignment(props) {
         <div style={{textAlign: "center", fontSize: "large", marginTop: "25px"}}>
           Total Score = {totalScore}
         </div>}
-      <button onClick={() => props.saveAssignments(slots, totalScore)}>SAVE</button>
+      <button style={{marginLeft: "1200px", height: "40px", width: "80px"}} onClick={() => props.saveAssignments(slots, totalScore)}>SAVE</button>
     </DndProvider>
   );
 }
