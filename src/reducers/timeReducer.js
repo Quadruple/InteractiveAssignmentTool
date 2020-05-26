@@ -11,8 +11,7 @@ import {
 export default (state={}, action) => {
   switch(action.type) {
     case FETCH_TIMES:
-      console.log("FETCH_TIMES", action.payload);
-      return { ...state, ...action.payload}
+      return [ ...action.payload ]
     case FETCH_TIME:
       return { ...state, [action.payload.id]: action.payload };
     case CREATE_PREFERENCES:

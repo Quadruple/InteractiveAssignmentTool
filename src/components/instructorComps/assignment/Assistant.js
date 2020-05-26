@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 
 function Assistant({ name, prefs, writeTimes }) {
   const [{isDragging}, drag] = useDrag({
-    item: { name, prefs: prefs.Ege, type: ItemTypes.ASSISTANT },
+    item: { name, prefs: prefs, type: ItemTypes.ASSISTANT },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
@@ -21,7 +21,7 @@ function Assistant({ name, prefs, writeTimes }) {
 
   useEffect(() => {
     if(isDragging)
-      writeTimes(prefs[name])
+      writeTimes(prefs)
   }, [isDragging]);
 
   return (
