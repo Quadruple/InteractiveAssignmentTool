@@ -154,11 +154,11 @@
       return false;
     }
 
-    function insertStudentPreference($studentemail, $preferencedegree, $preferencestring)
+    function insertStudentPreference($studentemail, $preferencedegree, $preferencestring, $coursename)
     {
-      $stmt = $this->con->prepare("INSERT INTO studentpreference (studentemail, preferencedegree, preferencestring) 
-              VALUES (?,?,?)");
-      $stmt->bind_param("sss", $studentemail, $preferencedegree, $preferencestring);
+      $stmt = $this->con->prepare("INSERT INTO studentpreference (studentemail, preferencedegree, preferencestring, coursename) 
+              VALUES (?,?,?,?)");
+      $stmt->bind_param("ssss", $studentemail, $preferencedegree, $preferencestring, $coursename);
       if($stmt->execute()) {
         return true;
       }
@@ -503,6 +503,29 @@
       }
 
       return $assignments;
+    }
+
+    function getStudentPreferencesOfCourse($coursename)
+    {
+      $stmt = $this->con->prepare("SELECT studentemail, preferencedegree, preferencestring
+                                  FROM studentpreference WHERE coursename = ?");
+      $stmt->bind_param("s", $coursename);
+      $stmt->execute();
+      $stmt->bind_result( $studentemail, $preferencedegree, $preferencestring);
+
+      $preferences = array();
+
+      while($stmt->fetch())
+      {
+        $preferenceArray = array();
+        $preferenceArray['studentemail'] = $studentemail;
+        $preferenceArray['preferencedegree'] = $preferencedegree;
+        $preferenceArray['preferencestring'] = $preferencestring;
+
+        array_push($preferences, $preferenceArray);
+      }
+
+      return $preferences;
     }
   }
 ?>

@@ -200,12 +200,13 @@
           }
         break;
         case 'insertStudentPreference':
-          isTheseParametersAvailable(array('studentemail', 'preferencedegree', 'preferencestring'));
+          isTheseParametersAvailable(array('studentemail', 'preferencedegree', 'preferencestring', 'coursename'));
           $db = new DbOperation();
           $result = $db->insertStudentPreference(
             $_POST['studentemail'],
             $_POST['preferencedegree'],
-            $_POST['preferencestring']
+            $_POST['preferencestring'],
+            $_POST['coursename']
           );
           if($result) {
             $response['error'] = false;
@@ -450,6 +451,15 @@
             $response['error'] = false;
             $response['message'] = 'Request succesfully completed';
             $response['assignments'] = $db->getAssignmentsOfCourse($_GET['coursename']);
+          }
+        break;
+        case 'getStudentPreferencesOfCourse':
+          if(isset($_GET['coursename']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['preferences'] = $db->getStudentPreferencesOfCourse($_GET['coursename']);
           }
         break;
       }
