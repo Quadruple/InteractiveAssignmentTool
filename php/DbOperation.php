@@ -519,8 +519,8 @@
       {
         $preferenceArray = array();
         $preferenceArray['studentemail'] = $studentemail;
-        $preferenceArray['preferencedegree'] = $preferencedegree;
-        $preferenceArray['preferencestring'] = $preferencestring;
+        $preferenceArray['preferenceScore'] = $preferencedegree;
+        $preferenceArray['preferenceHour'] = $preferencestring;
 
         array_push($preferences, $preferenceArray);
       }
