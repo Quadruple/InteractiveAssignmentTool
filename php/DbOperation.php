@@ -156,11 +156,18 @@
 
     function insertStudentPreference($studentemail, $preferencedegree, $preferencestring, $coursename)
     {
-      $stmt = $this->con->prepare("INSERT INTO studentpreference (studentemail, preferencedegree, preferencestring, coursename) 
-              VALUES (?,?,?,?)");
-      $stmt->bind_param("ssss", $studentemail, $preferencedegree, $preferencestring, $coursename);
-      if($stmt->execute()) {
-        return true;
+      $deleteStmt = $this->con->prepare("DELETE FROM studentpreference WHERE studentemail = ?");
+      $deleteStmt->bind_param("s", $studentemail);
+      if($deleteStmt->execute())
+      {
+
+        $stmt = $this->con->prepare("INSERT INTO studentpreference (studentemail, preferencedegree, preferencestring, coursename) 
+                VALUES (?,?,?,?)");
+        $stmt->bind_param("ssss", $studentemail, $preferencedegree, $preferencestring, $coursename);
+        if($stmt->execute()) {
+          return true;
+        }
+        return false;
       }
       return false;
     }
@@ -471,13 +478,19 @@
 
     function saveAssignments($coursename, $sectionname, $sectiontime, $studentemail, $studentname)
     {
-      $stmt = $this->con->prepare("INSERT INTO assignments (coursename, sectionname, sectiontime, studentemail, studentname) 
+      $deleteStmt = $this->con->prepare("DELETE FROM assignments WHERE coursename = ?");
+        $deleteStmt->bind_param("s", $coursename);
+        if($deleteStmt->execute())
+        {
+          $stmt = $this->con->prepare("INSERT INTO assignments (coursename, sectionname, sectiontime, studentemail, studentname) 
                                   VALUES (?,?,?,?,?)");
-      $stmt->bind_param("sssss", $coursename, $sectionname, $sectiontime, $studentemail, $studentname);
-      if($stmt->execute()) {
-        return true;
-      }
-      return false; 
+          $stmt->bind_param("sssss", $coursename, $sectionname, $sectiontime, $studentemail, $studentname);
+          if($stmt->execute()) {
+            return true;
+          }
+          return false;  
+        }
+        return false;
     }
 
     function getAssignmentsOfCourse($coursename)
