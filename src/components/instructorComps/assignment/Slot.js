@@ -13,8 +13,8 @@ function Slot({ onDrop, onRemove, items, name, time, id }) {
       canDrop: monitor.canDrop()
 		}),
   })
-
-  const prefs = useSelector(state =>  state.drag)
+  
+  const prefs = useSelector(state => state.drag)
 
   const doesHavePreference = () => {
     if(Array.isArray(prefs)) {
