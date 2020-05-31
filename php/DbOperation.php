@@ -42,10 +42,9 @@
     }
 
     function insertInstructor($instructoremail, $instructorname, $term, $coursename) {
-      $stmt = $this->con->prepare("INSERT INTO instructors (instructoremail, instructorname, term) VALUES (?,?,?)");
-      $stmt->bind_param("sss", $instructoremail, $instructorname, $term);
+      $stmt = $this->con->prepare("INSERT INTO instructors (instructoremail, instructorname, term, coursename) VALUES (?,?,?,?)");
+      $stmt->bind_param("ssss", $instructoremail, $instructorname, $term, $coursename);
       if($stmt->execute()) {
-        $this->instructorAddsCourse($instructoremail, $coursename);
         return true;
       }
       return false;
@@ -174,9 +173,9 @@
 
     function getInstructors()
     {
-      $stmt = $this->con->prepare("SELECT instructoremail, instructorname, term FROM instructors");
+      $stmt = $this->con->prepare("SELECT instructoremail, instructorname, term, coursename FROM instructors");
       $stmt->execute();
-      $stmt->bind_result($instructoremail, $instructorname, $term);
+      $stmt->bind_result($instructoremail, $instructorname, $term, $coursename);
 		
       $instructors = array(); 
       
@@ -185,8 +184,9 @@
         $instructor['instructoremail'] = $instructoremail; 
         $instructor['instructorname'] = $instructorname; 
         $instructor['term'] = $term; 
-        
-        array_push($instructors, $instructor); 
+        $instructor['coursename'] = $coursename;
+
+        array_push($instructors, $instructor);
       }
       
       return $instructors; 

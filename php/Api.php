@@ -66,7 +66,7 @@
             $_POST['studentnumber'],
             $_POST['workhours'],
             $_POST['assistantscore'],
-            $_POST['course'],
+            $_POST['course']
           );
           if($result) {
             $response['error'] = false;

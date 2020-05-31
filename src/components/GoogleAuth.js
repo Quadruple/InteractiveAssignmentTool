@@ -28,7 +28,6 @@ class GoogleAuth extends React.Component {
       const userMail = this.auth.currentUser.get().Tt.Du;
       console.log("GoogleAuth:", userMail);
       this.props.signIn(userMail);
-            
     } else {
       this.props.signOut();
       history.push("/");
