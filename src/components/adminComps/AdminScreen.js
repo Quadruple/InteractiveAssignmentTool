@@ -23,21 +23,12 @@ function AdminScreen(props) {
   const terms = useSelector(state =>  state.terms);
   const courses = useSelector(state => state.courses);
   const instructors = useSelector(state => state.instructors);
-  console.log(addInstructorForm);
-
-
-
+  console.log(addInstructorForm)
   useEffect(() => {
     props.fetchTerms();
     props.fetchCourses();
     props.fetchInstructors();
   }, []);
-
-  function deleteTermFunction(term)
-  {
-    props.deleteTerm(term);
-    setTimeout(props.fetchTerms(), 1000);
-  }
 
   useEffect(() => {
     let courseArr;
@@ -92,10 +83,8 @@ function AdminScreen(props) {
   }
 
   const renderInstructorInput = () => {
-    const courseOptions = props.courses.map(course =>
-      course.map(result => 
-        <option value={result.course + " " + result.term}>{result.course + " " + result.term}</option>  
-      )
+    const courseOptions = courses.map(course =>
+      <option value={course.course + " " + course.term}>{course.course + " " + course.term}</option>  
     )
     const instructorSelectOptions = instructorOptions.map(instructor =>
       <option value={instructor}>{instructor}</option>
@@ -121,7 +110,7 @@ function AdminScreen(props) {
     const termsHtml = terms.map(term =>
         <div className="item">
           <div className="right floated content">
-            <Link onClick={() => deleteTermFunction(term.term)} className="ui button negative">
+            <Link onClick={() => props.deleteTerm(term.term)} className="ui button negative">
               Delete
               </Link>
           </div>
@@ -140,7 +129,7 @@ function AdminScreen(props) {
     const coursesHtml = courses.map(course =>
         <div className="item">
           <div className="right floated content">
-            <Link onClick={deleteCourse(course.course)} className="ui button negative">
+            <Link onClick={() => props.deleteCourse(course.course)} className="ui button negative">
               Delete
             </Link>
           </div>
@@ -156,24 +145,22 @@ function AdminScreen(props) {
   }
 
   const renderInstructorBlock = () => {
-    const instructors = props.instructors.map(instructor =>
-      instructor.map(result =>
-        <div className="item">
-          <div className="right floated content">
-            <Link onClick={deleteInstructor(result.instructoremail)} className="ui button negative">
-              Delete
-            </Link>
-          </div>
-          <div className="content">
-            {result.instructorname}
-            <div className="description">
-              {result.instructoremail + " / " + result.term}
-            </div>
+    const instructorsHtml = instructors.map(instructor =>
+      <div className="item">
+        <div className="right floated content">
+          <Link onClick={() => props.deleteInstructor(instructor.instructoremail)} className="ui button negative">
+            Delete
+          </Link>
+        </div>
+        <div className="content">
+          {instructor.instructorname}
+          <div className="description">
+            {instructor.instructoremail + " / " + instructor.term}
           </div>
         </div>
-      )
+      </div>
     );
-    return instructors;
+    return instructorsHtml;
   }
 
   return (
@@ -191,9 +178,9 @@ function AdminScreen(props) {
       {renderCourseInput()}
       <h2>Instructors</h2>
       <div className="ui celled list">
-        {/*renderInstructorBlock()*/}
+        {!!instructors.length && renderInstructorBlock()}
       </div>
-      {/*renderInstructorInput()*/}
+      {renderInstructorInput()}
     </div>
   );
 }

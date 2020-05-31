@@ -6,14 +6,14 @@ import {
   FETCH_INSTRUCTORS
 } from "../actions/types";
 
-export default (state={}, action) => {
+export default (state=[], action) => {
   switch(action.type) {
     case FETCH_INSTRUCTORS:
-      return { ...state, ..._.mapKeys(action.payload, "id")}
+      return [ ...action.payload ]
     case ADD_INSTRUCTOR:
-      return { ...state, [action.payload.id]: action.payload };
+      return [ ...state, action.payload ];
     case DELETE_INSTRUCTOR:
-      return _.omit(state, `${action.payload}`);
+      return state.filter(e => e.instructoremail != action.payload);
     default:
       return state;
   }

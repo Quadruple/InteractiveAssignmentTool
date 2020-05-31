@@ -6,14 +6,14 @@ import {
   FETCH_COURSES
 } from "../actions/types";
 
-export default (state={}, action) => {
+export default (state=[], action) => {
   switch(action.type) {
     case FETCH_COURSES:
-      return { ...state, ..._.mapKeys(action.payload, "id")}
+      return [ ...action.payload ];
     case ADD_COURSE:
-      return [...state, action.payload ];
+      return [ ...state, action.payload ];
     case DELETE_COURSE:
-      return _.omit(state, `${action.payload}`);
+      return state.filter(e => e.course != action.payload);
     default:
       return state;
   }

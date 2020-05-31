@@ -23,7 +23,6 @@ class EditStudent extends React.Component {
         <div>
           <h2>Edit Student</h2>
           <CreateStudentForm initialValues={{
-            studentemail: this.props.student.studentemail,
             studentname: this.props.student.studentname,
             studentnumber: this.props.student.studentnumber,
             role: this.props.student.role,
@@ -31,7 +30,7 @@ class EditStudent extends React.Component {
             workhours: this.props.student.workhours.toString(),
             assistantscore: this.props.student.assistantscore,
             term: this.props.student.term,
-            email: this.props.student.studentemail.replace(/@sabanciuniv.edu/, "")
+            studentemail: this.props.student.studentemail.replace(/@sabanciuniv.edu/, "")
           }} onSubmit={this.onSubmit} />
         </div>
       );

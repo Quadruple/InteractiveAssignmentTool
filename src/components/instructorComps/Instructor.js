@@ -16,7 +16,7 @@ class StudentList extends React.Component {
           <Link to={`/instructor/editStudent/${student.studentemail}`} className="ui button primary">
             Edit
           </Link>
-          <Link onClick={deleteStudent(student.studentemail)} className="ui button negative">
+          <Link onClick={() => this.props.deleteStudent(student.studentemail)} className="ui button negative">
             Delete
           </Link>
         </div>
@@ -60,7 +60,7 @@ class StudentList extends React.Component {
       <div>
         <h3>{string}</h3>
         <div className="ui celled list">
-          {this.renderStudents()}
+          {!!this.props.students.length && this.renderStudents()}
         </div>
         {this.renderCreate()}
         <Link to="/assignment" >
@@ -73,9 +73,9 @@ class StudentList extends React.Component {
 
 const mapStateToProps = state => {
   return { 
-    students: Object.values(state.students),
+    students: state.students,
     isSignedIn: state.auth.isSignedIn
   }
 }
 
-export default connect(mapStateToProps, { fetchStudents })(StudentList);
+export default connect(mapStateToProps, { fetchStudents, deleteStudent })(StudentList);

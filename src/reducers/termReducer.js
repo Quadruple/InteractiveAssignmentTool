@@ -13,7 +13,7 @@ export default (state=[], action) => {
     case ADD_TERM:
       return [ ...state, action.payload ];
     case DELETE_TERM:
-      return _.omit(state, `${action.payload}`);
+      return state.filter(e => e.term != action.payload);
     default:
       return state;
   }
