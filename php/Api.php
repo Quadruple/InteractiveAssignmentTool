@@ -427,14 +427,15 @@
           }
         break;
         case 'saveAssignments':
-          isTheseParametersAvailable(array('coursename', 'sectionname', 'sectiontime', 'studentemail', 'studentname'));
+          isTheseParametersAvailable(array('coursename', 'sectionname', 'sectiontime', 'studentemail', 'studentname', 'totalscore'));
           $db = new DbOperation();
           $result = $db->saveAssignments(
             $_POST['coursename'],
             $_POST['sectionname'],
             $_POST['sectiontime'],
             $_POST['studentemail'],
-            $_POST['studentname']
+            $_POST['studentname'],
+            $_POST['totalscore']
           );
           if($result) {
             $response['error'] = false;

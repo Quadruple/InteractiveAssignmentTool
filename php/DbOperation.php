@@ -476,15 +476,15 @@
       return $this->getPreferences($preferenceids[0]);
     }
 
-    function saveAssignments($coursename, $sectionname, $sectiontime, $studentemail, $studentname)
+    function saveAssignments($coursename, $sectionname, $sectiontime, $studentemail, $studentname, $totalscore)
     {
       $deleteStmt = $this->con->prepare("DELETE FROM assignments WHERE coursename = ?");
         $deleteStmt->bind_param("s", $coursename);
         if($deleteStmt->execute())
         {
-          $stmt = $this->con->prepare("INSERT INTO assignments (coursename, sectionname, sectiontime, studentemail, studentname) 
-                                  VALUES (?,?,?,?,?)");
-          $stmt->bind_param("sssss", $coursename, $sectionname, $sectiontime, $studentemail, $studentname);
+          $stmt = $this->con->prepare("INSERT INTO assignments (coursename, sectionname, sectiontime, studentemail, studentname, totalscore) 
+                                  VALUES (?,?,?,?,?,?)");
+          $stmt->bind_param("sssssi", $coursename, $sectionname, $sectiontime, $studentemail, $studentname, $totalscore);
           if($stmt->execute()) {
             return true;
           }
@@ -495,11 +495,11 @@
 
     function getAssignmentsOfCourse($coursename)
     {
-      $stmt = $this->con->prepare("SELECT coursename, sectionname, sectiontime, studentemail, studentname
+      $stmt = $this->con->prepare("SELECT coursename, sectionname, sectiontime, studentemail, studentname, totalscore
                                   FROM assignments WHERE coursename = ?");
       $stmt->bind_param("s", $coursename);
       $stmt->execute();
-      $stmt->bind_result($coursename, $sectionname, $sectiontime, $studentemail, $studentname);
+      $stmt->bind_result($coursename, $sectionname, $sectiontime, $studentemail, $studentname, $totalscore);
 
       $assignments = array();
 
@@ -511,6 +511,7 @@
         $assignment->sectiontime = $sectiontime;
         $assignment->studentemail = $studentemail;
         $assignment->studentname = $studentname;
+        $assignment->totalscore = $totalscore;
 
         array_push($assignments, $assignment);
       }

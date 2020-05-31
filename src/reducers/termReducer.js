@@ -6,12 +6,12 @@ import {
   FETCH_TERMS
 } from "../actions/types";
 
-export default (state={}, action) => {
+export default (state=[], action) => {
   switch(action.type) {
     case FETCH_TERMS:
-      return { ...state, ..._.mapKeys(action.payload, "id")}
+      return [...action.payload]
     case ADD_TERM:
-      return { ...state, [action.payload.id]: action.payload };
+      return [ ...state, action.payload ];
     case DELETE_TERM:
       return _.omit(state, `${action.payload}`);
     default:

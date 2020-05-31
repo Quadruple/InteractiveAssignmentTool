@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useSelector } from 'react-redux'
 import {
   fetchTerms,
   addTerm,
@@ -19,14 +20,24 @@ function AdminScreen(props) {
   const [addCourseForm, setAddCourseForm] = useState({});
   const [addInstructorForm, setAddInstructorForm] = useState({});
   const [instructorOptions, setInstructorOptions] = useState([]);
-  
+  const terms = useSelector(state =>  state.terms);
+  const courses = useSelector(state => state.courses);
+  const instructors = useSelector(state => state.instructors);
   console.log(addInstructorForm);
+
+
 
   useEffect(() => {
     props.fetchTerms();
     props.fetchCourses();
     props.fetchInstructors();
   }, []);
+
+  function deleteTermFunction(term)
+  {
+    props.deleteTerm(term);
+    setTimeout(props.fetchTerms(), 1000);
+  }
 
   useEffect(() => {
     let courseArr;
@@ -61,10 +72,8 @@ function AdminScreen(props) {
   }
 
   const renderCourseInput = () => {
-    const termOptions = props.terms.map(term =>
-      term.map(result =>
-        <option value={result.term}>{result.term}</option>
-      )
+    const termOptions = terms.map(term =>
+        <option value={term.term}>{term.term}</option>
     );
     return (
       <div style={{ textAlign: 'right' }}>
@@ -109,45 +118,41 @@ function AdminScreen(props) {
   }
 
   const renderTermBlock = () => {
-    const terms = props.terms.map(term =>
-      term.map(result =>
+    const termsHtml = terms.map(term =>
         <div className="item">
           <div className="right floated content">
-            <Link onClick={deleteTerm(result.term)} className="ui button negative">
+            <Link onClick={() => deleteTermFunction(term.term)} className="ui button negative">
               Delete
               </Link>
           </div>
           <div className="content">
-            {result.term}
+            {term.term}
             <div className="description">
-              {result.term}
+              {term.term}
             </div>
           </div>
         </div>
-      )
     )
-    return terms;
+    return termsHtml;
   }
 
   const renderCourseBlock = () => {
-    const courses = props.courses.map(course =>
-      course.map(result =>
+    const coursesHtml = courses.map(course =>
         <div className="item">
           <div className="right floated content">
-            <Link onClick={deleteCourse(result.course)} className="ui button negative">
+            <Link onClick={deleteCourse(course.course)} className="ui button negative">
               Delete
             </Link>
           </div>
           <div className="content">
-            {result.course}
+            {course.course}
           </div>
           <div className="content">
-            {result.term}
+            {course.term}
           </div>
         </div>
-      )
     );
-    return courses;
+    return coursesHtml;
   }
 
   const renderInstructorBlock = () => {
@@ -176,31 +181,21 @@ function AdminScreen(props) {
       <h1>Admin Dashboard</h1>
       <h2>Terms</h2>
       <div className="ui celled list">
-        {renderTermBlock()}
+        {terms && renderTermBlock()}
       </div>
       {renderTermInput()}
       <h2>Courses</h2>
       <div className="ui celled list">
-        {renderCourseBlock()}
+        {!!courses.length && renderCourseBlock()}
       </div>
       {renderCourseInput()}
       <h2>Instructors</h2>
       <div className="ui celled list">
-        {renderInstructorBlock()}
+        {/*renderInstructorBlock()*/}
       </div>
-      {renderInstructorInput()}
+      {/*renderInstructorInput()*/}
     </div>
   );
 }
 
-
-const mapStateToProps = state => {
-  console.log(Object.values(state.courses));
-  return {
-    terms: Object.values(state.terms),
-    courses: Object.values(state.courses),
-    instructors: Object.values(state.instructors)
-  }
-}
-
-export default connect(mapStateToProps, { fetchTerms, addTerm, deleteTerm, fetchCourses, addCourse, deleteCourse, fetchInstructors, addInstructor, deleteInstructor })(AdminScreen);
+export default connect(null, { fetchTerms, addTerm, deleteTerm, fetchCourses, addCourse, deleteCourse, fetchInstructors, addInstructor, deleteInstructor })(AdminScreen);

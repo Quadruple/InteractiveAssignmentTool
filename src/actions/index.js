@@ -317,12 +317,15 @@ export const addTerm = formValues => async (dispatch) => {
 
   fetch(insertTermUrl, requestData)
     .then((response) => response.json())
-    .then(function (data) {
-      console.log(data);
+    .then(function (response) {
+      console.log(response);
     });
+    
+    dispatch({ type: ADD_TERM, payload: {term: termInDatabaseFormat} });
 }
 
-export const deleteTerm = term => async dispatch => {
+export const deleteTerm = term => async (dispatch) => {
+  console.log(term);
   const deleteTermBaseUrl = "http://localhost/php/Api.php?apicall=deleteTerm&term=";
   const deleteTermUrl = deleteTermBaseUrl + term;
   fetch(deleteTermUrl)
@@ -336,9 +339,9 @@ export const fetchTerms = () => async dispatch => {
   const fetchTermsUrl = "http://localhost/php/Api.php?apicall=getTerms";
   fetch(fetchTermsUrl)
     .then((response) => response.json())
-    .then(function (data) {
-      console.log(data);
-      dispatch({ type: FETCH_TERMS, payload: data });
+    .then(function (response) {
+      console.log(response.terms);
+      dispatch({ type: FETCH_TERMS, payload: response.terms });
     });
 }
 
@@ -363,6 +366,8 @@ export const addCourse = formValues => async (dispatch) => {
     .then(function (data) {
       console.log(data);
     });
+
+  dispatch({ type: ADD_COURSE, payload: dataForBody });
 }
 
 export const deleteCourse = coursename => async dispatch => {
