@@ -88,7 +88,8 @@ export const createPreferences = preferences => async (dispatch) => {
   history.push("/student");
 }
 
-export const fetchTimes = () => async dispatch => {
+export const fetchTimes = course => async dispatch => {
+  console.log(course)
   const response = await axios.get("/times")
   dispatch({ type: FETCH_TIMES, payload: response.data});
 }
@@ -101,8 +102,7 @@ export const writeTimes = (preferences) => async dispatch => {
 
 export const fetchAssignments = () => async dispatch => {
   const response = await axios.get("/assignments")
-  console.log(response)
-  response.data[0] && dispatch({ type: FETCH_ASSIGNMENTS, payload: response.data[0]})
+  response.data.length && dispatch({ type: FETCH_ASSIGNMENTS, payload: response.data})
 }
 
 export const saveAssignments = (assignments, totalScore) => async dispatch => {

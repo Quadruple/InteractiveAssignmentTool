@@ -119,6 +119,7 @@ function Assignment(props) {
           let studentEmail = "egebircan@sabanciuniv.edu" // TODO : add email to <Student /> as a prop
        
           // SAVE ASSIGNMENTS REQUEST
+          //props.saveAssignments(a, totalScore);
         }
       }
     }
@@ -147,7 +148,7 @@ function Assignment(props) {
         <div style={{ textAlign: "center", fontSize: "large", marginTop: "25px" }}>
           Total Score = {totalScore}
         </div>}
-      <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => props.saveAssignments(slots, totalScore)}>SAVE</button>
+      <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => onSave()}>SAVE</button>
     </DndProvider>
   );
 }
