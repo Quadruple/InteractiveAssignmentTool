@@ -21,12 +21,11 @@ function Assignment(props) {
   const preferences = useSelector(state => state.times);
   //const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const assignments = useSelector(state => state.assignments);
-  //const totalScoreFromDb = useSelector(state =>  state.assignments.totalScore);
   const courseName = useSelector(state =>  state.instructorCourse.instructorCourse);
 
   useEffect(() => {
     courseName && props.fetchTimesByCourse(courseName)
-    props.fetchAssignments();
+    courseName && props.fetchAssignments(courseName);
     courseName && props.fetchStudents(courseName);
     //courseName && props.fetchTimes(courseName);
 
@@ -45,7 +44,6 @@ function Assignment(props) {
 
   useEffect(() => {
     let slots = [];
-    
     if (recitations.length && times.length) {
       for (let i = 0; i < recitations.length; i++) {
         if (assignments && assignments.length && preferences && preferences.length) {
@@ -59,14 +57,15 @@ function Assignment(props) {
           });
 
           let items = []
-          assignmentsArrayWithPrefs.forEach(assignmentWithPrefs => items.push({ name: assignmentWithPrefs.studentname , type: "ASSISTANT", prefs: assignmentWithPrefs.prefs }))
+          assignmentsArrayWithPrefs.forEach(assignmentWithPrefs => items.push({ name: assignmentWithPrefs.studentname, email: assignmentsArrayWithPrefs.studentemail, type: "ASSISTANT", prefs: assignmentWithPrefs.prefs }))
 
           slots.push({
             name: recitations[i],
             time: times[i],
             id: i,
             items 
-          })          
+          })   
+          setTotalScore(assignments[0].totalscore)       
         } else {
           slots.push({
             name: recitations[i],
@@ -80,11 +79,11 @@ function Assignment(props) {
     } 
   }, [recitations, times, preferences, assignments]);
 
-  //EMAİL E GÖRE PREF ATA
   const renderAssistants = () => {
     const studentArray = students.map(student => {
+      console.log(student.studentemail)
       let studentPreferences = preferences.filter(pref =>  pref.studentemail === student.studentemail)
-      return <div><Assistant name={student.studentname} prefs={studentPreferences} /></div>  
+      return <div><Assistant name={student.studentname} email={student.studentemail} prefs={studentPreferences} /></div>  
     });
 
     return studentArray;
@@ -92,7 +91,7 @@ function Assignment(props) {
 
   const handleDrop = (id, droppedItem) => {
     const matchingPref = droppedItem.prefs.find(preference => preference.preferenceHour === slots[id].time)
-     
+     console.log(droppedItem)
     if(slots[id].items.find(item => item.name === droppedItem.name))
       alert("ALREADY EXISTS!")
     else {
@@ -108,18 +107,15 @@ function Assignment(props) {
   } 
 
   const onSave = () => {
-    let courseName = "IF 100" //TODO: take it from redux store
-
     for(let i = 0; i < slots.length; i++) {
       if(slots[i].items.length) {
-        let sectionName = slots[i].name;
-        let sectionTime = slots[i].time;
+        let sectionname = slots[i].name;
+        let sectiontime = slots[i].time;
 
         for(let j = 0; j < slots[i].items.length; j++) {
-          let studentName = slots[i].items[j].name
-          let studentEmail = "egebircan@sabanciuniv.edu" // TODO : add email to <Student /> as a prop
-       
-          // SAVE ASSIGNMENTS REQUEST
+          let studentname = slots[i].items[j].name
+          let studentemail = slots[i].items[j].email
+          props.saveAssignments({ coursename: courseName, sectionname, sectiontime, studentemail, studentname }, totalScore);
         }
       }
     }
@@ -148,7 +144,7 @@ function Assignment(props) {
         <div style={{ textAlign: "center", fontSize: "large", marginTop: "25px" }}>
           Total Score = {totalScore}
         </div>}
-      <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => props.saveAssignments(slots, totalScore)}>SAVE</button>
+      <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => onSave()}>SAVE</button>
     </DndProvider>
   );
 }

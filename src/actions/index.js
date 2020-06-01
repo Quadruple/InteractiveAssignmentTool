@@ -1,5 +1,4 @@
 import history from "../history";
-import axios from "../axios";
 import {
   SIGN_IN,
   SIGN_OUT,
@@ -21,7 +20,6 @@ import {
   FETCH_COURSES,
   FETCH_INSTRUCTORS,
   FETCH_ASSIGNMENTS,
-  SAVE_ASSIGNMENTS,
   FETCH_INSTRUCTOR_COURSE,
   FETCH_TIMES_BY_COURSE
 } from "../actions/types";
@@ -220,16 +218,43 @@ export const writeTimes = (preferences) => async dispatch => {
   dispatch({ type: WRITE_TIMES, payload: preferences });
 }
 
-export const fetchAssignments = () => async dispatch => {
-  const response = await axios.get("/assignments")
-  console.log(response)
-  response.data[0] && dispatch({ type: FETCH_ASSIGNMENTS, payload: response.data[0] })
+export const fetchAssignments = (courseName) => async dispatch => {
+  const fetchAssignmentsUrl = `http://localhost/php/Api.php?apicall=getAssignmentsOfCourse&coursename=${courseName}`;
+  fetch(fetchAssignmentsUrl)
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+      !!data.assignments.length && dispatch({ type: FETCH_ASSIGNMENTS, payload: data.assignments });
+    });
 }
 
-export const saveAssignments = (assignments, totalScore) => async dispatch => {
-  console.log(assignments)
-  await axios.post("/assignments", { assignments, totalScore })
-  dispatch({ type: SAVE_ASSIGNMENTS, payload: assignments });
+export const saveAssignments = (assignment, totalscore) => async dispatch => {
+  console.log(assignment)
+  const saveAssignmentsUrl = "http://localhost/php/Api.php?apicall=saveAssignments";
+
+  let { coursename, sectionname, sectiontime, studentemail, studentname } = assignment;
+  let dataForBody = {
+    coursename,
+    sectionname,
+    sectiontime,
+    studentemail,
+    studentname,
+    totalscore
+  };
+
+  let encodedBody = encodeRequestBody(dataForBody);
+
+  let requestData = {
+    method: 'POST',
+    body: encodedBody,
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+  }
+
+  await fetch(saveAssignmentsUrl, requestData)
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+    });
 }
 
 export const fetchStudentCourse = studentMail => async dispatch => {

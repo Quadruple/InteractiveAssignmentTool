@@ -472,8 +472,8 @@
 
     function saveAssignments($coursename, $sectionname, $sectiontime, $studentemail, $studentname, $totalscore)
     {
-      $deleteStmt = $this->con->prepare("DELETE FROM assignments WHERE coursename = ?");
-        $deleteStmt->bind_param("s", $coursename);
+      $deleteStmt = $this->con->prepare("DELETE FROM assignments WHERE studentemail = ?");
+        $deleteStmt->bind_param("s", $studentemail);
         if($deleteStmt->execute())
         {
           $stmt = $this->con->prepare("INSERT INTO assignments (coursename, sectionname, sectiontime, studentemail, studentname, totalscore) 

@@ -5,9 +5,9 @@ import { AssistantDiv } from "./styles"
 import { writeTimes } from "../../../actions"; 
 import { connect } from "react-redux";
 
-function Assistant({ name, prefs, writeTimes }) {
+function Assistant({ name, prefs, writeTimes, email }) {
   const [{isDragging}, drag] = useDrag({
-    item: { name, prefs: prefs, type: ItemTypes.ASSISTANT },
+    item: { name, email, prefs: prefs, type: ItemTypes.ASSISTANT },
     end: (item, monitor) => {
       const dropResult = monitor.getDropResult()
       if (item && dropResult) {
