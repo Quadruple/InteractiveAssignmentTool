@@ -1,31 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { useSelector } from 'react-redux'
 
 import { fetchTimes, fetchStudentCourse } from "../../actions";
 
-class TimeList extends React.Component {
-  componentDidMount() {
-    this.props.fetchTimes(this.props.email);
-    this.props.fetchStudentCourse();
-  }
+function TimeList(props) {
+  const times = useSelector(state => state.times);
+  const email = useSelector(state => state.auth.userMail);
+  const isSignedIn = useSelector(state => state.auth.isSignedIn);
 
-  renderPreferences() {
-    const timeArray = this.props.times.map(time =>
+  useEffect(() => {
+    props.fetchTimes(email);
+    props.fetchStudentCourse();
+  }, [props, email]);
+
+  const renderPreferences = () => {
+    const timeArray = times.map(time =>
       <div style={{ marginBottom: "50px" }}>
         <div className="content">
-          {`Score for ${time.preferenceHour}: ${time.preferenceScore}`}
+          {`Score for ${time.preferencestring}: ${time.preferencedegree}`}
         </div>
       </div>
     );
 
-    if (this.props.isSignedIn) {
+    if (isSignedIn) {
       return timeArray;
     }
   }
 
-  renderCreate() {
-    if (this.props.isSignedIn) {
+  const renderCreate = () => {
+    if (isSignedIn) {
       return (
         <div style={{ textAlign: 'right' }}>
           <Link to="/student/newTime" className="ui button primary">
@@ -36,26 +41,16 @@ class TimeList extends React.Component {
     }
   }
 
-  render() {
-    var string = this.props.isSignedIn ? "Time Preferences" : "";
-    return (
-      <div>
-        <h3 style={{ marginBottom: "25px" }}>{string}</h3>
-        <div className="ui celled list">
-          {this.props.times && this.renderPreferences()}
-        </div>
-        {this.renderCreate()}
+  var string = isSignedIn ? "Time Preferences" : "";
+  return (
+    <div>
+      <h3 style={{ marginBottom: "25px" }}>{string}</h3>
+      <div className="ui celled list">
+        {!!times.length && renderPreferences()}
       </div>
-    );
-  }
+      {renderCreate()}
+    </div>
+  );
 }
 
-const mapStateToProps = state => {
-  return {
-    times: state.times,
-    email: state.auth.userMail,
-    isSignedIn: state.auth.isSignedIn
-  }
-}
-
-export default connect(mapStateToProps, { fetchTimes, fetchStudentCourse })(TimeList);
+export default connect(null, { fetchTimes, fetchStudentCourse })(TimeList);

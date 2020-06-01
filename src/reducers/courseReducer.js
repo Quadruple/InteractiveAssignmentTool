@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import {
   ADD_COURSE,
   DELETE_COURSE,
@@ -13,7 +11,7 @@ export default (state=[], action) => {
     case ADD_COURSE:
       return [ ...state, action.payload ];
     case DELETE_COURSE:
-      return state.filter(e => e.course != action.payload);
+      return state.filter(e => e.course !== action.payload);
     default:
       return state;
   }

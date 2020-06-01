@@ -22,7 +22,7 @@ function Assistant({ name, prefs, writeTimes }) {
   useEffect(() => {
     if(isDragging)
       writeTimes(prefs)
-  }, [isDragging]);
+  }, [isDragging, prefs, writeTimes]);
 
   return (
     <div

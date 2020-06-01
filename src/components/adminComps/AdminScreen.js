@@ -28,7 +28,7 @@ function AdminScreen(props) {
     props.fetchTerms();
     props.fetchCourses();
     props.fetchInstructors();
-  }, []);
+  }, [props]);
 
   useEffect(() => {
     let courseArr;

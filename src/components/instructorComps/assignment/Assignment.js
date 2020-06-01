@@ -53,7 +53,7 @@ function Assignment(props) {
           let recitName = recitations[i];
           let recitTime = times[i];
 
-          let assignmentsArray = assignments.filter(assignment => assignment.sectionname == recitName && assignment.sectiontime == recitTime)
+          let assignmentsArray = assignments.filter(assignment => assignment.sectionname === recitName && assignment.sectiontime === recitTime)
 
           let assignmentsArrayWithPrefs = assignmentsArray.map(assignment => { 
             return { ...assignment, prefs: preferences.filter(pref => pref.studentemail === assignment.studentemail) } 

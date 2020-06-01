@@ -5,17 +5,12 @@ import {
   SIGN_OUT,
   CREATE_STUDENT,
   FETCH_STUDENTS,
-  FETCH_STUDENT,
   FETCH_STUDENT_COURSE,
   DELETE_STUDENT,
   EDIT_STUDENT,
   CREATE_PREFERENCES,
-  EDIT_TIME,
-  DELETE_TIME,
   FETCH_TIMES,
   WRITE_TIMES,
-  FETCH_TIME,
-  CHECK_MAIL,
   ADD_TERM,
   DELETE_TERM,
   ADD_COURSE,
@@ -65,10 +60,10 @@ export const signIn = (email) => async (dispatch) => {
       console.log('Response Check Mail: ', JSON.parse(request.responseText));
       var accountGetter = JSON.parse(request.responseText)
       console.log("AccountGetter:", accountGetter);
-      if (accountGetter.accounttype == 'Admin') {
+      if (accountGetter.accounttype === 'Admin') {
         dispatch({ type: SIGN_IN, payload: { userType: "ADMIN", userMail: email } });
       }
-      else if (accountGetter.accounttype == 'Instructor') {
+      else if (accountGetter.accounttype === 'Instructor') {
         dispatch({ type: SIGN_IN, payload: { userType: "INSTRUCTOR", userMail: email } });
       }
       else {
@@ -114,30 +109,13 @@ export const createStudent = formValues => async (dispatch) => {
   });
 }
 
-export const fetchStudents = () => async dispatch => {
-  const fetchStudentsUrl = "http://localhost/php/Api.php?apicall=getStudents";
+export const fetchStudents = (instructorCourse) => async dispatch => {
+  const fetchStudentsUrl = `http://localhost/php/Api.php?apicall=getStudents&coursename=${instructorCourse}`;
   await fetch(fetchStudentsUrl)
     .then((response) => response.json())
     .then(function (response) {
       dispatch({ type: FETCH_STUDENTS, payload: response.students });
     });
-}
-
-export const fetchStudent = id => async dispatch => {
-  /*
-  const fetchStudentBaseUrl = "http://localhost/php/Api.php?apicall=getStudentInformation&studentemail=";
-  const fetchStudentUrl = fetchStudentBaseUrl + studentEmail;
-
-  fetch(fetchStudentUrl)
-  .then((response) => response.json())
-  .then(function(data) {
-    console.log(data);
-    dispatch({ type: FETCH_STUDENT, payload: data});  
-  });
-  */
-  const response = await axios.get(`/students/${id}`)
-
-  dispatch({ type: FETCH_STUDENT, payload: response.data });
 }
 
 export const editStudent = (formValues) => async dispatch => {
@@ -165,18 +143,9 @@ export const editStudent = (formValues) => async dispatch => {
     .then((response) => response.json())
     .then(function (data) {
       console.log(data);
+      dispatch({ type: EDIT_STUDENT, payload: dataForBody });
+      history.push("/instructor");
     });
-
-
-  dispatch({ type: EDIT_STUDENT, payload: dataForBody });
-  history.push("/instructor");
-
-  /*
-  const response = await axios.patch(`/students/${id}`, formValues);
-
-  dispatch({ type: EDIT_STUDENT, payload: response.data});
-  history.push("/instructor");
-  */
 }
 
 export const deleteStudent = studentEmail => async dispatch => {
@@ -194,7 +163,7 @@ export const deleteStudent = studentEmail => async dispatch => {
 export const createPreferences = (preferences, email) => async (dispatch) => {
   const insertPreferenceURL = "http://localhost/php/Api.php?apicall=insertStudentPreference";
   //const response = await axios.post("/times", ...preferences);
-  await Promise.all(preferences.map(preference => {
+  await Promise.all(preferences.forEach(preference => {
     console.log(preference);
 
     let dataForBody = {
@@ -230,9 +199,8 @@ export const fetchTimes = (email) => async dispatch => {
     .then((response) => response.json())
     .then(function (data) {
       console.log("İNDEXJS", data);
-      dispatch({ type: FETCH_TIMES, payload: data });
+      dispatch({ type: FETCH_TIMES, payload: data.preferences });
     });
-  //const response = await axios.get("/times")
 }
 
 export const writeTimes = (preferences) => async dispatch => {
@@ -257,26 +225,6 @@ export const fetchStudentCourse = id => async dispatch => {
   //const response = await axios.get(`/studentCourse`)
 
   dispatch({ type: FETCH_STUDENT_COURSE, payload: "IF 100" });
-}
-
-export const fetchTime = id => async dispatch => {
-  const response = await axios.get(`/times/${id}`)
-
-  dispatch({ type: FETCH_TIME, payload: response.data });
-}
-
-export const editTime = (id, formValues) => async dispatch => {
-  const response = await axios.patch(`/times/${id}`, formValues);
-
-  dispatch({ type: EDIT_TIME, payload: response.data });
-  history.push("/student");
-}
-
-export const deleteTime = id => async dispatch => {
-  await axios.delete(`/times/${id}`);
-
-  dispatch({ type: DELETE_TIME, payload: id });
-  history.push("/student");
 }
 
 export const addTerm = formValues => async (dispatch) => {
@@ -313,9 +261,8 @@ export const deleteTerm = term => async (dispatch) => {
     .then((response) => response.json())
     .then(function (data) {
       console.log(data);
+      dispatch({ type: DELETE_TERM, payload: term });
     });
-
-  dispatch({ type: DELETE_TERM, payload: term });
 }
 
 export const fetchTerms = () => async dispatch => {
@@ -362,9 +309,8 @@ export const deleteCourse = coursename => async dispatch => {
     .then((response) => response.json())
     .then(function (data) {
       console.log(data);
+      dispatch({ type: DELETE_COURSE, payload: coursename });
     });
-
-  dispatch({ type: DELETE_COURSE, payload: coursename });
 }
 
 export const fetchCourses = () => async dispatch => {
@@ -421,10 +367,8 @@ export const deleteInstructor = instructorEmail => async dispatch => {
     .then((response) => response.json())
     .then(function (data) {
       console.log(data);
+      dispatch({ type: DELETE_INSTRUCTOR, payload: instructorEmail });
     });
-
-  dispatch({ type: DELETE_INSTRUCTOR, payload: instructorEmail });
-
 }
 
 export const fetchInstructors = () => async dispatch => {

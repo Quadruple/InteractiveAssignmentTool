@@ -9,11 +9,12 @@ function StudentList(props) {
   const students = useSelector(state => state.students);
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const instructorMail = useSelector(state => state.auth.userMail);
+  const instructorCourse = useSelector(state => state.instructorCourse.instructorCourse)
 
   useEffect(() => {
-    props.fetchStudents();
     instructorMail && props.fetchInstructorCourse(instructorMail);
-  }, [instructorMail]);
+    instructorCourse && props.fetchStudents(instructorCourse);
+  }, [instructorMail, instructorCourse, props]);
 
   const renderAdmin = (student) => {
     if(isSignedIn) {
@@ -37,7 +38,7 @@ function StudentList(props) {
         <div className="content">
             {student.studentname + " / " + student.studentnumber}
           <div className="description">
-            {student.role + " / " + student.workhours + " hours / " + student.assistantscore + " experience points"}
+            {student.role + " / " + student.workhours + " labs / " + student.assistantscore + " experience points"}
           </div>
         </div>
       </div>  

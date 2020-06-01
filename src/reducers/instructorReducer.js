@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import {
   ADD_INSTRUCTOR,
   DELETE_INSTRUCTOR,
@@ -13,7 +11,7 @@ export default (state=[], action) => {
     case ADD_INSTRUCTOR:
       return [ ...state, action.payload ];
     case DELETE_INSTRUCTOR:
-      return state.filter(e => e.instructoremail != action.payload);
+      return state.filter(e => e.instructoremail !== action.payload);
     default:
       return state;
   }

@@ -1,5 +1,3 @@
-import _ from "lodash";
-
 import {
   ADD_TERM,
   DELETE_TERM,
@@ -13,7 +11,7 @@ export default (state=[], action) => {
     case ADD_TERM:
       return [ ...state, action.payload ];
     case DELETE_TERM:
-      return state.filter(e => e.term != action.payload);
+      return state.filter(e => e.term !== action.payload);
     default:
       return state;
   }

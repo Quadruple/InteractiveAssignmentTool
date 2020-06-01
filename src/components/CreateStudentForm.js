@@ -30,7 +30,7 @@ class CreateStudentForm extends React.Component {
 
   onSubmit = formValues => {
     console.log(formValues)
-    formValues = { ...formValues, studentemail: formValues.studentemail + "@sabanciuniv.edu" }
+    formValues = { ...formValues, studentemail: formValues.studentemail + "@sabanciuniv.edu", course: this.props.instructorCourse }
     this.props.onSubmit(formValues);
   }
 
@@ -54,27 +54,20 @@ class CreateStudentForm extends React.Component {
             LA
           </label>
         </div> <br></br>
-        <label style={{ fontWeight: "bold" }}>Course</label>
-        <div>
-          <label>
-            <Field name="course" component={"input"} type="radio" value="NS-101" />{' '}
-            NS-101
-          </label> <br></br>
-          <label>
-            <Field name="course" component="input" type="radio" value="IF-100" />{' '}
-            IF-100
-          </label>
-        </div> <br></br>
         <label style={{ fontWeight: "bold" }}>Work Hours:</label>
         <div>
           <label>
-            <Field name="workhours" component="input" type="radio" value="10" />{' '}
-            10
+            <Field name="workhours" component="input" type="radio" value="1" />{' '}
+            1
           </label> <br></br>
           <label>
-            <Field name="workhours" component="input" type="radio" value="20" />{' '}
-            20
-          </label>
+            <Field name="workhours" component="input" type="radio" value="2" />{' '}
+            2
+          </label> <br></br>
+          <label>
+            <Field name="workhours" component="input" type="radio" value="3" />{' '}
+            3
+          </label> <br></br>
         </div> <br></br>
         <Field name="assistantscore" component={this.renderInput} label="Score: " />
         <br></br>
@@ -101,6 +94,7 @@ const validate = formValues => {
 const mapStateToProps = state => {
   return {
     students: Object.values(state.students),
+    instructorCourse: state.instructorCourse.instructorCourse
   }
 }
 
