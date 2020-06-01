@@ -11,11 +11,10 @@ export default (state=[], action) => {
     case FETCH_STUDENTS:
       return [ ...action.payload ]
     case FETCH_STUDENT_COURSE:
-      return { ...state, courseName: action.payload };
+      return action.payload;
     case CREATE_STUDENT:
       return [...state, action.payload ];
     case EDIT_STUDENT:
-      console.log(action.payload)
       return [ ...state.filter(e => e.studentemail !== action.payload.studentemail), action.payload ];
     case DELETE_STUDENT:
       return [ ...state.filter(e => e.studentemail !== action.payload) ];

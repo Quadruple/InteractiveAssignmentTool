@@ -5,11 +5,10 @@ import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import Assistant from "./Assistant";
 import { connect } from "react-redux";
-import { fetchStudents, fetchTimes, fetchAssignments, saveAssignments } from "../../../actions";
+import { fetchStudents, fetchAssignments, saveAssignments, fetchTimesByCourse } from "../../../actions";
 import { CalendarGrid } from "./styles";
 import Slot from "./Slot";
 import { useSelector } from 'react-redux'
-import { arrayRemove } from "redux-form";
 
 function Assignment(props) {
   const [recitations, setRecitations] = useState([]);
@@ -18,18 +17,18 @@ function Assignment(props) {
   const [totalScore, setTotalScore] = useState(0);
   console.log(slots)
 
-  const students = useSelector(state =>  Object.values(state.students));
+  const students = useSelector(state =>  state.students);
   const preferences = useSelector(state => state.times);
-  const isSignedIn = useSelector(state => state.auth.isSignedIn);
+  //const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const assignments = useSelector(state => state.assignments);
-  const totalScoreFromDb = useSelector(state =>  state.assignments.totalScore);
-  //const course = useSelector(state =>  state.students[0].course);
-  const course = "IF 100";
+  //const totalScoreFromDb = useSelector(state =>  state.assignments.totalScore);
+  const courseName = useSelector(state =>  state.instructorCourse.instructorCourse);
 
   useEffect(() => {
+    courseName && props.fetchTimesByCourse(courseName)
     props.fetchAssignments();
-    props.fetchStudents();
-    course && props.fetchTimes(course);
+    courseName && props.fetchStudents(courseName);
+    //courseName && props.fetchTimes(courseName);
 
     axios.get(`http://localhost:4000/getRecitationSections/IF 100`)
       .then((response) => {
@@ -42,7 +41,7 @@ function Assignment(props) {
         setTimes(response.data);
         //console.log(response.data)
       });
-  }, [course]);
+  }, [courseName, props]);
 
   useEffect(() => {
     let slots = [];
@@ -79,13 +78,15 @@ function Assignment(props) {
       }
       setSlots(slots)
     } 
-  }, [recitations, times, preferences]);
+  }, [recitations, times, preferences, assignments]);
 
   //EMAİL E GÖRE PREF ATA
   const renderAssistants = () => {
-    const studentArray = students.map(student => 
-      <div><Assistant name={student.name} prefs={preferences} /></div>
-    );
+    const studentArray = students.map(student => {
+      let studentPreferences = preferences.filter(pref =>  pref.studentemail === student.studentemail)
+      return <div><Assistant name={student.studentname} prefs={studentPreferences} /></div>  
+    });
+
     return studentArray;
   }
 
@@ -128,7 +129,7 @@ function Assignment(props) {
     <DndProvider backend={Backend}>
       <Layout>
         <SideBar>
-          {preferences && renderAssistants()}
+          {!!preferences.length && renderAssistants()}
         </SideBar>
         <CalendarGrid>
           {slots && slots.map(({ items, name, time, id }) => (
@@ -152,4 +153,4 @@ function Assignment(props) {
   );
 }
 
-export default connect(null, { fetchStudents, fetchTimes, fetchAssignments, saveAssignments })(Assignment);
+export default connect(null, { fetchStudents, fetchAssignments, saveAssignments, fetchTimesByCourse })(Assignment);

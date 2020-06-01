@@ -9,10 +9,10 @@ function TimeList(props) {
   const times = useSelector(state => state.times);
   const email = useSelector(state => state.auth.userMail);
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
-
+  
   useEffect(() => {
-    props.fetchTimes(email);
-    props.fetchStudentCourse();
+    email && props.fetchTimes(email);
+    email && props.fetchStudentCourse(email);
   }, [props, email]);
 
   const renderPreferences = () => {

@@ -472,7 +472,7 @@
             $db = new DbOperation();
             $response['error'] = false;
             $response['message'] = 'Request succesfully completed';
-            $response['preferences'] = $db->getCourseOfStudent($_GET['studentemail']);
+            $response['student'] = $db->getCourseOfStudent($_GET['studentemail']);
           }
         break;
       }

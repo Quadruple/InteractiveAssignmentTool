@@ -3,19 +3,22 @@ import { connect } from "react-redux";
 import _ from "lodash";
 import axios from "axios";
 import { createPreferences } from "../../actions"; 
+import { useSelector } from 'react-redux';
 
 function TimePreferences(props) {
   const [recitationHours, setRecitationHours] = useState([]);
   const [preferences, setPreferences] = useState([]);
 
-  console.log(preferences)
+  const email = useSelector(state => state.auth.userMail);
+  const courseName = useSelector(state => state.students.course);
+
   useEffect(() => {
-    axios.get(`http://localhost:4000/getRecitationHours/${props.courseName}`)
+    courseName && axios.get(`http://localhost:4000/getRecitationHours/${courseName}`)
       .then((response) => {
         setRecitationHours(_.uniq(response.data));
       });
 
-  }, [props.courseName]);
+  }, [courseName]);
 
   const renderSections = () => {
     const sectionOptions = recitationHours.map(hour =>
@@ -42,16 +45,9 @@ function TimePreferences(props) {
   return (
     <>
       {renderSections()}
-      {!!recitationHours.length && <button className="ui button primary" style={{ float: 'right' }} onClick={() => props.createPreferences(preferences, props.email)}>Submit Preferences</button>}
+      {!!recitationHours.length && <button className="ui button primary" style={{ float: 'right' }} onClick={() => props.createPreferences(preferences, email, courseName)}>Submit Preferences</button>}
     </>
   );
 }
 
-const mapStateToProps = (state) => {
-  return { 
-    courseName: state.students.courseName, 
-    email: state.auth.userMail
-  }
-}
-
-export default connect(mapStateToProps, { createPreferences })(TimePreferences);
+export default connect(null, { createPreferences })(TimePreferences);

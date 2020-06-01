@@ -22,7 +22,8 @@ import {
   FETCH_INSTRUCTORS,
   FETCH_ASSIGNMENTS,
   SAVE_ASSIGNMENTS,
-  FETCH_INSTRUCTOR_COURSE
+  FETCH_INSTRUCTOR_COURSE,
+  FETCH_TIMES_BY_COURSE
 } from "../actions/types";
 
 const encodeRequestBody = (requestBody) => {
@@ -160,14 +161,15 @@ export const deleteStudent = studentEmail => async dispatch => {
   dispatch({ type: DELETE_STUDENT, payload: studentEmail});
 }
 
-export const createPreferences = (preferences, email) => async (dispatch) => {
+export const createPreferences = (preferences, email, coursename) => async (dispatch) => {
   const insertPreferenceURL = "http://localhost/php/Api.php?apicall=insertStudentPreference";
-  //const response = await axios.post("/times", ...preferences);
-  await Promise.all(preferences.forEach(preference => {
+
+  await preferences.forEach(preference => {
     console.log(preference);
 
     let dataForBody = {
       studentemail: email,
+      coursename,
       preferencedegree: preference.preferenceScore,
       preferencestring: preference.preferenceHour
     };
@@ -184,10 +186,10 @@ export const createPreferences = (preferences, email) => async (dispatch) => {
       .then((response) => response.json())
       .then(function (data) {
         console.log(data);
+        dispatch({ type: CREATE_PREFERENCES, payload: { preferencedegree: dataForBody.preferencedegree, preferencestring: dataForBody.preferencestring } });
       });
-  }))
+  })
 
-  //dispatch({ type: CREATE_PREFERENCES, payload: response.data });
   history.push("/student");
 }
 
@@ -200,6 +202,15 @@ export const fetchTimes = (email) => async dispatch => {
     .then(function (data) {
       console.log("İNDEXJS", data);
       dispatch({ type: FETCH_TIMES, payload: data.preferences });
+    });
+}
+
+export const fetchTimesByCourse = courseName => async dispatch => {
+  const getTimesByCourseURL = `http://localhost/php/Api.php?apicall=getStudentPreferencesOfCourse&coursename=${courseName}`;
+  fetch(getTimesByCourseURL)
+    .then((response) => response.json())
+    .then(function (data) {
+      dispatch({ type: FETCH_TIMES_BY_COURSE, payload: data.preferences });
     });
 }
 
@@ -221,10 +232,14 @@ export const saveAssignments = (assignments, totalScore) => async dispatch => {
   dispatch({ type: SAVE_ASSIGNMENTS, payload: assignments });
 }
 
-export const fetchStudentCourse = id => async dispatch => {
-  //const response = await axios.get(`/studentCourse`)
-
-  dispatch({ type: FETCH_STUDENT_COURSE, payload: "IF 100" });
+export const fetchStudentCourse = studentMail => async dispatch => {
+  const fetchStudentCourseUrl = `http://localhost/php/Api.php?apicall=getCourseOfStudent&studentemail=${studentMail}`;
+  fetch(fetchStudentCourseUrl)
+    .then((response) => response.json())
+    .then(function (data) {
+      console.log(data);
+      dispatch({ type: FETCH_STUDENT_COURSE, payload: data.student[0] });
+    });
 }
 
 export const addTerm = formValues => async (dispatch) => {
