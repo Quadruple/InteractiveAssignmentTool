@@ -241,10 +241,13 @@
 				  $response['terms'] = $db->getTerms();
         break;
         case 'getStudents':
-          $db = new DbOperation();
-				  $response['error'] = false; 
-				  $response['message'] = 'Request successfully completed';
-				  $response['students'] = $db->getStudents();
+          if(isset($_GET['coursename']))
+          {
+            $db = new DbOperation();
+				    $response['error'] = false; 
+				    $response['message'] = 'Request successfully completed';
+				    $response['students'] = $db->getStudents($_GET['coursename']);
+          }
         break;
         case 'getPreferences':
           if(isset($_GET['studentemail']))

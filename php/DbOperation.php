@@ -92,13 +92,7 @@
                                   VALUES (?,?,?,?,?,?,?)");
       $stmt->bind_param("sssiids", $studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore, $course);
       if($stmt->execute()) {
-        if($this->studentDeclaresPreference($studentemail)){
-          return true;
-        }
-        else 
-        {
-          return false;
-        }
+        return true;
       }
       return false;
     }
@@ -276,12 +270,13 @@
       return $studentArray;
     }
 
-    function getStudents()
+    function getStudents($coursename)
     {
-      $stmt = $this->con->prepare("SELECT studentemail, studentname, role, studentnumber, workhours, assistantscore , course
-                                  FROM students");
+      $stmt = $this->con->prepare("SELECT studentemail, studentname, role, studentnumber, workhours, assistantscore
+                                  FROM students WHERE course = ?");
+      $stmt->bind_param("s", $coursename);
       $stmt->execute();
-      $stmt->bind_result($studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore, $course);
+      $stmt->bind_result($studentemail, $studentname, $role, $studentnumber, $workhours, $assistantscore);
 
       $students = array();
 
@@ -294,7 +289,6 @@
         $studentArray['studentnumber'] = $studentnumber;
         $studentArray['workhours'] = $workhours;
         $studentArray['assistantscore'] = $assistantscore;
-        $studentArray['course'] = $course;
         array_push($students, $studentArray);
       }
 
