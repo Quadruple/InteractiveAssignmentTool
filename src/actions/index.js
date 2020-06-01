@@ -26,7 +26,8 @@ import {
   FETCH_COURSES,
   FETCH_INSTRUCTORS,
   FETCH_ASSIGNMENTS,
-  SAVE_ASSIGNMENTS
+  SAVE_ASSIGNMENTS,
+  FETCH_INSTRUCTOR_COURSE
 } from "../actions/types";
 
 const encodeRequestBody = (requestBody) => {
@@ -86,7 +87,17 @@ export const signOut = () => {
 }
 
 export const createStudent = formValues => async (dispatch) => {
-  let encodedBody = encodeRequestBody(formValues);
+   let dataForBody = {
+    studentemail: formValues.studentemail,
+    studentname: formValues.studentname,
+    role: formValues.role,
+    studentnumber: formValues.studentnumber,
+    workhours: formValues.workhours,
+    assistantscore: formValues.assistantscore,
+    course: formValues.course
+  };
+
+  let encodedBody = encodeRequestBody(dataForBody);
   let createStudentUrl = "http://localhost/php/Api.php?apicall=insertStudent"
   let requestData = {
     method: 'POST',
@@ -98,15 +109,14 @@ export const createStudent = formValues => async (dispatch) => {
   .then((response) => response.json())
   .then(function (data) {
     console.log(data);
+    dispatch({ type: CREATE_STUDENT, payload: formValues });
+    history.push("/instructor")
   });
-
-  dispatch({ type: CREATE_STUDENT, payload: formValues });
-  history.push("/instructor");
 }
 
 export const fetchStudents = () => async dispatch => {
   const fetchStudentsUrl = "http://localhost/php/Api.php?apicall=getStudents";
-  fetch(fetchStudentsUrl)
+  await fetch(fetchStudentsUrl)
     .then((response) => response.json())
     .then(function (response) {
       dispatch({ type: FETCH_STUDENTS, payload: response.students });
@@ -425,4 +435,14 @@ export const fetchInstructors = () => async dispatch => {
       console.log(data);
       dispatch({ type: FETCH_INSTRUCTORS, payload: data.instructors });
     });
+}
+
+export const fetchInstructorCourse = (email) => async dispatch => {
+  const fetchInstructorCourseUrl = `http://localhost/php/Api.php?apicall=getCoursesOfInstructor&instructoremail=${email}`
+  fetch(fetchInstructorCourseUrl)
+  .then((response) => response.json())
+  .then(function (data) {
+    console.log(data);
+    dispatch({ type: FETCH_INSTRUCTOR_COURSE, payload: data.courses[0].coursename });
+  });
 }

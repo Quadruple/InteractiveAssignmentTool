@@ -8,6 +8,7 @@ import instructorReducer from "./instructorReducer"
 import { reducer as formReducer } from "redux-form";
 import dragReducer from "./dragReducer";
 import assignmentReducer from "./assignmentReducer";
+import instructorCourseReducer from "./instructorCourseReducer";
 
 export default combineReducers({
   auth: authReducer,
@@ -18,5 +19,6 @@ export default combineReducers({
   courses: courseReducer,
   instructors: instructorReducer,
   drag: dragReducer,
-  assignments: assignmentReducer
+  assignments: assignmentReducer,
+  instructorCourse: instructorCourseReducer
 });
