@@ -535,5 +535,31 @@
 
       return $preferences;
     }
+
+    function getCourseOfStudent($studentemail)
+    {
+      $stmt = $this->con->prepare("SELECT studentname, role, studentnumber, workhours, assistantscore, course
+                                  FROM students WHERE studentemail = ?");
+      $stmt->bind_param("s", $studentemail);
+      $stmt->execute();
+      $stmt->bind_result($studentname, $role, $studentnumber, $workhours, $assistantscore, $course);
+
+      $students = array();
+
+      while($stmt->fetch())
+      {
+        $student = array();
+        $student['studentname'] = $studentname;
+        $student['role'] = $role;
+        $student['studentnumber'] = $studentnumber;
+        $student['workhours'] = $workhours;
+        $student['assistantscore'] = $assistantscore;
+        $student['course'] = $course;
+
+        array_push($students, $student);
+      }
+
+      return $students;
+    }
   }
 ?>

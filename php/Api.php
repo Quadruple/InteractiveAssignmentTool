@@ -466,6 +466,15 @@
             $response['preferences'] = $db->getStudentPreferencesOfCourse($_GET['coursename']);
           }
         break;
+        case 'getCourseOfStudent':
+          if(isset($_GET['studentemail']))
+          {
+            $db = new DbOperation();
+            $response['error'] = false;
+            $response['message'] = 'Request succesfully completed';
+            $response['preferences'] = $db->getCourseOfStudent($_GET['studentemail']);
+          }
+        break;
       }
   }
 
