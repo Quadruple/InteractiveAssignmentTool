@@ -6,7 +6,7 @@ class Header extends React.Component {
   render() {
     return (
       <div className="ui secondary pointing menu">
-        <Link to="/" className="item"> Interactive Assignment Tool</Link>
+        <Link to="/" className="item" style={{fontWeight: "bold", fontSize: "15px"}}> Interactive Assignment Tool</Link>
         <div className="right menu">
           <GoogleAuth />
         </div>

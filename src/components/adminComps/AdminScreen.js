@@ -20,10 +20,12 @@ function AdminScreen(props) {
   const [addCourseForm, setAddCourseForm] = useState({});
   const [addInstructorForm, setAddInstructorForm] = useState({});
   const [instructorOptions, setInstructorOptions] = useState([]);
+
   const terms = useSelector(state =>  state.terms);
   const courses = useSelector(state => state.courses);
   const instructors = useSelector(state => state.instructors);
-  console.log(addInstructorForm)
+  const userType = useSelector(state => state.auth.userType);
+  
   useEffect(() => {
     props.fetchTerms();
     props.fetchCourses();
@@ -164,24 +166,25 @@ function AdminScreen(props) {
   }
 
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
-      <h2>Terms</h2>
-      <div className="ui celled list">
-        {terms && renderTermBlock()}
-      </div>
-      {renderTermInput()}
-      <h2>Courses</h2>
-      <div className="ui celled list">
-        {!!courses.length && renderCourseBlock()}
-      </div>
-      {renderCourseInput()}
-      <h2>Instructors</h2>
-      <div className="ui celled list">
-        {!!instructors.length && renderInstructorBlock()}
-      </div>
-      {renderInstructorInput()}
-    </div>
+    userType === "ADMIN" ?
+      <div>
+        <h1>Admin Dashboard</h1>
+        <h2>Terms</h2>
+        <div className="ui celled list">
+          {terms && renderTermBlock()}
+        </div>
+        {renderTermInput()}
+        <h2>Courses</h2>
+        <div className="ui celled list">
+          {!!courses.length && renderCourseBlock()}
+        </div>
+        {renderCourseInput()}
+        <h2>Instructors</h2>
+        <div className="ui celled list">
+          {!!instructors.length && renderInstructorBlock()}
+        </div>
+        {renderInstructorInput()}
+      </div> : <h1>YOU ARE NOT THE ADMIN</h1> 
   );
 }
 

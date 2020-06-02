@@ -11,6 +11,7 @@ function TimePreferences(props) {
 
   const email = useSelector(state => state.auth.userMail);
   const courseName = useSelector(state => state.students.course);
+  const userType = useSelector(state => state.auth.userType);
 
   useEffect(() => {
     courseName && axios.get(`http://localhost:4000/getRecitationHours/${courseName}`)
@@ -43,10 +44,11 @@ function TimePreferences(props) {
   } 
 
   return (
-    <>
-      {renderSections()}
-      {!!recitationHours.length && <button className="ui button primary" style={{ float: 'right' }} onClick={() => props.createPreferences(preferences, email, courseName)}>Submit Preferences</button>}
-    </>
+    userType === "STUDENT" ? 
+      <>
+        {renderSections()}
+        {!!recitationHours.length && <button className="ui button primary" style={{ float: 'right' }} onClick={() => props.createPreferences(preferences, email, courseName)}>Submit Preferences</button>}
+      </> : <h1>YOU ARE NOT A STUDENT</h1>
   );
 }
 

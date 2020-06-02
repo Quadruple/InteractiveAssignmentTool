@@ -1,22 +1,23 @@
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { createStudent } from "../../actions";
 import CreateStudentForm from "../CreateStudentForm";
 
-class CreateStudent extends React.Component {
-  onSubmit = formValues => {
+function CreateStudent(props) {
+  const userType = useSelector(state => state.auth.userType);
+
+  const onSubmit = formValues => {
     console.log(formValues);
-    this.props.createStudent(formValues);
+    props.createStudent(formValues);
   }
 
-  render() {
-    return (
+  return (
+    userType === "INSTRUCTOR" ? 
       <div>
         <h2>Create Student</h2>
-        <CreateStudentForm onSubmit={this.onSubmit} />
-      </div>
-    );
-  }
+        <CreateStudentForm onSubmit={onSubmit} />
+      </div> : <h1>YOU ARE NOT AN INSTRUCTOR</h1>
+  ); 
 }
 
 export default connect(null, { createStudent })(CreateStudent);

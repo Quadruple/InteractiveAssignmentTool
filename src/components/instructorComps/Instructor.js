@@ -10,6 +10,7 @@ function StudentList(props) {
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const instructorMail = useSelector(state => state.auth.userMail);
   const instructorCourse = useSelector(state => state.instructorCourse.instructorCourse)
+  const userType = useSelector(state => state.auth.userType);
 
   useEffect(() => {
     instructorMail && props.fetchInstructorCourse(instructorMail);
@@ -63,16 +64,17 @@ function StudentList(props) {
 
   var string = isSignedIn ? "Student List" : "";
   return (
-    <div>
-      <h3>{string}</h3>
-      <div className="ui celled list">
-        {!!students.length && renderStudents()}
-      </div>
-      {renderCreate()}
-      <Link to="/assignment" >
-          Go to Assignment Screen 
-      </Link>
-    </div>
+    userType === "INSTRUCTOR" ?
+      <div>
+        <h3>{string}</h3>
+        <div className="ui celled list">
+          {!!students.length && renderStudents()}
+        </div>
+        {renderCreate()}
+        <Link to="/assignment" >
+            Go to Assignment Screen 
+        </Link>
+      </div> : <h1>YOU ARE NOT AN INSTRUCTOR</h1>
   );
 }
 

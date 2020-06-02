@@ -319,7 +319,7 @@
 
     function getCoursesOfInstructor($instructoremail)
     {
-      $stmt = $this->con->prepare("SELECT course FROM instructoraddedcourse WHERE instructoremail = ?");
+      $stmt = $this->con->prepare("SELECT coursename FROM instructors WHERE instructoremail = ?");
 
       $stmt->bind_param("s", $instructoremail);
       $stmt->execute();
@@ -419,6 +419,17 @@
 
         if(! $row)
         { 
+          $stmt = $this->con->prepare("SELECT studentemail FROM students WHERE studentemail = ?");
+
+          $stmt->bind_param("s", $email);
+          $stmt->execute();
+          $row = $stmt->fetch();
+
+          if(! $row)
+          {
+            return "Not-Registered";
+          }
+
           return "Student";
         }
 

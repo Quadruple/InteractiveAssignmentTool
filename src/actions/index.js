@@ -65,9 +65,11 @@ export const signIn = (email) => async (dispatch) => {
       else if (accountGetter.accounttype === 'Instructor') {
         dispatch({ type: SIGN_IN, payload: { userType: "INSTRUCTOR", userMail: email } });
       }
-      else {
+      else if(accountGetter.accounttype === 'Student') {
         dispatch({ type: SIGN_IN, payload: { userType: "STUDENT", userMail: email } });
       }
+      else
+        dispatch({ type: SIGN_IN, payload: { userType: accountGetter.accounttype, userMail: null }})
     }
   }
 

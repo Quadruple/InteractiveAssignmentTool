@@ -9,6 +9,7 @@ function TimeList(props) {
   const times = useSelector(state => state.times);
   const email = useSelector(state => state.auth.userMail);
   const isSignedIn = useSelector(state => state.auth.isSignedIn);
+  const userType = useSelector(state => state.auth.userType);
   
   useEffect(() => {
     email && props.fetchTimes(email);
@@ -43,13 +44,14 @@ function TimeList(props) {
 
   var string = isSignedIn ? "Time Preferences" : "";
   return (
-    <div>
-      <h3 style={{ marginBottom: "25px" }}>{string}</h3>
-      <div className="ui celled list">
-        {!!times.length && renderPreferences()}
-      </div>
-      {renderCreate()}
-    </div>
+    userType === "STUDENT" ?
+      <div>
+        <h3 style={{ marginBottom: "25px" }}>{string}</h3>
+        <div className="ui celled list">
+          {!!times.length && renderPreferences()}
+        </div>
+        {renderCreate()}
+      </div> : <h1>YOU ARE NOT A STUDENT</h1>
   );
 }
 

@@ -22,6 +22,7 @@ function Assignment(props) {
   //const isSignedIn = useSelector(state => state.auth.isSignedIn);
   const assignments = useSelector(state => state.assignments);
   const courseName = useSelector(state =>  state.instructorCourse.instructorCourse);
+  const userType = useSelector(state => state.auth.userType);
 
   useEffect(() => {
     courseName && props.fetchTimesByCourse(courseName)
@@ -122,30 +123,31 @@ function Assignment(props) {
   }
 
   return(
-    <DndProvider backend={Backend}>
-      <Layout>
-        <SideBar>
-          {!!preferences.length && renderAssistants()}
-        </SideBar>
-        <CalendarGrid>
-          {slots && slots.map(({ items, name, time, id }) => (
-            <Slot
-              id={id}
-              name={name}
-              time={time}
-              items={items}
-              onDrop={(item) => handleDrop(id, item)}
-              onRemove={handleRemove}
-            />
-          ))}
-        </CalendarGrid>
-      </Layout>
-      {slots &&
-        <div style={{ textAlign: "center", fontSize: "large", marginTop: "25px" }}>
-          Total Score = {totalScore}
-        </div>}
-      <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => onSave()}>SAVE</button>
-    </DndProvider>
+    userType === "INSTRUCTOR" ?
+      <DndProvider backend={Backend}>
+        <Layout>
+          <SideBar>
+            {!!preferences.length && renderAssistants()}
+          </SideBar>
+          <CalendarGrid>
+            {slots && slots.map(({ items, name, time, id }) => (
+              <Slot
+                id={id}
+                name={name}
+                time={time}
+                items={items}
+                onDrop={(item) => handleDrop(id, item)}
+                onRemove={handleRemove}
+              />
+            ))}
+          </CalendarGrid>
+        </Layout>
+        {slots &&
+          <div style={{ textAlign: "center", fontSize: "large", marginTop: "25px" }}>
+            Total Score = {totalScore}
+          </div>}
+        <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => onSave()}>SAVE</button>
+      </DndProvider> : <h1>YOU ARE NOT AN INSTRUCTOR</h1>
   );
 }
 
