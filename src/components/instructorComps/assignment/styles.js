@@ -22,9 +22,10 @@ export const SlotDiv = styled.div`
   border-style: solid;
   border-width: 2px;
   margin: 25px;
+  border-radius: 5px;
 `
 export const AssistantDiv = styled.div`
-  height: 35px;
+  height: 50px;
   width: 110px;
   border-style: solid;
   border-width: 2px;
