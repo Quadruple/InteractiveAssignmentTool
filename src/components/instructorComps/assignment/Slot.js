@@ -26,9 +26,9 @@ function Slot({ onDrop, onRemove, items, name, time, id }) {
 
   return (
     <SlotDiv ref={drop}>
-      {`${name} ${time}`}
-      {items ? <h4>{items.map(item => <div>{item.name} <button onClick={() => onRemove(item, id)}>x</button></div>)}</h4> : null}
-      {canDrop && <div style={{position: "absolute", right: "4px", bottom: "5px"}}>{doesHavePreference()}</div>}
+      <p style={{ fontWeight: "bold", marginTop: "8px", marginLeft: "5px"}}>{`${name} ${time}`}</p>
+      {items ? <div>{items.map(item => <div style={{ fontWeight: "bold", marginBottom: "10px", marginLeft: "5px" }}>{item.name} <button onClick={() => onRemove(item, id)} style={{ marginLeft: "5px", borderRadius: "10px", border: "none", background: "white", fontWeight: "bold", color: "red" }}>X</button></div>)}</div> : null}
+      {canDrop && <div style={{position: "absolute", right: "20px", bottom: "20px", color: "#b30059", fontWeight: "bold", fontSize: "25px"}}>{doesHavePreference()}</div>}
       {isOver && (
         <div
           style={{
@@ -38,8 +38,8 @@ function Slot({ onDrop, onRemove, items, name, time, id }) {
             height: '100%',
             width: '100%',
             zIndex: 1,
-            opacity: 0.5,
-            backgroundColor: 'yellow',
+            opacity: 0.6,
+            backgroundColor: 'white',
           }}
         />
       )}

@@ -82,9 +82,17 @@ function Assignment(props) {
 
   const renderAssistants = () => {
     const studentArray = students.map(student => {
-      console.log(student.studentemail)
       let studentPreferences = preferences.filter(pref =>  pref.studentemail === student.studentemail)
-      return <div><Assistant name={student.studentname} email={student.studentemail} prefs={studentPreferences} /></div>  
+      return (
+              <div>
+                <Assistant name={student.studentname}
+                           email={student.studentemail}
+                           prefs={studentPreferences} 
+                           role = {student.role}
+                           workHours = {student.workhours}
+                           experiencePoints = {student.assistantscore} />
+              </div>  
+      )
     });
 
     return studentArray;
@@ -143,10 +151,13 @@ function Assignment(props) {
           </CalendarGrid>
         </Layout>
         {slots &&
-          <div style={{ textAlign: "center", fontSize: "large", marginTop: "25px" }}>
-            Total Score = {totalScore}
-          </div>}
-        <button style={{ marginLeft: "1200px", height: "40px", width: "80px" }} onClick={() => onSave()}>SAVE</button>
+          <>
+            <div style={{ textAlign: "center", fontSize: "28px", fontWeight: "bold", marginTop: "30px" }}>
+              Total Score = {totalScore} 
+            </div>
+            <button style={{ float: "right", height: "35px", width: "70px", backgroundColor: "#ff751a", marginRight: "85px", border: "none", borderRadius: "10px", fontSize: "20px", fontFamily: "Monospace", fontWeight: "bold" }} onClick={() => onSave()}>SAVE</button>
+          </>
+        }
       </DndProvider> : <h1>YOU ARE NOT AN INSTRUCTOR</h1>
   );
 }
