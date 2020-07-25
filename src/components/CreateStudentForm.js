@@ -54,7 +54,7 @@ class CreateStudentForm extends React.Component {
             LA
           </label>
         </div> <br></br>
-        <label style={{ fontWeight: "bold" }}>Work Hours:</label>
+        <label style={{ fontWeight: "bold" }}>Section Number:</label>
         <div>
           <label>
             <Field name="workhours" component="input" type="radio" value="1" />{' '}

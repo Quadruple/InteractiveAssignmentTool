@@ -49,8 +49,8 @@ function AdminScreen(props) {
       <div style={{ textAlign: 'right' }}>
         <select class="ui dropdown" style={{ marginRight: "10px" }} onChange={e => setAddTermForm({ ...addTermForm, year: e.target.value })}>
           <option value="">Year</option>
-          <option value="2015-2016">2015-2016</option>
-          <option value="2016-2017">2016-2017</option>
+          <option value="2019-2020">2019-2020</option>
+          <option value="2020-2021">2020-2021</option>
         </select>
         <select class="ui dropdown" style={{ marginRight: "10px" }} onChange={e => setAddTermForm({ ...addTermForm, semester: e.target.value })}>
           <option value="">Semester</option>
