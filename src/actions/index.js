@@ -156,9 +156,8 @@ export const deleteStudent = studentEmail => async dispatch => {
     .then((response) => response.json())
     .then(function (data) {
       console.log(data);
+      dispatch({ type: DELETE_STUDENT, payload: studentEmail});
     });
-
-  dispatch({ type: DELETE_STUDENT, payload: studentEmail});
 }
 
 export const createPreferences = (preferences, email, coursename) => async (dispatch) => {
@@ -337,9 +336,8 @@ export const addCourse = formValues => async (dispatch) => {
     .then((response) => response.json())
     .then(function (data) {
       console.log(data);
+      dispatch({ type: ADD_COURSE, payload: { term: dataForBody.term, course: dataForBody.course } });
     });
-
-  dispatch({ type: ADD_COURSE, payload: { term: dataForBody.term, course: dataForBody.course } });
 }
 
 export const deleteCourse = coursename => async dispatch => {
